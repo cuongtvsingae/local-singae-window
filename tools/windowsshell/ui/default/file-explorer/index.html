@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>File Explorer | singae.cloud</title>
+    <link rel="icon" type="image/png" href="../../../asset/logo.png" />
+    <link rel="stylesheet" href="../../../style.css" />
+    <link rel="stylesheet" href="styles.css" />
+      <link rel="stylesheet" href="/tools/theme-singae.css" />
+  </head>
+  <body data-tool-theme="singae">
+    <section class="win-explorer">
+      <header class="xp-topbar">
+        <div class="xp-path-row">
+          <button id="btn-up" type="button" class="xp-icon-btn" title="Up">↑</button>
+          <button id="btn-new-folder" type="button" class="xp-primary-btn">New</button>
+          <div id="path-view" class="xp-breadcrumb">This PC > C:</div>
+        </div>
+        <div class="xp-search">Search singae.cloud</div>
+      </header>
+
+      <div class="xp-body">
+        <aside class="xp-sidebar">
+          <div class="xp-side-title">Quick access</div>
+          <button class="xp-side-item is-active" type="button">Home</button>
+          <button class="xp-side-item" type="button">Gallery</button>
+          <div class="xp-side-title">This PC</div>
+          <div id="drive-list" class="drive-list"></div>
+        </aside>
+
+        <section class="xp-main">
+          <div class="xp-head">
+            <div>Name</div>
+            <div>Date modified</div>
+            <div>Type</div>
+            <div>Size</div>
+          </div>
+          <div id="folder-list" class="xp-list"></div>
+        </section>
+
+        <aside class="xp-preview">
+          <div class="xp-preview-icon">▣</div>
+          <div id="preview-title" class="xp-preview-title">No item selected</div>
+          <div id="preview-meta" class="xp-preview-meta">Select a folder to view details.</div>
+        </aside>
+      </div>
+    </section>
+    <script src="app.js"></script>
+      <script src="/context-menu-fallback.js"></script>
+  </body>
+</html>
+
+

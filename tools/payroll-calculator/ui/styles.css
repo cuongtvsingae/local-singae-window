@@ -1,0 +1,361 @@
+.pc-shell {
+  padding: 20px;
+  color: #e5e7eb;
+  max-width: 1400px !important;
+}
+
+.pc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.pc-badge {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: #93c5fd;
+  margin-bottom: 6px;
+}
+
+.pc-header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.pc-sub {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: rgba(203, 213, 225, 0.9);
+}
+
+.pc-user {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.pc-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+  padding-bottom: 8px;
+}
+
+.pc-tab {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  padding: 8px 14px;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.pc-tab:hover {
+  color: #e5e7eb;
+  background: rgba(30, 41, 59, 0.6);
+}
+
+.pc-tab.is-active {
+  color: #f8fafc;
+  background: rgba(37, 99, 235, 0.35);
+}
+
+.pc-panel {
+  display: none;
+}
+
+.pc-panel.is-active {
+  display: block;
+}
+
+.pc-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.pc-range {
+  font-size: 13px;
+  color: #cbd5e1;
+}
+
+.pc-cache {
+  font-size: 12px;
+  color: #86efac;
+  margin-left: auto;
+}
+
+.pc-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 960px) {
+  .pc-split {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pc-list-wrap {
+  overflow: auto;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 10px;
+  max-height: 62vh;
+}
+
+.pc-detail {
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 10px;
+  padding: 14px;
+  max-height: 62vh;
+  overflow: auto;
+}
+
+.pc-detail h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.pc-muted {
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.pc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.pc-table th,
+.pc-table td {
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+.pc-table thead th {
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+/* Bảng chấm công: tiêu đề cột dính khi scroll (tab timesheet) */
+section[data-panel="timesheet"] .pc-agg-sticky {
+  -webkit-overflow-scrolling: touch;
+}
+
+section[data-panel="timesheet"] .pc-agg-sticky .pc-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #0f172a;
+  box-shadow: 0 1px 0 rgba(148, 163, 184, 0.2);
+}
+
+.pc-table tbody tr {
+  cursor: pointer;
+}
+
+.pc-table tbody tr:hover {
+  background: rgba(30, 41, 59, 0.5);
+}
+
+.pc-table tbody tr.is-selected {
+  background: rgba(37, 99, 235, 0.25);
+}
+
+.pc-table-sm td,
+.pc-table-sm th {
+  padding: 6px 8px;
+  font-size: 12px;
+}
+
+.pc-empty {
+  padding: 24px;
+  text-align: center;
+  color: #64748b;
+  margin: 0;
+}
+
+.pc-detail-meta {
+  font-size: 12px;
+  color: #cbd5e1;
+  margin-bottom: 10px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Trạng thái đơn (MISA): 1 chờ — 2 duyệt — 3 từ chối — 4 nháp */
+.pc-status {
+  display: inline-block;
+  white-space: nowrap;
+  max-width: 100%;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  border: 1px solid transparent;
+}
+
+td.pc-status-cell {
+  vertical-align: middle;
+}
+
+.pc-status--pending {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.12);
+  border-color: rgba(251, 191, 36, 0.35);
+}
+
+.pc-status--approved {
+  color: #86efac;
+  background: rgba(34, 197, 94, 0.14);
+  border-color: rgba(34, 197, 94, 0.35);
+}
+
+.pc-status--rejected {
+  color: #fda4af;
+  background: rgba(244, 63, 94, 0.12);
+  border-color: rgba(244, 63, 94, 0.35);
+}
+
+.pc-status--draft {
+  color: #94a3b8;
+  background: rgba(148, 163, 184, 0.12);
+  border-color: rgba(148, 163, 184, 0.28);
+}
+
+.pc-status--unknown {
+  color: #cbd5e1;
+  background: rgba(51, 65, 85, 0.5);
+  border-color: rgba(148, 163, 184, 0.2);
+}
+
+/* Tab Đơn khác: mỗi loại đơn 1 màu (cột Loại + viền trái dòng) */
+section[data-panel="applications-other"] .pc-app-row--late {
+  box-shadow: inset 3px 0 0 #f59e0b;
+  background: rgba(245, 158, 11, 0.07);
+}
+section[data-panel="applications-other"] .pc-app-row--ot {
+  box-shadow: inset 3px 0 0 #3b82f6;
+  background: rgba(59, 130, 246, 0.08);
+}
+section[data-panel="applications-other"] .pc-app-row--mission {
+  box-shadow: inset 3px 0 0 #a78bfa;
+  background: rgba(167, 139, 250, 0.08);
+}
+section[data-panel="applications-other"] .pc-app-row--timekeeper {
+  box-shadow: inset 3px 0 0 #2dd4bf;
+  background: rgba(45, 212, 191, 0.08);
+}
+section[data-panel="applications-other"] .pc-app-row--shift {
+  box-shadow: inset 3px 0 0 #f472b6;
+  background: rgba(244, 114, 182, 0.08);
+}
+section[data-panel="applications-other"] .pc-app-row--unknown {
+  box-shadow: inset 3px 0 0 #94a3b8;
+  background: rgba(148, 163, 184, 0.06);
+}
+
+td.pc-app-kind-cell {
+  vertical-align: middle;
+}
+
+.pc-app-kind {
+  display: inline-block;
+  max-width: 100%;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  border: 1px solid transparent;
+}
+
+.pc-app-kind--late {
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.16);
+  border-color: rgba(245, 158, 11, 0.4);
+}
+.pc-app-kind--ot {
+  color: #93c5fd;
+  background: rgba(59, 130, 246, 0.18);
+  border-color: rgba(59, 130, 246, 0.4);
+}
+.pc-app-kind--mission {
+  color: #c4b5fd;
+  background: rgba(139, 92, 246, 0.16);
+  border-color: rgba(167, 139, 250, 0.4);
+}
+.pc-app-kind--timekeeper {
+  color: #5eead4;
+  background: rgba(20, 184, 166, 0.16);
+  border-color: rgba(45, 212, 191, 0.4);
+}
+.pc-app-kind--shift {
+  color: #f9a8d4;
+  background: rgba(244, 114, 182, 0.14);
+  border-color: rgba(244, 114, 182, 0.4);
+}
+.pc-app-kind--unknown {
+  color: #cbd5e1;
+  background: rgba(100, 116, 139, 0.25);
+  border-color: rgba(148, 163, 184, 0.35);
+}
+
+section[data-panel="applications-other"] .pc-table tbody tr.pc-app-row--late:hover {
+  background: rgba(245, 158, 11, 0.16);
+}
+section[data-panel="applications-other"] .pc-table tbody tr.pc-app-row--ot:hover {
+  background: rgba(59, 130, 246, 0.16);
+}
+section[data-panel="applications-other"] .pc-table tbody tr.pc-app-row--mission:hover {
+  background: rgba(167, 139, 250, 0.16);
+}
+section[data-panel="applications-other"] .pc-table tbody tr.pc-app-row--timekeeper:hover {
+  background: rgba(45, 212, 191, 0.16);
+}
+section[data-panel="applications-other"] .pc-table tbody tr.pc-app-row--shift:hover {
+  background: rgba(244, 114, 182, 0.16);
+}
+section[data-panel="applications-other"] .pc-table tbody tr.pc-app-row--unknown:hover {
+  background: rgba(148, 163, 184, 0.14);
+}
+
+/* Chọn dòng: nền xanh, giữ sọc trái theo loại đơn */
+section[data-panel="applications-other"] .pc-table tbody tr.pc-app-row--late.is-selected,
+section[data-panel="applications-other"] .pc-table tbody tr.pc-app-row--ot.is-selected,
+section[data-panel="applications-other"] .pc-table tbody tr.pc-app-row--mission.is-selected,
+section[data-panel="applications-other"] .pc-table tbody tr.pc-app-row--timekeeper.is-selected,
+section[data-panel="applications-other"] .pc-table tbody tr.pc-app-row--shift.is-selected,
+section[data-panel="applications-other"] .pc-table tbody tr.pc-app-row--unknown.is-selected {
+  background: rgba(37, 99, 235, 0.2) !important;
+}
+section[data-panel="applications-other"] .pc-table tbody tr.pc-app-row--late.is-selected {
+  box-shadow: inset 3px 0 0 #f59e0b;
+}
+section[data-panel="applications-other"] .pc-table tbody tr.pc-app-row--ot.is-selected {
+  box-shadow: inset 3px 0 0 #3b82f6;
+}
+section[data-panel="applications-other"] .pc-table tbody tr.pc-app-row--mission.is-selected {
+  box-shadow: inset 3px 0 0 #a78bfa;
+}
+section[data-panel="applications-other"] .pc-table tbody tr.pc-app-row--timekeeper.is-selected {
+  box-shadow: inset 3px 0 0 #2dd4bf;
+}
+section[data-panel="applications-other"] .pc-table tbody tr.pc-app-row--shift.is-selected {
+  box-shadow: inset 3px 0 0 #f472b6;
+}
+section[data-panel="applications-other"] .pc-table tbody tr.pc-app-row--unknown.is-selected {
+  box-shadow: inset 3px 0 0 #94a3b8;
+}

@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <title>Color Palette | singae.cloud</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Online utility tool on singae.cloud." />
+    <link rel="canonical" href="https://singae.cloud/tools/image/color-palette.html" />
+    <link rel="icon" type="image/png" href="../../asset/logo.png" />
+    <link rel="stylesheet" href="../../style.css" />
+    <style>
+      .tool-shell {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 32px 24px 40px;
+      }
+      .tool-header-row {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .tool-title-main {
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin: 0 0 6px;
+        text-align: center;
+      }
+      .tool-sub {
+        margin: 0;
+        font-size: 14px;
+        color: var(--text-muted);
+        text-align: center;
+      }
+      .panel {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .panel-label {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text);
+      }
+      .color-input-group {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .color-picker-wrapper {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      input[type="color"] {
+        width: 60px;
+        height: 40px;
+        border: 1px solid var(--border-soft);
+        border-radius: 6px;
+        cursor: pointer;
+        background: none;
+      }
+      .hex-input {
+        width: 120px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        border: 1px solid var(--border-soft);
+        background: #020617;
+        color: var(--text);
+        font-family: ui-monospace, monospace;
+        font-size: 13px;
+        outline: none;
+      }
+      .hex-input:focus {
+        border-color: var(--accent-strong);
+      }
+      .palette-type-selector {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .palette-type {
+        padding: 8px 12px;
+        border-radius: 4px;
+        border: 1px solid var(--border-soft);
+        background: var(--card);
+        cursor: pointer;
+        transition: all 150ms ease-out;
+        font-size: 12px;
+        text-align: center;
+      }
+      .palette-type:hover {
+        border-color: var(--accent-strong);
+        background: var(--accent-soft);
+      }
+      .palette-type.active {
+        border-color: var(--accent-strong);
+        background: var(--accent-soft);
+      }
+      .palette-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 12px;
+        margin-top: 20px;
+      }
+      .palette-color {
+        display: flex;
+        flex-direction: column;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid var(--border-soft);
+        cursor: pointer;
+        transition: transform 150ms ease-out;
+      }
+      .palette-color:hover {
+        transform: translateY(-2px);
+      }
+      .palette-color-box {
+        width: 100%;
+        height: 120px;
+      }
+      .palette-color-info {
+        padding: 10px;
+        background: rgba(15, 23, 42, 0.96);
+        font-size: 11px;
+        font-family: ui-monospace, monospace;
+        text-align: center;
+      }
+      .btn-row {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin-top: 20px;
+      }
+      .btn {
+        padding: 10px 20px;
+        border-radius: 6px;
+        border: 1px solid var(--border-soft);
+        background: var(--card);
+        color: var(--text);
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 150ms ease-out;
+      }
+      .btn:hover {
+        background: var(--accent-soft);
+        border-color: var(--accent-strong);
+        transform: translateY(-1px);
+      }
+      .btn-primary {
+        background: var(--accent-strong);
+        border-color: var(--accent-strong);
+        color: #ffffff;
+      }
+      .code-samples-section {
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border-soft);
+      }
+      .code-samples-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0 0 16px;
+        color: var(--text);
+      }
+      .code-tabs {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+        border-bottom: 1px solid var(--border-soft);
+        position: relative;
+        z-index: 0;
+      }
+      .code-tab {
+        padding: 8px 16px;
+        border: none;
+        background: transparent;
+        color: var(--text-muted);
+        font-size: 13px;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+        transition: all 150ms ease-out;
+        position: relative;
+        z-index: 2;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+      .code-tab:hover {
+        color: var(--text);
+      }
+      .code-tab.active {
+        color: var(--accent-strong);
+        border-bottom-color: var(--accent-strong);
+      }
+      .code-blocks {
+        position: relative;
+      }
+      .code-block {
+        display: none;
+      }
+      .code-block.active {
+        display: block;
+      }
+      .code-block pre {
+        margin: 0;
+        padding: 16px;
+        border-radius: 6px;
+        border: 1px solid var(--border-soft);
+        background: #020617;
+        overflow-x: auto;
+      }
+      .code-block code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 12px;
+        line-height: 1.6;
+        color: var(--text);
+        white-space: pre;
+      }
+      .tool-article {
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border-soft);
+        max-width: 960px;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 13px;
+        line-height: 1.7;
+        color: var(--text-muted);
+        column-count: 2;
+        column-gap: 32px;
+      }
+      @media (max-width: 900px) {
+        .tool-article {
+          column-count: 1;
+        }
+      }
+      .tool-article h2 {
+        font-size: 16px;
+        margin: 0 0 10px;
+        color: var(--text);
+        break-after: avoid;
+      }
+      .tool-article h3 {
+        font-size: 14px;
+        margin: 18px 0 6px;
+        color: var(--text);
+        break-after: avoid;
+      }
+      .tool-article p {
+        margin: 6px 0;
+      }
+      .tool-article ul {
+        margin: 6px 0 6px 18px;
+        padding: 0;
+      }
+      .tool-article li {
+        margin: 3px 0;
+      }
+    </style>
+  
+      <link rel="stylesheet" href="/tools/theme-singae.css" />
+  <body data-tool-theme="singae">
+<div id="tool-meta-hidden" style="display:none" aria-hidden="true">
+      <span id="tagline"></span>
+      <span id="title"></span>
+      <span id="subtitle"></span>
+    </div>
+    <main class="tool-shell">
+      <div class="panel">
+        <label class="panel-label" id="colorLabel"></label>
+        <div class="color-input-group">
+          <div class="color-picker-wrapper">
+            <input type="color" id="baseColor" value="#3b82f6" />
+            <input type="text" id="baseColorHex" class="hex-input" value="#3B82F6" maxlength="7" />
+          </div>
+        </div>
+        <div class="palette-type-selector" id="paletteTypeSelector"></div>
+      </div>
+
+      <div class="palette-grid" id="paletteGrid"></div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="btnCopyPalette"></button>
+      </div>
+
+      <div class="code-samples-section">
+        <h3 class="code-samples-title" id="codeSamplesTitle"></h3>
+        <div class="code-tabs">
+          <button class="code-tab active" data-tab="javascript">JavaScript</button>
+          <button class="code-tab" data-tab="python">Python</button>
+          <button class="code-tab" data-tab="react">React</button>
+          <button class="code-tab" data-tab="vue">Vue</button>
+          <button class="code-tab" data-tab="swift">Swift</button>
+          <button class="code-tab" data-tab="android">Android</button>
+        </div>
+        <div class="code-blocks">
+          <div class="code-block active" id="javascriptCode">
+            <pre><code>// JavaScript code will appear here</code></pre>
+          </div>
+          <div class="code-block" id="pythonCode">
+            <pre><code>// Python code will appear here</code></pre>
+          </div>
+          <div class="code-block" id="reactCode">
+            <pre><code>// React code will appear here</code></pre>
+          </div>
+          <div class="code-block" id="vueCode">
+            <pre><code>// Vue code will appear here</code></pre>
+          </div>
+          <div class="code-block" id="swiftCode">
+            <pre><code>// Swift code will appear here</code></pre>
+          </div>
+          <div class="code-block" id="androidCode">
+            <pre><code>// Android code will appear here</code></pre>
+          </div>
+        </div>
+      </div>
+
+      </main>
+
+    <script src="../../tooltip.js"></script>
+<script src="color-palette.js"></script>
+      <script src="/context-menu-fallback.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

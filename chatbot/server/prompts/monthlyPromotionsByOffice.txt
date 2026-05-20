@@ -1,0 +1,71 @@
+<!--
+  Human: cap nhat noi dung CTKM theo thang / theo co so tai file nay.
+  Bot: khong doc HTML comment; doc toan bo trong <ctkm_co_so_singae_office_key> ben duoi.
+-->
+
+<ctkm_co_so_singae_office_key>
+
+## Bot đọc CTKM ở đây — cùng prompt bot (đã ghép conversationSetup + chatCases + file này)
+
+**Quan trọng:** Đoạn từ dòng **"## Bot đọc…"** đến thẻ đóng `</ctkm_co_so_singae_office_key>` **chính là** nguồn CTKM. Server ghép `conversationSetup.txt` → `chatCases.txt` → **nội dung file này** thành **một** prompt dài; bạn **không** mở file riêng — **cuộn xuống cuối prompt** là thấy khối này. **[KB-n] / RAG: y khoa & quy trình — không dùng làm CTKM** (kể cả KB có % hay “khuyến mãi”).
+
+**Hành vi chung (cách chọn cơ sở / nhồi mỗi tin / không trộn hai cơ sở):** block **`<ctkm_rules>`** trong `chatCases.txt` — file này giữ **bảng A/B/C, bước C, và dữ liệu ưu đãi** làm nguồn duy nhất cho các chi tiết đó.
+
+---
+
+## Thuật toán chọn cơ sở (làm trước khi nêu %)
+
+| Bước | Điều kiện (intake + tin khách) | Hành động |
+|------|--------------------------------|-----------|
+| A | `preferredOfficeKey` = **25VNP** HOẶC `regionLive` rõ **Hà Nội** | Chỉ dùng mục **### 25VNP** |
+| B | `preferredOfficeKey` = **355LTT** HOẶC `regionLive` rõ **TP.HCM / Sài Gòn** | Chỉ dùng mục **### 355LTT** |
+| C | Chưa rõ HN vs TP.HCM | **Chỉ nhịp “3 dịch vụ”** (xem khối dưới); **cấm** %, số tiền, tên gói, ngày hạn, slogan/chương trình **một** bên; **cấm** nói **theo tháng** / **cập nhật theo kỳ**; **cấm** nêu **thành phố**, **tên cơ sở**, **hai nơi**, **từng cơ sở** |
+
+**Cấm** trộn 25VNP với 355LTT trong **một** tin trừ khi khách hỏi so sánh.
+
+---
+
+## Khi chưa rõ `regionLive` / chưa phân HN vs TP.HCM (bước **C**)
+
+**Được phép — duy nhất khung giới thiệu ưu đãi (không con số):** Singae có **chương trình ưu đãi** áp dụng các nhu cầu **implant**, **răng sứ** và **điều trị tổng quát** (nhổ răng khôn, điều trị nền răng miệng thông thường trong phạm vi tổng quát — diễn đạt gọn, **không** liệt kê dài). Gợi ý một mệnh đề nối liền: *ưu đãi gắn ba nhóm trên — khi thăm khám / làm rõ nhu cầu, trợ lý bác sĩ tư vấn chi tiết phù hợp*.
+
+**Cấm tuyệt đối** trong nhịp KM bước **C** (cho đến khi thỏa **A** hoặc **B**): nói **theo tháng**, **hàng tháng**, **kỳ**, **lịch** (kiểu lịch ưu đãi); nêu **Hà Nội**, **TP.HCM**, **Sài Gòn**, **từng cơ sở**, **hai cơ sở**, **địa danh**; mọi **%**; **triệu**; tên hãng trụ / tên gói quà; số răng; ngày `effective_*` / `promotion_valid_until`; slogan một bên; workshop chi tiết; so sánh số hai bên.
+
+---
+
+## Chọn dòng ưu đãi trong mục cơ sở đã chọn
+
+Ánh xạ **chủ đề khách / `notes`** → **một** dòng `promotion_text` tương ứng (chỉ trong mục A hoặc B ở trên):
+
+- **Implant** (trồng răng, implant, All-on, cầu implant…) → dòng gắn **(implant)**  
+- **Răng sứ / bọc sứ / thẩm mỹ răng** → dòng **(răng sứ)** hoặc **(răng sứ thẩm mỹ)** tùy mục cơ sở  
+- **Nhổ răng khôn, TTR, cao răng, hàn răng…** → dòng **(tổng quát)** (nếu mục cơ sở có)  
+- **Workshop / khám miễn phí / sự kiện** → dòng **(sự kiện)** (chỉ khi khách hỏi và mục có ghi)
+
+Mỗi tin: **một** ý KM súc tích từ đúng dòng đã chọn; không đọc dài như bảng nội bộ. Ngày hiệu lực: chỉ nêu khi **đã có** trong các trường `effective_*` / `promotion_valid_until` dưới đây — **không** tự đoán “còn hạn tháng này”.
+
+---
+
+### 25VNP — Hà Nội (`preferredOfficeKey` **25VNP** | khách **Hà Nội**)
+
+- **effective_from:** 2026-04-01 | **effective_to:** 2026-04-30 | **promotion_valid_until:** 2026-04-30  
+- **category / trọng tâm:** implant; răng sứ; tổng quát  
+- **package_name:** Kế hoạch kinh doanh chi tiết **tháng 4** — cơ sở Hà Nội  
+- **promotion_text (implant):** Dentium: ưu đãi tới **15%** implant đơn; **12%** cầu implant (không phụ thu thêm). Kontact, Nobel, Straumann: implant đơn giảm tới **8%**; cầu implant **5%** (không phụ thu thêm). Combo All-on **1 + 2 trụ Dentium:** giảm tới **12%**, tặng cầu tạm **PMMA**. Combo đặc biệt **95 triệu:** giảm tới **10%**, tặng cầu răng tạm **tháo lắp**.  
+- **promotion_text (răng sứ):** Từ **6 răng** trở lên: giảm **20%** + tặng gói **Titan** (giá trị niêm yết **4,3 triệu**). Dưới **6 răng:** giảm **17%**.  
+- **promotion_text (tổng quát):** Giảm **25%** cho: nhổ răng khôn (mọi mức độ), **TTR**, lấy cao răng, hàn răng.  
+- **promotion_text (sự kiện — khi khách hỏi workshop / khám miễn phí):** Workshop **"Sức khỏe răng miệng gia đình"** (khoảng **15–20** người, mời khách cũ đem người thân/trẻ); gợi ý nội dung: khám răng miễn phí, bác sĩ hướng dẫn đánh răng đúng, tặng bộ bàn chải kem đánh răng, phát voucher ưu đãi cho thành viên gia đình. Các đợt sàng lọc ngoài cơ sở **theo lịch từng tháng** — chỉ nêu khi có xác nhận vận hành (bổ sung vào file này khi có).
+
+### 355LTT — TP.HCM (`preferredOfficeKey` **355LTT** | khách **TP.HCM / Sài Gòn**)
+
+- **effective_from:** 2026-04-01 | **effective_to:** 2026-05-31 | **promotion_valid_until:** 2026-05-31  
+- **category / chủ đề:** Mừng **Đại lễ Chiến thắng 30/4** — slogan **"Tặng nụ cười sức khỏe"**; trọng tâm **implant** và **răng sứ thẩm mỹ**.  
+- **package_name:** CTKM **tháng 4 – 5** — cơ sở TP.HCM  
+- **promotion_text (implant):** Tặng **01 trụ Dentium HQ** (giá trị niêm yết **11 triệu**). Giảm **10%** các dòng trụ còn lại. Tặng **Gói Bạc** trị giá **1,5 triệu** cho người thân. Tặng **100%** đóng góp **Quỹ chăm sóc nụ cười gia đình trọn đời** (theo niêm yết chương trình tại cơ sở).  
+- **promotion_text (răng sứ):** Giảm **20%**. Khách điều trị từ **6 răng** trở lên: tặng **Gói Family** trị giá **12,8 triệu** cho người thân. Tặng **01 chai nước súc miệng Singae**. Tặng **100%** đóng góp **Quỹ chăm sóc nụ cười gia đình trọn đời** (theo niêm yết chương trình tại cơ sở).
+
+---
+
+**Lưu ý vận hành:** Cập nhật CTKM = sửa file repo **`tools/chatbot/server/prompts/monthlyPromotionsByOffice.txt`**. Khách hỏi **chi phí cá nhân**: không báo tổng — chỉ tóm tắt ưu đãi chương trình **từ khối này** + mời thăm khám; điều kiện chi tiết khi đặt lịch do trợ lý bác sĩ xác nhận.
+
+</ctkm_co_so_singae_office_key>

@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <title>Tiny Png | singae.cloud</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Online utility tool on singae.cloud." />
+    <link rel="canonical" href="https://singae.cloud/tools/image/tiny-png.html" />
+    <link rel="icon" type="image/png" href="../../asset/logo.png" />
+    <link rel="stylesheet" href="../../style.css" />
+    <style>
+      .tool-shell {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 32px 24px 40px;
+      }
+      .tool-header-row {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .tool-title-main {
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin: 0 0 6px;
+        text-align: center;
+      }
+      .tool-sub {
+        margin: 0;
+        font-size: 14px;
+        color: var(--text-muted);
+        text-align: center;
+      }
+      .upload-area {
+        border: 2px dashed var(--border-soft);
+        border-radius: 8px;
+        padding: 40px 20px;
+        text-align: center;
+        background: var(--card);
+        cursor: pointer;
+        transition: all 150ms ease-out;
+      }
+      .upload-area:hover {
+        border-color: var(--accent-strong);
+        background: var(--accent-soft);
+      }
+      .upload-area.dragover {
+        border-color: var(--accent-strong);
+        background: var(--accent-soft);
+      }
+      .upload-icon {
+        font-size: 48px;
+        margin-bottom: 12px;
+      }
+      .upload-text {
+        font-size: 14px;
+        color: var(--text);
+        margin-bottom: 8px;
+      }
+      .upload-hint {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+      input[type="file"] {
+        display: none;
+      }
+      .preview-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        margin-top: 24px;
+      }
+      @media (max-width: 900px) {
+        .preview-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .preview-box {
+        border: 1px solid var(--border-soft);
+        border-radius: 8px;
+        padding: 16px;
+        background: var(--card);
+      }
+      .preview-label {
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 12px;
+        color: var(--text);
+      }
+      .preview-image {
+        width: 100%;
+        max-height: 400px;
+        object-fit: contain;
+        border-radius: 4px;
+        background: #020617;
+      }
+      .file-info {
+        margin-top: 12px;
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+      .file-info strong {
+        color: var(--text);
+      }
+      .compression-info {
+        margin-top: 16px;
+        padding: 12px;
+        border-radius: 6px;
+        background: var(--accent-soft);
+        border: 1px solid var(--accent-strong);
+      }
+      .compression-info.success {
+        background: rgba(74, 222, 128, 0.1);
+        border-color: var(--success);
+      }
+      .btn-row {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin-top: 24px;
+      }
+      .btn {
+        padding: 10px 20px;
+        border-radius: 6px;
+        border: 1px solid var(--border-soft);
+        background: var(--card);
+        color: var(--text);
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 150ms ease-out;
+      }
+      .btn:hover {
+        background: var(--accent-soft);
+        border-color: var(--accent-strong);
+        transform: translateY(-1px);
+      }
+      .btn-primary {
+        background: var(--accent-strong);
+        border-color: var(--accent-strong);
+        color: #ffffff;
+      }
+      .btn-primary:hover {
+        background: var(--accent-hover);
+      }
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .status {
+        text-align: center;
+        font-size: 12px;
+        margin-top: 12px;
+        color: var(--text-muted);
+      }
+      .status.error {
+        color: var(--danger);
+      }
+      .status.success {
+        color: var(--success);
+      }
+    </style>
+  
+      <link rel="stylesheet" href="/tools/theme-singae.css" />
+  <body data-tool-theme="singae">
+<div id="tool-meta-hidden" style="display:none" aria-hidden="true">
+      <span id="tagline"></span>
+      <span id="title"></span>
+      <span id="subtitle"></span>
+    </div>
+    <main class="tool-shell">
+      <div class="upload-area" id="uploadArea">
+        <div class="upload-icon">IMG</div>
+        <div class="upload-text" id="uploadText"></div>
+        <div class="upload-hint" id="uploadHint"></div>
+        <input type="file" id="fileInput" accept="image/*" />
+      </div>
+
+      <div class="preview-grid" id="previewGrid" style="display: none;">
+        <div class="preview-box">
+          <div class="preview-label" id="originalLabel"></div>
+          <img id="originalImage" class="preview-image" alt="Original" />
+          <div class="file-info" id="originalInfo"></div>
+        </div>
+        <div class="preview-box">
+          <div class="preview-label" id="compressedLabel"></div>
+          <img id="compressedImage" class="preview-image" alt="Compressed" />
+          <div class="file-info" id="compressedInfo"></div>
+          <div class="compression-info" id="compressionInfo" style="display: none;"></div>
+        </div>
+      </div>
+
+      <div class="btn-row" id="btnRow" style="display: none;">
+        <button class="btn btn-primary" id="btnCompress"></button>
+        <button class="btn" id="btnCompressMore" disabled></button>
+        <button class="btn" id="btnDownload" disabled></button>
+      </div>
+
+      <div class="status" id="status"></div>
+    </main>
+
+    <script src="../../tooltip.js"></script>
+<script src="tiny-png.js"></script>
+      <script src="/context-menu-fallback.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

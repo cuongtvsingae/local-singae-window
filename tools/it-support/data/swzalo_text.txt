@@ -1,0 +1,448 @@
+Lấy danh sách tài khoản Zalo đã liên kết
+[GET] 
+https://salework.net/api/open/zalo/v1/connected-account/list
+Request headers:
+client-id: …
+token: …
+Sample response body:
+{
+    
+&quot;apiVersion&quot;
+:
+ 
+&quot;0.0.1&quot;
+,
+    
+&quot;data&quot;
+:
+ 
+[
+        
+{
+            
+&quot;createAt&quot;
+:
+ 
+&quot;2023-02-09T03:17:25.504+00:00&quot;
+,
+            
+&quot;updateAt&quot;
+:
+ 
+&quot;2023-07-12T07:20:34.847+00:00&quot;
+,
+            
+&quot;accountId&quot;
+:
+ 
+&quot;417443234476401111&quot;
+,
+            
+&quot;avatar&quot;
+:
+ 
+&quot;avatar-url&quot;
+,
+            
+&quot;displayName&quot;
+:
+ 
+&quot;Salework Test&quot;
+,
+            
+&quot;dob&quot;
+:
+ 
+633805200
+,
+            
+&quot;gender&quot;
+:
+ 
+0
+,
+            
+&quot;sdob&quot;
+:
+ 
+&quot;01/02/1990&quot;
+,
+            
+&quot;username&quot;
+:
+ 
+&quot;t_m7cz9immam&quot;
+,
+            
+&quot;zaloName&quot;
+:
+ 
+&quot;Salework Test&quot;
+,
+            
+&quot;globalId&quot;
+:
+ 
+&quot;4QGUJKMUG7MU9N5OGF11111NRHOK1EO0&quot;
+,
+            
+&quot;scheduledAt&quot;
+:
+ 
+1689146434831
+,
+            
+&quot;checkStatusAt&quot;
+:
+ 
+1689145783449
+,
+            
+&quot;status&quot;
+:
+ 
+&quot;ACTIVE&quot;
+,
+            
+&quot;allEmployee&quot;
+:
+ 
+false
+        
+},
+    
+],
+    
+&quot;status&quot;
+:
+ 
+&quot;success&quot;
+}
+Lấy danh sách hội thoại
+[GET] 
+https://salework.net/api/open/zalo/v1/conversation/list
+Request headers:
+client-id: …
+token: …
+Request params:
+accountIds
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>Long[]
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:tab/></w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>(optional)
+</w:r></w:p><w:p w14:paraId="26165369"><w:pPr><w:pStyle w:val="7"/><w:numPr><w:ilvl w:val="0"/><w:numId w:val="4"/></w:numPr><w:spacing w:after="0" w:line="276" w:lineRule="auto"/><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr></w:pPr><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>tagIds
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:tab/></w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>Long[]
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:tab/></w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>(optional)
+search
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:tab/></w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>String
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:tab/></w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>(optional)
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>Search keyword
+group
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:tab/></w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>Boolean
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>(optional)
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:tab/></w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>Group conversation or not
+unread
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:tab/></w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>Boolean
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>(optional)
+</w:r></w:p><w:p w14:paraId="5D19E566"><w:pPr><w:pStyle w:val="7"/><w:numPr><w:ilvl w:val="0"/><w:numId w:val="4"/></w:numPr><w:spacing w:after="0" w:line="276" w:lineRule="auto"/><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr></w:pPr><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>unReplied
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>Boolean
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>(optional)
+from
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:tab/></w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>Long
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:tab/></w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>(optional)
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>Timestamp (in milliseconds)
+to
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:tab/></w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>Long
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:tab/></w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>(optional)
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>Timestamp (in milliseconds)
+limit
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:tab/></w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>Integer
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:tab/></w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>(optional)
+Sample response body:
+{
+    
+&quot;apiVersion&quot;
+:
+ 
+&quot;0.0.1&quot;
+,
+    
+&quot;data&quot;
+:
+ 
+[
+        
+{
+            
+&quot;createAt&quot;
+:
+ 
+&quot;2023-04-13T07:14:16.676+00:00&quot;
+,
+            
+&quot;updateAt&quot;
+:
+ 
+&quot;2023-07-12T04:49:24.212+00:00&quot;
+,
+            
+&quot;id&quot;
+:
+ 
+&quot;4174411111111111111_3348632111111111111_0_0&quot;
+,
+            
+&quot;accountId&quot;
+:
+ 
+&quot;41744323111111111111&quot;
+,
+            
+&quot;toId&quot;
+:
+ 
+&quot;334863111111111111111&quot;
+,
+            
+&quot;toName&quot;
+:
+ 
+&quot;Huy&quot;
+,
+            
+&quot;avatar&quot;
+:
+ 
+&quot;avatar-url&quot;
+,
+            
+&quot;hidden&quot;
+:
+ 
+false
+,
+            
+&quot;pushNotify&quot;
+:
+ 
+true
+,
+            
+&quot;cmd&quot;
+:
+ 
+501
+,
+            
+&quot;lastMessageId&quot;
+:
+ 
+&quot;4509356070653&quot;
+,
+            
+&quot;lastMessageContent&quot;
+:
+ 
+&quot;đasa&quot;
+,
+            
+&quot;lastMessageType&quot;
+:
+ 
+&quot;webchat&quot;
+,
+            
+&quot;lastMessageTime&quot;
+:
+ 
+1689137363890
+,
+            
+&quot;phone&quot;
+:
+ 
+&quot;+84855555555&quot;
+,
+            
+&quot;unReplied&quot;
+:
+ 
+false
+,
+            
+&quot;unreadCount&quot;
+:
+ 
+0
+,
+            
+&quot;lastContent&quot;
+:
+ 
+&quot;đasa&quot;
+,
+            
+&quot;tags&quot;
+:
+ 
+[],
+            
+&quot;page&quot;
+:
+ 
+false
+,
+            
+&quot;group&quot;
+:
+ 
+false
+,
+            
+&quot;addFr&quot;
+:
+ 
+true
+        
+},
+    
+],
+    
+&quot;status&quot;
+:
+ 
+&quot;success&quot;
+}
+Lấy nội dung hội thoại
+[GET] 
+https://salework.net/api/open/zalo/v1/conversation/{conversationId}
+Request headers:
+client-id: …
+token: …
+Request params:
+limit
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:tab/></w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>Interger
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:tab/></w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>(required)
+</w:r></w:p><w:p w14:paraId="2C1EC68C"><w:pPr><w:pStyle w:val="7"/><w:numPr><w:ilvl w:val="0"/><w:numId w:val="4"/></w:numPr><w:spacing w:after="0" w:line="276" w:lineRule="auto"/><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr></w:pPr><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>timestamp
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>Long
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:tab/></w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>(optional)
+</w:r><w:r><w:rPr><w:sz w:val="20"/><w:szCs w:val="20"/></w:rPr><w:t>(in milliseconds)
+Sample response body:
+{
+    
+&quot;apiVersion&quot;
+:
+ 
+&quot;0.0.1&quot;
+,
+    
+&quot;data&quot;
+:
+ 
+[
+        
+{
+            
+&quot;id&quot;
+:
+ 
+{
+                
+&quot;msgId&quot;
+:
+ 
+&quot;4445711941972&quot;
+,
+                
+&quot;conversationId&quot;
+:
+ 
+&quot;111111111111111111_222222222222222222222_1_0&quot;
+,
+                
+&quot;uidFrom&quot;
+:
+ 
+&quot;8412603449979912422&quot;
+,
+                
+&quot;idTo&quot;
+:
+ 
+&quot;4150029229428909518&quot;
+            
+},
+            
+&quot;msgType&quot;
+:
+ 
+&quot;webchat&quot;
+,
+            
+&quot;ts&quot;
+:
+ 
+&quot;1687172197510&quot;
+,
+            
+&quot;status&quot;
+:
+ 
+1
+,
+            
+&quot;content&quot;
+:
+ 
+&quot;123344&quot;
+,
+            
+&quot;mentions&quot;
+:
+ 
+&quot;&quot;
+,
+            
+&quot;actionId&quot;
+:
+ 
+&quot;5948246572383&quot;
+,
+            
+&quot;cliMsgId&quot;
+:
+ 
+&quot;1687172197494&quot;
+,
+            
+&quot;createAt&quot;
+:
+ 
+&quot;2023-06-19T10:56:37.735+00:00&quot;
+,
+            
+&quot;dname&quot;
+:
+ 
+&quot;Salework Test&quot;
+        
+},
+    
+],
+    
+&quot;status&quot;
+:
+ 
+&quot;success&quot;
+}
+Lấy thông tin liên hệ 
+<w:t>[GET]
+https://salework.net/api/open/zalo/v1/contact/profile
+Request headers:
+client-id: …
+token: …
+Request params:
+conversationId  
+<w:t>
+<w:t>String
+<w:t>
+<w:t xml:space="preserve"> 
+(required)

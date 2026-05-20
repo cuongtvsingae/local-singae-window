@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CTV SINGAE MANAGER</title>
+    <link rel="icon" type="image/png" href="../../../asset/logo.png" />
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/tools/normal/giftbag/styles.css?v=20260403" />
+    <link rel="stylesheet" href="/tools/theme-singae.css" />
+  </head>
+  <body data-tool-theme="singae">
+    <div id="tool-meta-hidden" style="display:none" aria-hidden="true">
+      <span id="tagline">CTV • Túi quà • Hoa hồng</span>
+      <span id="title">CTV SINGAE MANAGER</span>
+      <span id="subtitle"></span>
+    </div>
+
+    <main class="tool-shell giftbag-tool" id="giftBagApp">
+      <div id="gbApiLoadingIndicator" class="gb-api-loading" aria-live="polite" aria-hidden="true">
+        <span class="gb-api-spinner" aria-hidden="true"></span>
+      </div>
+      <section class="gb-card gb-card-wide">
+        <div class="gb-list-head">
+          <div class="gb-card-title">Danh sách CTV</div>
+          <div class="gb-row">
+            <input id="gbSearchCtvInput" class="gb-input" placeholder="Tìm CTV: mã, tên, sđt, địa chỉ..." />
+            <button class="btn btn-ghost gb-btn" id="gbOpenManagerBtn" type="button">Quản lý túi quà</button>
+            <button class="btn btn-primary gb-btn" id="gbAddCtvBtn" type="button">+ Thêm CTV</button>
+          </div>
+        </div>
+        <div class="gb-table-wrap">
+          <table class="gb-table gb-table-ctv">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Họ tên</th>
+                <th>Ngày sinh</th>
+                <th>Giới tính</th>
+                <th>Địa chỉ</th>
+                <th>Cấp trên</th>
+                <th>Túi quà</th>
+                <th>Hoa hồng</th>
+              </tr>
+            </thead>
+            <tbody id="gbCtvTable"></tbody>
+          </table>
+          <div id="gbCtvCards" class="gb-ctv-grid"></div>
+        </div>
+      </section>
+
+      <section id="gbCtvDetailOverlay" class="gb-overlay" aria-hidden="true">
+        <div class="gb-modal gb-modal-lg" role="dialog" aria-modal="true">
+          <header class="window-titlebar gb-modal-titlebar">
+            <div class="window-title">
+              <span class="window-title-text gb-detail-title">
+                <span id="gbDetailHeaderAvatar" class="gb-title-avatar gb-h-avatar gb-h-avatar-neutral" aria-hidden="true"></span>
+                <span id="gbDetailHeaderName" class="gb-detail-title-name">CTV</span>
+                <span class="gb-detail-title-func">Thông tin CTV</span>
+              </span>
+            </div>
+            <div class="window-controls">
+              <button class="ctl close" id="gbCloseDetailDialogBtn" type="button" aria-label="Close"><span class="ctl-icon ctl-icon-close" aria-hidden="true"></span></button>
+            </div>
+          </header>
+          <div class="gb-form gb-form-grid">
+              <div class="gb-tabs" id="gbDetailTabs">
+                <button class="gb-tab is-active" data-tab-target="gbTabInfo" type="button">Thông tin CTV</button>
+                <button class="gb-tab" data-tab-target="gbTabHierarchy" type="button">Mạng lưới của CTV</button>
+                <button class="gb-tab" data-tab-target="gbTabGiftbag" type="button">Gói quà</button>
+                <button class="gb-tab" data-tab-target="gbTabCommission" type="button">Hoa hồng</button>
+              </div>
+              <section id="gbTabInfo" class="gb-tab-panel is-active">
+                <div class="gb-detail-grid">
+                  <label class="gb-label"><span>ID</span><input id="gbDetailCode" class="gb-input" readonly /></label>
+                  <label class="gb-label"><span>Họ tên</span><input id="gbDetailName" class="gb-input" /></label>
+                  <label class="gb-label"><span>Số điện thoại</span><input id="gbDetailPhone" class="gb-input" /></label>
+                  <label class="gb-label"><span>Ngày sinh</span><input id="gbDetailDob" class="gb-input" type="date" /></label>
+                  <label class="gb-label">
+                    <span>Giới tính</span>
+                    <select id="gbDetailGender" class="gb-input">
+                      <option value="other">Khác</option>
+                      <option value="male">Nam</option>
+                      <option value="female">Nữ</option>
+                    </select>
+                  </label>
+                  <label class="gb-label"><span>CCCD</span><input id="gbDetailCitizenId" class="gb-input" /></label>
+                  <label class="gb-label"><span>Địa chỉ</span><input id="gbDetailAddress" class="gb-input" /></label>
+                  <label class="gb-label"><span>Ngày kích hoạt</span><input id="gbDetailActivatedAt" class="gb-input" readonly /></label>
+                  <label class="gb-label gb-label-full"><span>Ghi chú</span><input id="gbDetailNote" class="gb-input" /></label>
+                  <div class="gb-row">
+                    <button class="btn btn-primary gb-btn" id="gbSaveDetailBtn" type="button">Lưu thông tin CTV</button>
+                    <button class="btn btn-ghost gb-btn" id="gbDeleteCtvBtn" type="button">Xóa CTV</button>
+                  </div>
+                </div>
+              </section>
+              <section id="gbTabHierarchy" class="gb-tab-panel">
+                <div id="gbDownlineTree" class="gb-downline-tree"></div>
+              </section>
+              <section id="gbTabGiftbag" class="gb-tab-panel">
+                <div class="gb-card-title">Túi quà của CTV</div>
+                <input id="gbSearchCtvWalletInput" class="gb-input" placeholder="Tìm túi quà của CTV..." />
+                <div id="gbCtvWalletTickets" class="gb-ticket-grid"></div>
+                <div class="gb-card-title">Lịch sử sử dụng gói quà</div>
+                <div class="gb-table-wrap">
+                  <table class="gb-table">
+                    <thead>
+                      <tr>
+                        <th>Thời gian</th>
+                        <th>Ai dùng</th>
+                        <th>Mục đích</th>
+                        <th>Mã KH</th>
+                        <th>Dịch vụ</th>
+                        <th>Đã dùng</th>
+                        <th>Còn lại năm nay</th>
+                      </tr>
+                    </thead>
+                    <tbody id="gbGiftbagUsageRows"></tbody>
+                  </table>
+                </div>
+              </section>
+              <section id="gbTabCommission" class="gb-tab-panel">
+                <div class="gb-card-title">Phiếu hoa hồng của CTV</div>
+                <input id="gbSearchCtvVoucherInput" class="gb-input" placeholder="Tìm phiếu hoa hồng của CTV..." />
+                <div id="gbCtvVoucherTickets" class="gb-ticket-grid"></div>
+              </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="gbWalletOverlay" class="gb-overlay" aria-hidden="true">
+        <div class="gb-modal gb-modal-lg" role="dialog" aria-modal="true">
+          <header class="window-titlebar gb-modal-titlebar">
+            <div class="window-title">
+              <span class="window-title-text gb-detail-title">
+                <span id="gbWalletHeaderAvatar" class="gb-title-avatar gb-h-avatar gb-h-avatar-neutral" aria-hidden="true"></span>
+                <span id="gbWalletHeaderName" class="gb-detail-title-name">CTV</span>
+                <span class="gb-detail-title-func">Danh sách túi quà</span>
+              </span>
+            </div>
+            <div class="window-controls">
+              <button class="ctl close" id="gbCloseWalletDialogBtn" type="button" aria-label="Close"><span class="ctl-icon ctl-icon-close" aria-hidden="true"></span></button>
+            </div>
+          </header>
+          <div class="gb-form gb-form-grid gb-wallet-list-only">
+            <div class="gb-card-title">Danh sách túi quà</div>
+            <input id="gbSearchWalletInput" class="gb-input" placeholder="Tìm túi quà: mã gói..." />
+            <div id="gbWalletTickets" class="gb-ticket-grid"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="gbUseWalletOverlay" class="gb-overlay" aria-hidden="true">
+        <div class="gb-modal gb-modal-md" role="dialog" aria-modal="true">
+          <header class="window-titlebar gb-modal-titlebar">
+            <div class="window-title">
+              <span class="window-title-text gb-detail-title">
+                <span id="gbUseWalletHeaderAvatar" class="gb-title-avatar gb-h-avatar gb-h-avatar-neutral" aria-hidden="true"></span>
+                <span id="gbUseWalletHeaderName" class="gb-detail-title-name">CTV</span>
+                <span class="gb-detail-title-func">Sử dụng gói quà</span>
+              </span>
+            </div>
+            <div class="window-controls">
+              <button class="ctl close" id="gbCloseUseWalletDialogBtn" type="button" aria-label="Close"><span class="ctl-icon ctl-icon-close" aria-hidden="true"></span></button>
+            </div>
+          </header>
+          <div class="gb-form gb-form-grid">
+            <label class="gb-label"><span>Mã túi quà</span><input id="gbUseWalletCode" class="gb-input" readonly /></label>
+            <label class="gb-label">
+              <span>Dịch vụ</span>
+              <select id="gbUseServiceCategory" class="gb-input">
+                <option value="implant">Implant</option>
+                <option value="porcelain">Sứ (trên răng thật)</option>
+                <option value="general">Nha khoa tổng quát</option>
+                <option value="orthodontic">Niềng răng</option>
+              </select>
+            </label>
+            <label class="gb-label"><span>Khách hàng</span><input id="gbUseCustomerName" class="gb-input" placeholder="Tên khách hàng" /></label>
+            <label class="gb-label"><span>SĐT khách</span><input id="gbUseCustomerPhone" class="gb-input" placeholder="Số điện thoại" /></label>
+            <label class="gb-label"><span>Mã KH</span><input id="gbUseCustomerCode" class="gb-input" placeholder="VD: KH_0001" /></label>
+            <label class="gb-label"><span>Số tiền dùng từ gói quà (VND)</span><input id="gbUseGiftAmount" class="gb-input" value="0" /></label>
+            <label class="gb-label gb-label-full"><span>Mô tả mục đích sử dụng:</span><input id="gbUseNote" class="gb-input" /></label>
+            <div class="gb-row">
+              <button class="btn btn-primary gb-btn" id="gbUseWalletSubmitBtn" type="button">Xác nhận sử dụng</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="gbCreateWalletOverlay" class="gb-overlay" aria-hidden="true">
+        <div class="gb-modal gb-modal-md" role="dialog" aria-modal="true">
+          <header class="window-titlebar gb-modal-titlebar">
+            <div class="window-title">
+              <span class="window-title-text gb-detail-title">
+                <span id="gbCreateWalletHeaderAvatar" class="gb-title-avatar gb-h-avatar gb-h-avatar-neutral" aria-hidden="true"></span>
+                <span id="gbCreateWalletHeaderName" class="gb-detail-title-name">CTV</span>
+                <span class="gb-detail-title-func">Tạo túi quà</span>
+              </span>
+            </div>
+            <div class="window-controls">
+              <button class="ctl close" id="gbCloseCreateWalletDialogBtn" type="button" aria-label="Close"><span class="ctl-icon ctl-icon-close" aria-hidden="true"></span></button>
+            </div>
+          </header>
+          <div class="gb-form gb-form-grid">
+            <label class="gb-label"><span>Tổng giá trị (VND)</span><input id="gbCreateWalletTotal" class="gb-input" value="500.000.000" /></label>
+            <label class="gb-label">
+              <span>Hạn mức mỗi năm (%)</span>
+              <input id="gbCreateWalletAnnualPercent" class="gb-input" value="10" />
+              <small class="gb-calc-text">~ <span id="gbCreateWalletAnnualMoney">50.000.000</span> VND</small>
+            </label>
+            <div class="gb-wallet-distribution">
+              <label class="gb-label"><span>Implant (%)</span><input id="gbDistImplantPct" class="gb-input" value="40" /><small class="gb-calc-text">~ <span id="gbDistImplantMoney">200.000.000</span> VND</small></label>
+              <label class="gb-label"><span>Sứ (trên răng thật) (%)</span><input id="gbDistPorcelainPct" class="gb-input" value="30" /><small class="gb-calc-text">~ <span id="gbDistPorcelainMoney">150.000.000</span> VND</small></label>
+              <label class="gb-label"><span>Nha khoa tổng quát (%)</span><input id="gbDistGeneralPct" class="gb-input" value="20" /><small class="gb-calc-text">~ <span id="gbDistGeneralMoney">100.000.000</span> VND</small></label>
+              <label class="gb-label"><span>Niềng răng (%)</span><input id="gbDistOrthoPct" class="gb-input" value="10" /><small class="gb-calc-text">~ <span id="gbDistOrthoMoney">50.000.000</span> VND</small></label>
+            </div>
+            <div class="gb-row">
+              <button class="btn btn-primary gb-btn" id="gbCreateWalletForCtvBtn" type="button">Tạo túi quà</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="gbVoucherOverlay" class="gb-overlay" aria-hidden="true">
+        <div class="gb-modal gb-modal-lg" role="dialog" aria-modal="true">
+          <header class="window-titlebar gb-modal-titlebar">
+            <div class="window-title">
+              <span class="window-title-text gb-detail-title">
+                <span id="gbVoucherHeaderAvatar" class="gb-title-avatar gb-h-avatar gb-h-avatar-neutral" aria-hidden="true"></span>
+                <span id="gbVoucherHeaderName" class="gb-detail-title-name">CTV</span>
+                <span class="gb-detail-title-func">Phiếu hoa hồng</span>
+              </span>
+            </div>
+            <div class="window-controls">
+              <button class="ctl close" id="gbCloseVoucherDialogBtn" type="button" aria-label="Close"><span class="ctl-icon ctl-icon-close" aria-hidden="true"></span></button>
+            </div>
+          </header>
+          <div class="gb-form gb-form-grid gb-wallet-list-only">
+            <div class="gb-card-title">Danh sách phiếu hoa hồng</div>
+            <input id="gbSearchVoucherInput" class="gb-input" placeholder="Tìm phiếu: mã phiếu, CTV nguồn..." />
+            <div class="gb-table-wrap">
+              <table class="gb-table">
+                <thead>
+                  <tr><th>Mã phiếu</th><th>Từ CTV</th><th>Hoa hồng</th><th>Tạo lúc</th><th>Trạng thái</th></tr>
+                </thead>
+                <tbody id="gbVoucherRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="gbManagerOverlay" class="gb-overlay" aria-hidden="true">
+        <div class="gb-modal gb-modal-lg" role="dialog" aria-modal="true">
+          <header class="window-titlebar gb-modal-titlebar">
+            <div class="window-title">
+              <span class="window-title-text gb-detail-title">
+                <span id="gbManagerHeaderAvatar" class="gb-title-avatar gb-h-avatar gb-h-avatar-neutral" aria-hidden="true"></span>
+                <span id="gbManagerHeaderName" class="gb-detail-title-name">Hệ thống</span>
+              </span>
+            </div>
+            <div class="window-controls">
+              <button class="ctl close" id="gbCloseManagerDialogBtn" type="button" aria-label="Close"><span class="ctl-icon ctl-icon-close" aria-hidden="true"></span></button>
+            </div>
+          </header>
+          <div class="gb-manager-layout">
+            <aside class="gb-manager-sidebar">
+              <button class="gb-manager-nav is-active" id="gbManagerNavWallet" type="button" data-manager-panel="wallet">Quản lý túi quà</button>
+              <button class="gb-manager-nav" id="gbManagerNavVoucher" type="button" data-manager-panel="voucher">Quản lý hoa hồng</button>
+              <button class="gb-manager-nav" id="gbManagerNavHistory" type="button" data-manager-panel="history">Lịch sử thanh toán</button>
+              <button class="gb-manager-nav" id="gbManagerNavSyncGdv25" type="button" data-manager-panel="sync-gdv25">Sync GDV 25 (VNP)</button>
+              <!-- Logs removed per UX request -->
+            </aside>
+            <div class="gb-manager-main">
+              <section id="gbManagerPanelWallet" class="gb-manager-panel is-active">
+                <div class="gb-row gb-row-right">
+                  <input id="gbSearchManagerWalletInput" class="gb-input" placeholder="Tìm túi quà trong manager..." />
+                </div>
+                <div class="gb-table-wrap">
+                  <table class="gb-table">
+                    <thead><tr><th>Mã túi quà</th><th>CTV</th><th>Tổng</th><th>Đã dùng</th><th>Còn lại theo dịch vụ(trong năm nay)</th><th>Hết hiệu lực</th><th>Thao tác</th></tr></thead>
+                    <tbody id="gbManagerWalletRows"></tbody>
+                  </table>
+                </div>
+              </section>
+              <section id="gbManagerPanelVoucher" class="gb-manager-panel">
+                <div class="gb-form gb-form-grid gb-settings-grid">
+                  <label class="gb-label">
+                    <span>% hoa hồng cấp 1</span>
+                    <input id="gbCommissionLevel1Percent" class="gb-input" value="10" />
+                  </label>
+                  <label class="gb-label">
+                    <span>% hoa hồng cấp 2</span>
+                    <input id="gbCommissionLevel2Percent" class="gb-input" value="10" />
+                  </label>
+                  <div class="gb-row">
+                    <button class="btn btn-primary gb-btn" id="gbSaveCommissionSettingsBtn" type="button">Lưu cấu hình hoa hồng</button>
+                  </div>
+                </div>
+                <input id="gbSearchManagerVoucherInput" class="gb-input" placeholder="Tìm phiếu hoa hồng trong manager..." />
+                <div class="gb-table-wrap">
+                  <table class="gb-table">
+                    <thead><tr><th>Mã phiếu hoa hồng</th><th>CTV</th><th>Hoa hồng</th><th>Được nhận lúc</th><th>Trạng thái</th><th>thao tác</th></tr></thead>
+                    <tbody id="gbManagerVoucherRows"></tbody>
+                  </table>
+                </div>
+              </section>
+              <section id="gbManagerPanelHistory" class="gb-manager-panel">
+                <div class="gb-card-title">Lịch sử sử dụng gói quà</div>
+                <input id="gbSearchManagerUsageInput" class="gb-input" placeholder="Tìm lịch sử dùng gói quà..." />
+                <div class="gb-table-wrap">
+                  <table class="gb-table">
+                    <thead><tr><th>Mã gói quà</th><th>Mã KH</th><th>Tên Khách hàng</th><th>CTV</th><th>Loại dịch vụ</th><th>đã dùng</th><th>Thời gian</th></tr></thead>
+                    <tbody id="gbManagerUsageRows"></tbody>
+                  </table>
+                </div>
+                <div class="gb-card-title">Lịch sử thanh toán hoa hồng</div>
+                <input id="gbSearchManagerPaymentInput" class="gb-input" placeholder="Tìm lịch sử thanh toán hoa hồng..." />
+                <div class="gb-table-wrap">
+                  <table class="gb-table">
+                    <thead><tr><th>Mã phiếu hoa hồng</th><th>CTV</th><th>Hoa hồng</th><th>Thanh toán lúc</th></tr></thead>
+                    <tbody id="gbManagerPaymentRows"></tbody>
+                  </table>
+                </div>
+              </section>
+              <section id="gbManagerPanelSyncGdv25" class="gb-manager-panel">
+                <div class="gb-card-title">Sync: Gói Dịch Vụ 25 Vũ Ngọc Phan</div>
+                <div class="gb-note">
+                  Chỉ đọc từ <b>hàng 4</b> (row 4). Chỉ dùng các cột:
+                  <b>A</b>=Mã KH, <b>C</b>=Số lượng gói quà, <b>D</b>=Số tiền mỗi gói, <b>G</b>=Hạn sử dụng.
+                  File upload chỉ xử lý trong RAM, sync xong là bỏ.
+                </div>
+                <div class="gb-form gb-form-grid gb-settings-grid">
+                  <label class="gb-label gb-label-full">
+                    <span>Chọn file Excel</span>
+                    <input id="gbGdv25File" class="gb-input" type="file" accept=".xlsx,.xls" />
+                  </label>
+                  <div class="gb-row">
+                    <button class="btn btn-ghost gb-btn" id="gbGdv25DryRunBtn" type="button">Kiểm tra (dry-run)</button>
+                    <button class="btn btn-primary gb-btn" id="gbGdv25SyncBtn" type="button">Sync & tạo gói quà</button>
+                  </div>
+                </div>
+                <pre id="gbGdv25Log" class="gb-log"></pre>
+              </section>
+              <!-- Logs panel removed -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <section id="gbPayVoucherOverlay" class="gb-overlay" aria-hidden="true">
+      <div class="gb-modal gb-modal-md" role="dialog" aria-modal="true">
+        <header class="window-titlebar gb-modal-titlebar">
+          <div class="window-title">
+            <span class="window-title-text gb-detail-title">
+              <span id="gbPayVoucherHeaderAvatar" class="gb-title-avatar gb-h-avatar gb-h-avatar-neutral" aria-hidden="true"></span>
+              <span id="gbPayVoucherHeaderName" class="gb-detail-title-name">CTV</span>
+              <span class="gb-detail-title-func">Thanh toán phiếu hoa hồng</span>
+            </span>
+          </div>
+          <div class="window-controls">
+            <button class="ctl close" id="gbClosePayVoucherDialogBtn" type="button" aria-label="Close"><span class="ctl-icon ctl-icon-close" aria-hidden="true"></span></button>
+          </div>
+        </header>
+
+        <div class="gb-form gb-form-grid">
+          <label class="gb-label"><span>Mã phiếu hoa hồng</span><input id="gbPayVoucherCode" class="gb-input" readonly /></label>
+          <label class="gb-label"><span>Mã KH</span><input id="gbPayVoucherCustomerCode" class="gb-input" readonly /></label>
+          <label class="gb-label"><span>Số tiền thanh toán (VND)</span><input id="gbPayVoucherPaidAmount" class="gb-input" value="0" readonly /></label>
+          <label class="gb-label gb-label-full"><span>Ghi chú</span><input id="gbPayVoucherNote" class="gb-input" /></label>
+
+          <div class="gb-row">
+            <button class="btn btn-primary gb-btn" id="gbPayVoucherSubmitBtn" type="button">Xác nhận thanh toán</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="gbCtvOverlay" class="gb-overlay" aria-hidden="true">
+      <div class="gb-modal gb-modal-md" role="dialog" aria-modal="true">
+        <header class="window-titlebar gb-modal-titlebar">
+          <div class="window-title">
+            <span class="window-title-text gb-detail-title">
+              <span id="gbCreateCtvHeaderAvatar" class="gb-title-avatar gb-h-avatar gb-h-avatar-neutral" aria-hidden="true"></span>
+              <span id="gbCreateCtvHeaderName" class="gb-detail-title-name">CTV mới</span>
+              <span class="gb-detail-title-func">Thêm cộng tác viên</span>
+            </span>
+          </div>
+          <div class="window-controls">
+            <button class="ctl close" id="gbCloseDialogBtn" type="button" aria-label="Close"><span class="ctl-icon ctl-icon-close" aria-hidden="true"></span></button>
+          </div>
+        </header>
+        <form id="gbCtvForm" class="gb-form gb-form-grid">
+          <label class="gb-label"><span>Mã KH</span><input id="gbCtvCustomerCode" class="gb-input" readonly /></label>
+          <label class="gb-label"><span>Tên cộng tác viên</span><input id="gbCtvName" class="gb-input" /></label>
+          <label class="gb-label"><span>Số điện thoại</span><input id="gbCtvPhone" class="gb-input" /></label>
+          <label class="gb-label"><span>Email</span><input id="gbCtvEmail" class="gb-input" /></label>
+          <label class="gb-label"><span>Ngày sinh</span><input id="gbCtvDob" class="gb-input" type="date" /></label>
+          <label class="gb-label">
+            <span>Giới tính</span>
+            <select id="gbCtvGender" class="gb-input">
+              <option value="other">Khác</option>
+              <option value="male">Nam</option>
+              <option value="female">Nữ</option>
+            </select>
+          </label>
+          <label class="gb-label"><span>Địa chỉ</span><input id="gbCtvAddress" class="gb-input" /></label>
+          <label class="gb-label"><span>Mối quan hệ</span><input id="gbCtvRelationName" class="gb-input" /></label>
+          <label class="gb-label"><span>Mô tả</span><input id="gbCtvDescription" class="gb-input" /></label>
+          <label class="gb-label"><span>Ghi chú nội bộ</span><input id="gbCtvNote" class="gb-input" /></label>
+          <label class="gb-label">
+            <span>Cấp trên</span>
+            <select id="gbReferrerSelect" class="gb-input">
+              <option value="">None</option>
+            </select>
+          </label>
+          <div class="gb-row">
+            <button class="btn btn-primary gb-btn" id="gbCreateCtvBtn" type="submit">Tạo cộng tác viên</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="gbGetflySearchOverlay" class="gb-overlay" aria-hidden="true">
+      <div id="gbGetflySearchModal" class="gb-modal gb-modal-md" role="dialog" aria-modal="true">
+        <div class="gb-form gb-form-grid">
+          <label class="gb-label gb-label-full">
+            <span>Mã KH</span>
+            <input id="gbSearchCustomerCode" class="gb-input" placeholder="Nhập mã KH, ví dụ KH123456789" />
+          </label>
+          <div class="gb-row">
+            <button class="btn gb-btn" id="gbCloseSearchDialogFooterBtn" type="button">Hủy</button>
+            <button class="btn btn-primary gb-btn" id="gbFetchCustomerBtn" type="button">Tiếp tục</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="gbNoticeOverlay" class="gb-overlay" aria-hidden="true">
+      <div class="gb-modal gb-modal-md" role="dialog" aria-modal="true">
+        <header class="window-titlebar gb-modal-titlebar">
+          <div class="window-title">
+            <span class="window-title-text gb-detail-title">
+              <span class="gb-title-avatar gb-h-avatar gb-h-avatar-neutral" aria-hidden="true"></span>
+              <span id="gbNoticeTitle" class="gb-detail-title-name">Thông báo</span>
+              <span class="gb-detail-title-func" id="gbNoticeSubtitle"></span>
+            </span>
+          </div>
+          <div class="window-controls">
+            <button class="ctl close" id="gbNoticeCloseBtn" type="button" aria-label="Close"><span class="ctl-icon ctl-icon-close" aria-hidden="true"></span></button>
+          </div>
+        </header>
+        <div class="gb-form">
+          <div id="gbNoticeBody" class="gb-note"></div>
+          <div id="gbNoticeActions" class="gb-row"></div>
+        </div>
+      </div>
+    </section>
+
+    <script src="/tools/normal/giftbag/app.js?v=20260403"></script>
+  </body>
+</html>
+
+

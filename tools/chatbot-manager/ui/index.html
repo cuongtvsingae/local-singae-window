@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chatbot Manager</title>
+    <link rel="icon" type="image/png" href="../../../asset/logo.png" />
+    <link rel="stylesheet" href="../../../style.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="chatbot-manager">
+    <header class="cm-header">
+      <div>
+        <h1>Chatbot Manager</h1>
+      </div>
+      <div class="cm-actions">
+        <button id="btn-refresh-all" class="btn btn-primary" type="button">Refresh</button>
+      </div>
+    </header>
+
+    <nav class="cm-tabs" aria-label="Khu vực quản lý">
+      <button type="button" class="cm-tab is-active" data-cm-tab="ops" id="cm-tab-ops">Vận hành</button>
+      <button type="button" class="cm-tab" data-cm-tab="processing" id="cm-tab-processing">Bot đang xử lý</button>
+      <button type="button" class="cm-tab" data-cm-tab="intake" id="cm-tab-intake">Thu thập khách</button>
+      <button type="button" class="cm-tab" data-cm-tab="booking" id="cm-tab-booking">Đặt lịch</button>
+      <button type="button" class="cm-tab" data-cm-tab="bug" id="cm-tab-bug">Bug Board</button>
+      <button type="button" class="cm-tab" data-cm-tab="zalo" id="cm-tab-zalo">Thông báo</button>
+    </nav>
+
+    <main class="cm-layout">
+      <div id="cm-ops-stack" class="cm-tab-panel cm-ops-stack">
+      <section class="cm-card" id="cm-panel-fb-pages">
+        <div class="cm-card-head">
+          <div>
+            <h2>Facebook Pages đã kết nối</h2>
+            <p class="cm-sub">Chỉ Page trong danh sách OAuth mới được bot trả lời. Tắt công tắc → không rep Page đó (vẫn lưu hội thoại). Page chưa OAuth → không rep.</p>
+          </div>
+          <div class="cm-inline">
+            <button type="button" class="btn btn-ghost" id="btn-fb-pages-sync">Đồng bộ OAuth</button>
+            <button type="button" class="btn btn-ghost" id="btn-fb-pages-refresh">Làm mới</button>
+          </div>
+        </div>
+        <div id="cm-fb-pages-meta" class="cm-meta">Đang tải…</div>
+        <div id="cm-fb-pages-list" class="cm-fb-pages-list"></div>
+      </section>
+
+      <section class="cm-card">
+        <div class="cm-card-head">
+          <h2>Prompt Profiles</h2>
+          <div class="cm-inline">
+            <button id="btn-add-prompt" class="btn btn-primary" type="button">Add Prompt</button>
+          </div>
+        </div>
+        <div id="prompt-profile-meta" class="cm-meta"></div>
+        <div id="prompts-list" class="cm-list"></div>
+      </section>
+
+      <section class="cm-card">
+        <div class="cm-card-head">
+          <div>
+            <h2>Knowledge Base</h2>
+          </div>
+        </div>
+        <div class="cm-filter-group">
+          <strong>Category</strong>
+          <div id="kb-filter-category" class="cm-chip-row"></div>
+        </div>
+        <div id="kb-list" class="cm-list"></div>
+        <div class="cm-pagination">
+          <button id="kb-page-prev" class="btn btn-ghost" type="button">Prev</button>
+          <span id="kb-page-label" class="cm-meta">Page 1/1</span>
+          <button id="kb-page-next" class="btn btn-ghost" type="button">Next</button>
+        </div>
+      </section>
+
+      <section class="cm-card">
+        <div class="cm-card-head">
+          <h2>Debug Retrieval</h2>
+        </div>
+        <div class="cm-import">
+          <input id="debug-query" type="text" class="cm-input" placeholder="Nhap cau hoi can test retrieval..." />
+          <input id="debug-topk" type="number" min="1" max="30" value="10" class="cm-input cm-small" />
+          <input id="debug-conversation" type="text" class="cm-input" placeholder="conversationId (optional)" />
+          <button id="btn-debug-retrieval" class="btn btn-primary" type="button">Run Debug</button>
+        </div>
+        <div id="debug-summary" class="cm-meta"></div>
+        <div id="debug-list" class="cm-list"></div>
+      </section>
+
+      <section class="cm-card">
+        <div class="cm-card-head">
+          <div>
+            <h2>Lịch sử chat (test)</h2>
+            <p class="cm-sub">Xóa dữ liệu cuộc trò chuyện trong SQLite để test lại từ đầu. Không hoàn tác.</p>
+          </div>
+        </div>
+        <div class="cm-inline" style="flex-wrap: wrap; gap: 8px;">
+          <button id="btn-clear-chat-facebook" class="btn btn-ghost" type="button">Xóa hội thoại Facebook</button>
+          <button id="btn-clear-chat-all" class="btn btn-danger" type="button">Xóa toàn bộ lịch sử chat</button>
+        </div>
+      </section>
+      </div>
+
+      <div id="cm-processing-stack" class="cm-tab-panel cm-processing-stack hidden" aria-hidden="true">
+        <section class="cm-card cm-panel-processing" id="cm-panel-processing">
+        <div class="cm-card-head">
+          <div>
+            <h2>Bot đang xử lý tin nhắn</h2>
+            <p class="cm-sub">
+              Theo dõi phiên bot tự trả lời Facebook (gọi mô hình + gửi Messenger). Tab riêng — không trộn với Vận hành hay các mục khác.
+            </p>
+          </div>
+          <button type="button" class="btn btn-ghost" id="btn-bot-status-refresh">Làm mới</button>
+        </div>
+        <div id="cm-bot-status-meta" class="cm-meta">Chọn tab để tải trạng thái.</div>
+        <div id="cm-bot-status-banner" class="cm-bot-status-banner" aria-live="polite"></div>
+        <div id="cm-bot-status-body" class="cm-bot-status-body"></div>
+        </section>
+      </div>
+
+      <section class="cm-card cm-tab-panel cm-panel-zalo hidden" id="cm-panel-zalo" aria-hidden="true">
+        <div class="cm-card-head">
+          <div>
+            <h2>Trung tâm thông báo lịch</h2>
+            <p class="cm-sub">Quản lý đăng nhập Zalo cá nhân và danh sách UID nhận thông báo booking.</p>
+          </div>
+        </div>
+        <p id="cm-zalo-meta" class="cm-meta">Chọn tab để tải trạng thái.</p>
+        <div class="cm-fb-grid" style="align-items: flex-end">
+          <button type="button" class="btn btn-primary" id="btn-zalo-start-qr">Bắt đầu đăng nhập QR</button>
+          <button type="button" class="btn btn-ghost" id="btn-zalo-refresh-status">Làm mới trạng thái</button>
+          <button type="button" class="btn btn-ghost" id="btn-zalo-test-send">Gửi tin thử</button>
+          <button type="button" class="btn btn-danger" id="btn-zalo-disconnect">Ngắt &amp; xóa session</button>
+        </div>
+        <div id="cm-zalo-qr-wrap" class="cm-zalo-qr-wrap hidden">
+          <p class="cm-meta" id="cm-zalo-qr-hint">Quét QR bằng Zalo trên điện thoại (tài khoản cá nhân).</p>
+          <div id="cm-zalo-qr" class="cm-zalo-qr"></div>
+          <button type="button" class="btn btn-ghost" id="btn-zalo-abort-qr">Hủy QR</button>
+        </div>
+        <div class="cm-list">
+          <div class="cm-item">
+            <div class="cm-item-title">Danh sách nhận thông báo</div>
+            <label class="cm-label">
+              Mỗi dòng: <code>uid | tên gợi nhớ</code>
+              <textarea
+                id="cm-zalo-recipient-list"
+                class="cm-input cm-textarea"
+                placeholder="9146322263245159407 | Admin&#10;1234567890123456789 | Le tan"
+              ></textarea>
+            </label>
+            <p class="cm-hint">
+              Có thể chỉ nhập <code>uid</code>. Booking thành công và nút gửi thử sẽ gửi tới toàn bộ danh sách này.
+            </p>
+            <div class="cm-inline">
+              <button type="button" class="btn btn-primary" id="btn-zalo-save-recipients">Lưu danh sách nhận</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="cm-card cm-tab-panel cm-panel-intake hidden" id="cm-panel-intake" aria-hidden="true">
+        <div class="cm-card-head">
+          <div>
+            <h2>Thông tin khách hàng đã thu thập</h2>
+            <p class="cm-sub">Bản ghi <code>customerIntake</code> trên SQLite (Facebook). Intake chỉ giữ thông tin KH; booking mới đã tách sang tab <strong>Đặt lịch</strong>. Cột <strong>Hẹn (xem nhanh)</strong> gộp <code>patient.preferredVisitDate</code> + <code>patient.preferredVisitTime</code>.</p>
+          </div>
+          <button type="button" class="btn btn-ghost" id="btn-intake-refresh">Làm mới</button>
+        </div>
+        <div id="cm-intake-meta" class="cm-meta">Chọn tab hoặc làm mới.</div>
+        <div class="cm-table-wrap cm-table-intake-wrap">
+          <table class="cm-table" id="cm-intake-table">
+            <thead>
+              <tr>
+                <th>conversationId</th>
+                <th>careStatus</th>
+                <th>schemaVersion</th>
+                <th>patient.fullName</th>
+                <th>patient.phone</th>
+                <th>patient.regionLive</th>
+                <th>patient.preferredOfficeKey</th>
+                <th>patient.shuttlePickup</th>
+                <th class="cm-th-stacked"><span>Hẹn (xem nhanh)</span><span class="cm-th-sub">gộp ngày + giờ · DB: preferredVisitDate + preferredVisitTime</span></th>
+                <th class="cm-th-stacked"><span>notes</span><span class="cm-th-sub">tình trạng &amp; mục đích</span></th>
+                <th class="cm-th-stacked"><span>legacy appointments</span><span class="cm-th-sub">chỉ đọc tương thích cũ</span></th>
+                <th>updatedAt</th>
+                <th>JSON</th>
+              </tr>
+            </thead>
+            <tbody id="cm-intake-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="cm-card cm-tab-panel cm-panel-booking hidden" id="cm-panel-booking" aria-hidden="true">
+        <div class="cm-card-head">
+          <div>
+            <h2>Booking nội bộ</h2>
+            <p class="cm-sub">Danh sách booking tách riêng khỏi <code>customerIntake</code>. Tạo từ action <code>create_booking_request</code>.</p>
+          </div>
+          <button type="button" class="btn btn-ghost" id="btn-booking-refresh">Làm mới</button>
+        </div>
+        <div id="cm-booking-meta" class="cm-meta">Chọn tab hoặc làm mới.</div>
+        <div class="cm-table-wrap cm-table-booking-wrap">
+          <table class="cm-table" id="cm-booking-table">
+            <thead>
+              <tr>
+                <th>bookingId</th>
+                <th>conversationId</th>
+                <th>careStatus</th>
+                <th>status</th>
+                <th>patient</th>
+                <th>office</th>
+                <th>visit</th>
+                <th>shuttle</th>
+                <th>zalo</th>
+                <th>createdAt</th>
+                <th>JSON</th>
+              </tr>
+            </thead>
+            <tbody id="cm-booking-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="cm-card cm-tab-panel cm-panel-bug hidden" id="cm-panel-bug" aria-hidden="true">
+        <div class="cm-card-head">
+          <div>
+            <h2>Bug Board</h2>
+          </div>
+          <div class="cm-inline">
+            <button type="button" class="btn btn-ghost" id="btn-bug-refresh">Làm mới</button>
+            <button type="button" class="btn btn-primary" id="btn-bug-create">Tạo bug</button>
+          </div>
+        </div>
+        <div id="cm-bug-meta" class="cm-meta">Chọn tab hoặc làm mới.</div>
+        <div class="cm-bug-board-wrap">
+          <div id="cm-bug-board" class="cm-bug-board"></div>
+        </div>
+      </section>
+    </main>
+
+    <div id="cm-modal" class="cm-modal" aria-hidden="true">
+      <div class="cm-modal-backdrop" data-close="1"></div>
+      <div class="cm-modal-card" role="dialog" aria-modal="true">
+        <div class="cm-modal-head">
+          <h3 id="cm-modal-title">Modal</h3>
+          <button id="cm-modal-close" class="btn btn-ghost" type="button">X</button>
+        </div>
+        <div id="cm-modal-body" class="cm-modal-body"></div>
+        <div class="cm-modal-actions">
+          <button id="cm-modal-cancel" class="btn btn-ghost" type="button">Cancel</button>
+          <button id="cm-modal-submit" class="btn btn-primary" type="button">Save</button>
+        </div>
+      </div>
+    </div>
+    <div id="cm-image-lightbox" class="cm-image-lightbox hidden" aria-hidden="true">
+      <div class="cm-image-lightbox-backdrop" data-lightbox-close="1"></div>
+      <div class="cm-image-lightbox-card">
+        <button id="cm-image-lightbox-close" class="btn btn-ghost cm-image-lightbox-close" type="button">X</button>
+        <img id="cm-image-lightbox-img" class="cm-image-lightbox-img" alt="Bug attachment preview" />
+        <div id="cm-image-lightbox-caption" class="cm-image-lightbox-caption"></div>
+      </div>
+    </div>
+    <div id="cm-toast" class="cm-toast" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
+

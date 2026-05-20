@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Database Viewer</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/tools/theme-singae.css" />
+    <link rel="stylesheet" href="/tools/vip/db-viewer/styles.css" />
+  </head>
+  <body data-tool-theme="singae">
+    <main class="tool-shell dbv-shell">
+      <section class="dbv-header panel">
+        <div>
+          <div class="dbv-badge">READ ONLY</div>
+          <h1 class="dbv-title">Database Viewer</h1>
+          <p class="dbv-sub">Xem tat ca file trong cac folder database, xem metadata va chi tiet tung file.</p>
+        </div>
+        <button id="btnReload" class="btn btn-primary" type="button">Reload</button>
+      </section>
+
+      <section class="dbv-layout">
+        <aside class="dbv-left panel">
+          <div class="dbv-left-head">
+            <input id="searchInput" placeholder="Tim file database..." />
+          </div>
+          <div id="fileList" class="dbv-file-list"></div>
+        </aside>
+
+        <section class="dbv-right panel">
+          <div id="metaBox" class="dbv-meta"></div>
+          <div id="sqliteTools" class="dbv-sqlite-tools" hidden>
+            <select id="tableSelect"></select>
+            <button id="btnLoadTable" class="btn" type="button">Load Table</button>
+          </div>
+          <pre id="previewBox" class="dbv-preview"></pre>
+          <div id="tableWrap" class="dbv-table-wrap" hidden>
+            <table id="tableView" class="dbv-table"></table>
+          </div>
+        </section>
+      </section>
+    </main>
+    <script src="/tools/vip/db-viewer/app.js"></script>
+  </body>
+</html>
+

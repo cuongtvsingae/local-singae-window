@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>IT Support</title>
+    <link rel="icon" type="image/png" href="../../../asset/logo.png" />
+    <link rel="stylesheet" href="../../../style.css" />
+    <link rel="stylesheet" href="/tools/theme-singae.css" />
+    <link rel="stylesheet" href="/tools/normal/it-support/styles.css" />
+  </head>
+  <body data-tool-theme="singae">
+    <div class="page">
+      <header class="topbar card">
+        <div class="topbar-left">
+          <div class="app-title">IT Support</div>
+          <div class="app-subtitle" id="subtitle">Loading…</div>
+        </div>
+        <div class="topbar-right">
+          <button class="btn icon" id="btnRefresh" title="Refresh">
+            <span class="i">↻</span>
+          </button>
+          <button class="btn icon" id="btnNew" title="New task">
+            <span class="i">＋</span>
+          </button>
+          <button class="btn icon" id="btnAdmin" title="Admin" style="display:none">
+            <span class="i">⚙</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="board">
+        <section class="col">
+          <div class="col-head card">
+            <div class="col-title">Open</div>
+            <div class="pill" id="countOpen">0</div>
+          </div>
+          <div class="col-body" id="listOpen"></div>
+        </section>
+        <section class="col">
+          <div class="col-head card">
+            <div class="col-title">In Progress</div>
+            <div class="pill" id="countProgress">0</div>
+          </div>
+          <div class="col-body" id="listProgress"></div>
+        </section>
+        <section class="col">
+          <div class="col-head card">
+            <div class="col-title">Done</div>
+            <div class="pill" id="countDone">0</div>
+          </div>
+          <div class="col-body" id="listDone"></div>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal" id="modal" data-open="0">
+      <div class="modal-card card">
+        <div class="modal-head">
+          <div class="modal-title" id="modalTitle">New task</div>
+          <button class="btn icon" id="btnClose" title="Close"><span class="i">✕</span></button>
+        </div>
+        <div class="modal-body">
+          <label class="field">
+            <div class="label">Title</div>
+            <input class="input" id="taskTitle" placeholder="Nhập tiêu đề…" />
+          </label>
+          <label class="field">
+            <div class="label">Description</div>
+            <textarea class="input textarea" id="taskDesc" rows="4" placeholder="Mô tả…"></textarea>
+          </label>
+          <div class="row">
+            <button class="btn" id="btnSave">
+              <span class="i">💾</span>
+              <span>Save</span>
+            </button>
+            <button class="btn secondary" id="btnCancel">
+              <span class="i">↩</span>
+              <span>Cancel</span>
+            </button>
+          </div>
+          <div class="error" id="modalError" style="display:none"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="aiModal" data-open="0">
+      <div class="modal-card card">
+        <div class="modal-head">
+          <div class="modal-title" id="aiModalTitle">AI Suggest</div>
+          <button class="btn icon" id="aiBtnClose" title="Close"><span class="i">✕</span></button>
+        </div>
+        <div class="modal-body">
+          <div id="aiModalBody"></div>
+          <div class="row" style="margin-top:12px">
+            <button class="btn" id="aiBtnApply">
+              <span class="i">✓</span>
+              <span>Apply to task</span>
+            </button>
+            <button class="btn secondary" id="aiBtnCancel">
+              <span class="i">↩</span>
+              <span>Close</span>
+            </button>
+          </div>
+          <div class="error" id="aiModalError" style="display:none"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/tools/normal/it-support/app.js"></script>
+  </body>
+</html>
+

@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <title>Qr Code | singae.cloud</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Online utility tool on singae.cloud." />
+    <link rel="canonical" href="https://singae.cloud/tools/code/qr-code.html" />
+    <link rel="icon" type="image/png" href="../../asset/logo.png" />
+    <link rel="stylesheet" href="../../style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+      .tool-shell {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 32px 24px 40px;
+      }
+      .tool-header-row {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .tool-title-main {
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin: 0 0 6px;
+        text-align: center;
+      }
+      .tool-sub {
+        margin: 0;
+        font-size: 14px;
+        color: var(--text-muted);
+        text-align: center;
+      }
+      .qr-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        align-items: start;
+      }
+      @media (max-width: 900px) {
+        .qr-layout {
+          grid-template-columns: 1fr;
+        }
+      }
+      .panel {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .panel-label {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text);
+      }
+      textarea {
+        width: 100%;
+        min-height: 200px;
+        padding: 12px;
+        border-radius: 6px;
+        border: 1px solid var(--border-soft);
+        background: #020617;
+        color: var(--text);
+        font-family: ui-monospace, monospace;
+        font-size: 13px;
+        line-height: 1.5;
+        resize: vertical;
+        outline: none;
+      }
+      textarea:focus {
+        border-color: var(--accent-strong);
+      }
+      .qr-preview {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        padding: 24px;
+        border-radius: 8px;
+        border: 1px solid var(--border-soft);
+        background: rgba(15, 23, 42, 0.96);
+      }
+      #qrCanvas {
+        background: #ffffff;
+        padding: 16px;
+        border-radius: 8px;
+        max-width: 100%;
+      }
+      .btn-row {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin-top: 16px;
+      }
+      .btn {
+        padding: 10px 20px;
+        border-radius: 6px;
+        border: 1px solid var(--border-soft);
+        background: var(--card);
+        color: var(--text);
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 150ms ease-out;
+      }
+      .btn:hover {
+        background: var(--accent-soft);
+        border-color: var(--accent-strong);
+        transform: translateY(-1px);
+      }
+      .btn-primary {
+        background: var(--accent-strong);
+        border-color: var(--accent-strong);
+        color: #ffffff;
+      }
+      .btn-primary:hover {
+        background: var(--accent-hover);
+      }
+      .status {
+        text-align: center;
+        font-size: 12px;
+        margin-top: 8px;
+        padding: 8px;
+        border-radius: 4px;
+      }
+      .status-ok {
+        background: rgba(34, 197, 94, 0.1);
+        color: #4ade80;
+      }
+      .status-error {
+        background: rgba(248, 113, 113, 0.1);
+        color: #fca5a5;
+      }
+      .input-type-selector {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+      }
+      .radio-option {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: var(--text);
+        cursor: pointer;
+        padding: 6px 12px;
+        border-radius: 4px;
+        border: 1px solid var(--border-soft);
+        background: rgba(15, 23, 42, 0.96);
+        transition: all 150ms ease-out;
+      }
+      .radio-option:hover {
+        background: var(--accent-soft);
+        border-color: var(--accent-strong);
+      }
+      .radio-option input[type="radio"] {
+        cursor: pointer;
+        margin: 0;
+      }
+      .radio-option input[type="radio"]:checked + span {
+        color: var(--accent-strong);
+        font-weight: 500;
+      }
+      .radio-option:has(input[type="radio"]:checked) {
+        background: var(--accent-soft);
+        border-color: var(--accent-strong);
+      }
+      #imageInputContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      #imageInput {
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid var(--border-soft);
+        background: #020617;
+        color: var(--text);
+        font-size: 13px;
+        cursor: pointer;
+      }
+      #imageInput:focus {
+        border-color: var(--accent-strong);
+        outline: none;
+      }
+      .image-preview {
+        width: 100%;
+        max-height: 200px;
+        border-radius: 6px;
+        border: 1px solid var(--border-soft);
+        background: rgba(15, 23, 42, 0.96);
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .image-preview img {
+        max-width: 100%;
+        max-height: 200px;
+        object-fit: contain;
+      }
+    </style>
+    <link rel="stylesheet" href="/tools/theme-singae.css" />
+  </head>
+  <body data-tool-theme="singae">
+<div id="tool-meta-hidden" style="display:none" aria-hidden="true">
+      <span id="tagline"></span>
+      <span id="title"></span>
+      <span id="subtitle"></span>
+    </div>
+    <main class="tool-shell">
+      <div class="qr-layout">
+        <div class="panel">
+          <label class="panel-label" id="inputLabel"></label>
+          <div class="input-type-selector">
+            <label class="radio-option">
+              <input type="radio" name="inputType" value="text" checked />
+              <span id="typeText"></span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="inputType" value="url" />
+              <span id="typeUrl"></span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="inputType" value="image" />
+              <span id="typeImage"></span>
+            </label>
+          </div>
+          <div id="textInputContainer">
+            <textarea id="input" placeholder="" spellcheck="false"></textarea>
+          </div>
+          <div id="imageInputContainer" style="display: none;">
+            <input type="file" id="imageInput" accept="image/*" />
+            <div id="imagePreview" class="image-preview"></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="qr-preview">
+            <canvas id="qrCanvas" width="300" height="300"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="btnGenerate"></button>
+        <button class="btn" id="btnDownload"></button>
+      </div>
+
+      <div class="status" id="status" style="display: none;"></div>
+    </main>
+
+    <script src="../../tooltip.js"></script>
+<script src="qr-code.js"></script>
+      <script src="/context-menu-fallback.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

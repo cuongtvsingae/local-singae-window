@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Trợ lý SINGAE</title>
+    <meta name="description" content="Trợ lý SINGAE chat tool." />
+    <link rel="icon" type="image/png" href="../../../asset/logo.png" />
+    <link rel="stylesheet" href="../../../style.css" />
+    <link rel="stylesheet" href="styles.css" />
+      <link rel="stylesheet" href="/tools/theme-singae.css" />
+  </head>
+  <body data-tool-theme="singae">
+    <div id="sd-bgview" class="sd-bgview" aria-hidden="true"></div>
+    <section id="sd-main" class="sd-main is-intro vip-chat-panel">
+      <div id="intro-head" class="sd-intro-head">
+        <h1>How can I help you today?</h1>
+      </div>
+
+      <div id="messages" class="sd-messages">
+        <div id="empty-state" class="sd-empty-state">Start a conversation with Trợ lý SINGAE.</div>
+      </div>
+
+      <footer class="sd-composer-wrap">
+        <div id="attachment-list" class="sd-attachments"></div>
+        <form id="chat-form" class="sd-input-wrap">
+          <input id="file-input" type="file" multiple hidden />
+          <button id="btn-attach" class="sd-icon-btn" type="button" title="Attach">+</button>
+          <textarea id="prompt" rows="1" placeholder="Trợ lý SINGAE AI"></textarea>
+          <button class="sd-send-btn" type="submit" aria-label="Send" title="Send">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3.8 11.2c-1-.34-1-1.74.02-2.06l15.8-4.98c.95-.3 1.85.59 1.55 1.55l-4.98 15.8c-.32 1.02-1.72 1.03-2.07.03l-2.6-7.34-7.8-2.98Z"></path>
+            </svg>
+          </button>
+        </form>
+      </footer>
+    </section>
+    <div id="sd-user-badge" class="sd-user-badge" hidden aria-live="polite"></div>
+    <div id="image-lightbox" class="sd-lightbox" hidden aria-hidden="true">
+      <button id="lightbox-close" class="sd-lightbox-close" type="button" aria-label="Close preview">x</button>
+      <img id="lightbox-image" class="sd-lightbox-image" alt="Preview" />
+    </div>
+    <script src="app.js"></script>
+      <script src="/context-menu-fallback.js"></script>
+  </body>
+</html>
+
+

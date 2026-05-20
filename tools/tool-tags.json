@@ -1,0 +1,38 @@
+{
+  "ai-manager": {
+    "tag": "vip",
+    "uiRoute": "/tools/vip/ai-manager/index.html"
+  },
+  "db-viewer": {
+    "tag": "vip",
+    "uiRoute": "/tools/vip/db-viewer/index.html"
+  },
+  "singae-lookup": {
+    "tag": "normal",
+    "uiRoute": "/tools/ai/singae-lookup/index.html"
+  },
+  "user-admin": {
+    "tag": "normal",
+    "uiRoute": "/tools/normal/user-admin/index.html"
+  },
+  "giftbag": {
+    "tag": "normal",
+    "uiRoute": "/tools/normal/giftbag/index.html"
+  },
+  "commission": {
+    "tag": "normal",
+    "uiRoute": "/tools/normal/commission/index.html"
+  },
+  "chatbot": {
+    "tag": "normal",
+    "uiRoute": "/tools/ai/chatbot/index.html"
+  },
+  "singae-assistant": {
+    "tag": "normal",
+    "uiRoute": "/tools/ai/singae-assistant/index.html"
+  },
+  "payroll-calculator": {
+    "tag": "normal",
+    "uiRoute": "/tools/normal/payroll-calculator/index.html"
+  }
+}

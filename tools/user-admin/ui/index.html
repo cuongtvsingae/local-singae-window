@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>User Admin</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/tools/theme-singae.css" />
+    <link rel="stylesheet" href="/tools/normal/user-admin/styles.css?v=20260425e" />
+  </head>
+  <body>
+    <main class="tool-shell user-admin-shell">
+      <section class="ua-header-card">
+        <div class="ua-header-left">
+          <span class="ua-header-badge">ADMIN CENTER</span>
+          <h1 class="ua-header-title">User Admin</h1>
+          <p class="ua-header-subtitle">Quan ly nguoi dung, role va thong tin ho so.</p>
+        </div>
+        <div class="ua-header-right">SINGAE WINDOWshell</div>
+      </section>
+
+      <section class="ua-toolbar">
+        <input id="searchInput" placeholder="Search username / full name / phone / dept / MISA…" />
+        <button id="btnRefresh" class="btn">Refresh</button>
+        <button id="btnMisaSync" class="btn btn-primary" type="button" title="Admin only">Đồng bộ MISA → DB</button>
+        <button id="btnAdd" class="btn btn-primary">Add User</button>
+      </section>
+
+      <section class="ua-tabs">
+        <button class="ua-tab is-active" data-tab="users" type="button">Users</button>
+        <button class="ua-tab" data-tab="role-tools" type="button">Role Tool Access</button>
+        <button class="ua-tab" data-tab="token-admin" type="button">Token Manager</button>
+        <button class="ua-tab" data-tab="leave-balance" type="button">Phép/OT</button>
+        <button class="ua-tab" data-tab="public-api-test" type="button">Test API Simly</button>
+      </section>
+
+      <section class="ua-panel ua-tab-panel is-active" data-panel="users">
+        <div class="ua-table-wrap">
+          <table class="ua-table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Full name</th>
+                <th>Dept</th>
+                <th>Level</th>
+                <th>Shift</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="userRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="ua-panel ua-tab-panel" data-panel="role-tools">
+        <div class="ua-role-tools-header">
+          <label>Role
+            <select id="roleAccessRole"></select>
+          </label>
+          <span id="roleToolSummary" class="ua-role-tools-summary" aria-live="polite"></span>
+          <button id="btnSaveRoleTools" class="btn btn-primary" type="button">Lưu quyền tool</button>
+        </div>
+        <div class="ua-role-tools-toolbar">
+          <label class="ua-role-tool-search">
+            <span class="ua-sr-only">Tìm tool</span>
+            <input id="roleToolSearch" type="search" placeholder="Tìm theo tên hoặc id…" autocomplete="off" />
+          </label>
+          <div class="ua-role-tools-quick">
+            <button id="btnRoleToolsSelectAll" type="button" class="btn">Chọn hết</button>
+            <button id="btnRoleToolsClearAll" type="button" class="btn">Bỏ hết</button>
+          </div>
+        </div>
+        <div id="roleToolGrid" class="ua-role-tool-grid"></div>
+      </section>
+
+      <section class="ua-panel ua-tab-panel" data-panel="token-admin">
+        <div class="ua-token-toolbar">
+          <button id="btnTokenServiceToggle" class="btn" type="button">Stop service</button>
+          <button id="btnTokenRefreshAll" class="btn btn-primary" type="button">Refresh all now</button>
+          <button id="btnTokenReload" class="btn" type="button">Reload</button>
+          <span id="tokenStatusText" class="ua-token-status">Loading token status...</span>
+        </div>
+        <div id="tokenOfficeGrid" class="ua-token-grid"></div>
+      </section>
+
+      <section class="ua-panel ua-tab-panel" data-panel="leave-balance">
+        <div class="ua-leave-bonus-bar">
+          <span class="ua-muted">
+            Công tháng (MISA) và cột <strong>phép thêm theo công</strong> được cập nhật <strong>tự động</strong> từ MISA. Mỗi <strong>mùng 1</strong>, hệ thống lấy công <strong>tháng lịch vừa rồi</strong> — nếu ≥ ngưỡng (mặc định 15) thì cộng <strong>+1</strong> vào <strong>phép còn lại</strong> và (nếu có) gửi Zalo theo <strong>UID Zalo</strong> ở hồ sơ user. Thông báo: <em>Singae thông báo nhân viên: …</em> Biến: <code>LEAVE_BONUS_CONG_THRESHOLD</code>, tắt job: <code>SINGAE_DISABLE_LEAVE_MISA_JOBS=1</code>.
+          </span>
+        </div>
+        <div class="ua-table-wrap">
+          <table class="ua-table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Mã NV</th>
+                <th>Họ tên</th>
+                <th>Phòng</th>
+                <th>Phép còn lại</th>
+                <th>Công tháng (MISA)</th>
+                <th>Phép thêm (theo công)</th>
+                <th>OT còn lại (phút)</th>
+                <th>Đi sớm/về muộn (phút)</th>
+                <th>OT tháng này (phút)</th>
+                <th>Đi muộn/về sớm tháng này (phút)</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="leaveRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="ua-panel ua-tab-panel" data-panel="public-api-test">
+        <p class="ua-muted ua-public-api-intro">
+          Gọi thử <code>/api/public/tokens</code> và <code>/api/public/appointment</code>. Để trống Base URL = gọi cùng host trang này; hoặc nhập <code>http://45.117.177.192:3000</code> để gọi thẳng VPS (mở User Admin bằng <strong>http://IP:3000</strong> hoặc dùng curl nếu trang đang là HTTPS).
+        </p>
+        <label class="ua-public-api-base-label">Base URL (tùy chọn)
+          <input id="publicApiBaseUrl" type="url" inputmode="url" placeholder="https://singae.cloud" autocomplete="off" />
+        </label>
+        <div class="ua-public-api-grid">
+          <div class="ua-public-api-card">
+            <h3 class="ua-public-api-title">GET /api/public/tokens</h3>
+            <p class="ua-muted">Token cache 25VNP / 355LTT + TTL.</p>
+            <button type="button" class="btn btn-primary" id="btnTestPublicTokens">Gọi API</button>
+            <pre id="publicTokensResult" class="ua-detail-pre ua-public-api-pre"></pre>
+          </div>
+          <div class="ua-public-api-card">
+            <h3 class="ua-public-api-title">GET /api/public/appointment</h3>
+            <p class="ua-muted">fromDate / toDate = ngày hôm nay (theo server).</p>
+            <div class="ua-public-api-fields">
+              <label>Office
+                <select id="publicApptOffice">
+                  <option value="25VNP">25VNP</option>
+                  <option value="355LTT">355LTT</option>
+                </select>
+              </label>
+              <label>search <input id="publicApptSearch" type="text" placeholder="(tùy chọn)" /></label>
+              <label>page <input id="publicApptPage" type="number" min="1" value="1" /></label>
+              <label>pageSize <input id="publicApptPageSize" type="number" min="1" max="500" value="100" /></label>
+            </div>
+            <button type="button" class="btn btn-primary" id="btnTestPublicAppointment">Gọi API</button>
+            <pre id="publicAppointmentResult" class="ua-detail-pre ua-public-api-pre"></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Commission Settings has been moved to a dedicated tool: /commission-settings -->
+
+      <dialog id="userDialog" class="ua-dialog ua-dialog-wide">
+        <form method="dialog" id="userForm" class="ua-form">
+          <h3 id="dialogTitle">Add user</h3>
+          <input type="hidden" id="userId" />
+          <div class="ua-grid">
+            <label>Username<input id="username" /></label>
+            <label>Password<input id="password" type="password" placeholder="min 8 (để trống khi sửa = giữ)" /></label>
+            <label>Role
+              <select id="role">
+                <option value="user">user (MISA / nhân viên)</option>
+                <option value="member" selected>member</option>
+                <option value="leader">leader</option>
+                <option value="manager">manager</option>
+                <option value="admin">admin</option>
+              </select>
+            </label>
+            <label>Full name<input id="fullName" /></label>
+            <label>Company level / Vị trí<input id="companyLevel" placeholder="job / level" /></label>
+            <label>Department / Phòng ban<input id="department" /></label>
+            <label>Work schedule<input id="workSchedule" /></label>
+            <label>Avatar URL<input id="avatarUrl" /></label>
+            <label>Gender
+              <select id="gender">
+                <option value="" selected>(empty)</option>
+                <option value="male">male</option>
+                <option value="female">female</option>
+                <option value="other">other</option>
+              </select>
+            </label>
+            <label>Phone<input id="phone" /></label>
+            <label>Address<input id="address" /></label>
+            <label>Strengths<input id="strengths" /></label>
+            <label>Weaknesses<input id="weaknesses" /></label>
+            <label>Hobbies<input id="hobbies" /></label>
+            <label class="ua-span-2"><strong>MISA / HR</strong></label>
+            <label>Employee code<input id="employeeCode" /></label>
+            <label>Org unit ID<input id="organizationUnitId" type="number" step="1" /></label>
+            <label class="ua-span-2">Org unit name<input id="organizationUnitName" /></label>
+            <label>Job position ID<input id="jobPositionId" /></label>
+            <label>Job position name<input id="jobPositionName" /></label>
+            <label>Shift code<input id="shiftCode" /></label>
+            <label>Employee status ID <span class="ua-hint">1=đang làm, 2=nghỉ</span><input id="employeeStatusId" type="number" step="1" /></label>
+            <label class="ua-span-2">MISA synced at (ISO, có thể sửa tay)<input id="misaSyncedAt" placeholder="2026-01-01T00:00:00.000Z" /></label>
+            <label>Facebook (PSID / id dùng nội bộ)<input id="facebookId" placeholder="tùy chọn" /></label>
+            <label>Zalo user id (UID gửi tin 1-1)<input id="zaloUserId" placeholder="từ Zalo" /></label>
+            <label>Phép còn lại (ngày)<input id="leaveRemaining" type="number" step="0.5" /></label>
+            <label>OT còn lại (phút)<input id="overtimeMinutesRemaining" type="number" step="1" /></label>
+            <label>Đi sớm/về muộn (phút)<input id="lateEarlyMinutesLastMonth" type="number" step="1" /></label>
+            <label>OT tháng này (phút)<input id="overtimeMinutesThisMonth" type="number" step="1" /></label>
+            <label>Đi muộn/về sớm tháng này (phút)<input id="lateEarlyMinutesThisMonth" type="number" step="1" /></label>
+            <label>Active
+              <select id="isActive">
+                <option value="true" selected>true</option>
+                <option value="false">false</option>
+              </select>
+            </label>
+          </div>
+          <div class="ua-actions">
+            <button value="cancel" type="button" id="btnCancel" class="btn">Cancel</button>
+            <button value="default" type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </dialog>
+
+      <dialog id="userDetailDialog" class="ua-dialog ua-dialog-wide">
+        <div class="ua-detail-head">
+          <h3>Full user record (database)</h3>
+          <button type="button" class="btn" id="btnDetailClose">Đóng</button>
+        </div>
+        <p class="ua-muted">Toàn bộ trường API <code>/api/windowsshell/auth/users</code> (không có password_hash).</p>
+        <pre id="userDetailPre" class="ua-detail-pre"></pre>
+      </dialog>
+    </main>
+    <script src="/tools/normal/user-admin/app.js?v=20260425e"></script>
+  </body>
+  </html>
+

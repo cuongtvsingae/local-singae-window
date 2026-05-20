@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://singae.cloud/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://singae.cloud/tools/code/json-formatter.html</loc>
+  </url>
+  <url>
+    <loc>https://singae.cloud/tools/code/base64.html</loc>
+  </url>
+  <url>
+    <loc>https://singae.cloud/tools/image/color-contrast.html</loc>
+  </url>
+  <url>
+    <loc>https://singae.cloud/tools/image/color-palette.html</loc>
+  </url>
+  <url>
+    <loc>https://singae.cloud/tools/code/date-formatter.html</loc>
+  </url>
+  <url>
+    <loc>https://singae.cloud/tools/code/gradient.html</loc>
+  </url>
+  <url>
+    <loc>https://singae.cloud/tools/code/hash.html</loc>
+  </url>
+  <url>
+    <loc>https://singae.cloud/tools/image/image-base64.html</loc>
+  </url>
+  <url>
+    <loc>https://singae.cloud/tools/image/image-resizer.html</loc>
+  </url>
+  <url>
+    <loc>https://singae.cloud/tools/code/json-formatter.html</loc>
+  </url>
+  <url>
+    <loc>https://singae.cloud/tools/code/json-to-model.html</loc>
+  </url>
+  <url>
+    <loc>https://singae.cloud/tools/code/qr-code.html</loc>
+  </url>
+  <url>
+    <loc>https://singae.cloud/tools/code/regex.html</loc>
+  </url>
+  <url>
+    <loc>https://singae.cloud/tools/image/tiny-png.html</loc>
+  </url>
+  <url>
+    <loc>https://singae.cloud/tools/code/uuid-generator.html</loc>
+  </url>
+</urlset>
+
+
+

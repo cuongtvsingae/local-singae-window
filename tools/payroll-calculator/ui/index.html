@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bảng chấm công — MISA</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/tools/theme-singae.css" />
+    <link rel="stylesheet" href="/tools/normal/payroll-calculator/styles.css" />
+  </head>
+  <body>
+    <main class="tool-shell pc-shell">
+      <header class="pc-header">
+        <div>
+          <span class="pc-badge">CHẤM CÔNG</span>
+          <h1>Bảng chấm công</h1>
+        </div>
+        <div class="pc-header-actions">
+          <button type="button" class="btn-icon" id="btnCreateApplication" title="Tạo đơn trên MISA">
+            <span class="btn-icon-inner">+</span>
+          </button>
+          <div class="pc-user" id="pcUser">…</div>
+        </div>
+      </header>
+
+      <div class="pc-toolbar">
+        <button type="button" class="btn btn-primary" id="btnLastMonth">Tháng trước</button>
+        <button type="button" class="btn btn-primary" id="btnThisMonth">Tháng này</button>
+        <span class="pc-range" id="rangeLabel"></span>
+        <span class="pc-cache" id="cacheHint"></span>
+        <label class="pc-cache-toggle">
+          <input type="checkbox" id="useCacheToggle" checked />
+          <span>Dùng cache trong ngày</span>
+        </label>
+      </div>
+
+      <nav class="pc-tabs">
+        <button type="button" class="pc-tab is-active" data-tab="timesheet">Bảng chấm công</button>
+        <button type="button" class="pc-tab" data-tab="applications-leave">Đơn xin nghỉ</button>
+        <button type="button" class="pc-tab" data-tab="applications-other">Đơn khác</button>
+      </nav>
+
+      <section class="pc-panel is-active" data-panel="timesheet">
+        <div class="pc-list-wrap pc-agg-sticky">
+          <table class="pc-table">
+            <thead>
+              <tr>
+                <th>Mã NV</th>
+                <th>Họ tên</th>
+                <th>Công thực tế</th>
+                <th>Tổng công hưởng lương</th>
+                <th>Phép còn lại</th>
+                <th>Phép thêm tháng này</th>
+                <th
+                  title="Tổng phút từ các đơn đi muộn / về sớm (MISA) của nhân viên đó trong khoảng ngày đã chọn (Tháng trước / Tháng này)"
+                >
+                  Phút đi muộn / về sớm
+                </th>
+                <th
+                  title="Tổng phút từ các đơn làm thêm giờ (MISA) của nhân viên đó trong khoảng ngày đã chọn"
+                >
+                  Phút làm thêm
+                </th>
+                <th>Đơn cập nhật công</th>
+                <th>Đơn xin nghỉ</th>
+              </tr>
+            </thead>
+            <tbody id="aggEmployeeRows"></tbody>
+          </table>
+          <p class="pc-empty" id="aggEmployeeEmpty">Chọn khoảng thời gian để tải dữ liệu.</p>
+        </div>
+      </section>
+
+      <section class="pc-panel" data-panel="applications-leave">
+        <div class="pc-list-wrap">
+          <table class="pc-table">
+            <thead>
+              <tr>
+                <th>NV</th>
+                <th>Họ tên</th>
+                <th>Loại nghỉ</th>
+                <th>Từ</th>
+                <th>Đến</th>
+                <th>Số ngày</th>
+                <th>Trạng thái</th>
+              </tr>
+            </thead>
+            <tbody id="appLeaveRows"></tbody>
+          </table>
+          <p class="pc-empty" id="appLeaveEmpty">Chọn khoảng thời gian để tải danh sách.</p>
+        </div>
+      </section>
+
+      <section class="pc-panel" data-panel="applications-other">
+        <div class="pc-list-wrap">
+          <table class="pc-table">
+            <thead>
+              <tr>
+                <th>NV</th>
+                <th>Họ tên</th>
+                <th>Loại</th>
+                <th>Từ ngày</th>
+                <th>Đến ngày</th>
+                <th>Trạng thái</th>
+              </tr>
+            </thead>
+            <tbody id="appOvertimeRows"></tbody>
+          </table>
+          <p class="pc-empty" id="appOvertimeEmpty">Chọn khoảng thời gian để tải danh sách.</p>
+        </div>
+      </section>
+
+    </main>
+
+    <dialog id="pcDetailModal" class="pc-modal">
+      <div class="pc-modal-card">
+        <header class="pc-modal-header">
+          <h2 id="pcDetailModalTitle"></h2>
+          <button type="button" class="pc-modal-close" id="pcDetailModalClose" aria-label="Đóng">×</button>
+        </header>
+        <div class="pc-modal-body" id="pcDetailModalBody"></div>
+      </div>
+    </dialog>
+
+    <script src="/tools/normal/payroll-calculator/app.js"></script>
+  </body>
+</html>

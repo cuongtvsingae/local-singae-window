@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tính Hoa Hồng | singae.cloud</title>
+    <link rel="icon" type="image/png" href="../../../asset/logo.png" />
+    <link rel="stylesheet" href="../../../style.css" />
+    <link rel="stylesheet" href="styles.css?v=20260401-1" />
+    <link rel="stylesheet" href="/tools/theme-singae.css" />
+  </head>
+  <body data-tool-theme="singae">
+    <div
+      id="commissionToastLayer"
+      class="commission-toast-layer"
+      aria-live="polite"
+      aria-atomic="true"
+    >
+      <div id="commissionToastStack" class="commission-toast-stack"></div>
+    </div>
+    <div id="tool-meta-hidden" style="display:none" aria-hidden="true">
+      <span id="tagline">Tính hoa hồng từ dữ liệu</span>
+      <span id="title">Tính Hoa Hồng</span>
+      <span id="subtitle">AI Commission Calculator</span>
+    </div>
+
+    <main class="tool-shell" id="commissionApp">
+
+      <div id="loading" class="loading" aria-live="polite">
+        <div class="spinner" aria-hidden="true"></div>
+        <p class="loading-text">Đang tải dữ liệu...</p>
+      </div>
+
+      <div id="tableDisplay" style="display:none" class="display-section">
+        <div class="table-controls">
+          <div class="date-range-selector">
+            <select id="dateRangeSelect" class="date-select">
+              <option value="last-month">Tháng trước</option>
+              <option value="current-month" selected>Từ đầu tháng đến hiện tại</option>
+            </select>
+            <button class="btn btn-primary" id="fetchCommissionFreshBtn" type="button">
+              <img class="btn-icon" alt="" src="../../../asset/icon-refresh.svg" />
+              Update mới nhất
+            </button>
+          </div>
+
+          <button class="btn btn-primary btn-export" id="exportBtn" type="button">
+            <img class="btn-icon" alt="" src="../../../asset/icon-excel.svg" />
+            Export Excel
+          </button>
+        </div>
+
+        <div id="facilityTabs" class="facility-tabs" aria-label="Nhóm tabs" role="tablist"></div>
+
+        <div class="table-wrapper">
+          <table id="dataTable" class="display-table">
+            <thead id="tableHeader"></thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <script src="app.js?v=20260401-1"></script>
+  </body>
+</html>
+
+

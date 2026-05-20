@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <title>Image Base64 | singae.cloud</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Online utility tool on singae.cloud." />
+    <link rel="canonical" href="https://singae.cloud/tools/image/image-base64.html" />
+    <link rel="icon" type="image/png" href="../../asset/logo.png" />
+    <link rel="stylesheet" href="../../style.css" />
+    <style>
+      .tool-shell {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 32px 24px 40px;
+      }
+      .tool-header-row {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .tool-title-main {
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin: 0 0 6px;
+        text-align: center;
+      }
+      .tool-sub {
+        margin: 0;
+        font-size: 14px;
+        color: var(--text-muted);
+        text-align: center;
+      }
+      .upload-area {
+        border: 2px dashed var(--border-soft);
+        border-radius: 8px;
+        padding: 40px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 150ms ease-out;
+        background: rgba(15, 23, 42, 0.3);
+      }
+      .upload-area:hover {
+        border-color: var(--accent-strong);
+        background: rgba(15, 23, 42, 0.5);
+      }
+      .upload-area.dragover {
+        border-color: var(--accent-strong);
+        background: rgba(59, 130, 246, 0.1);
+      }
+      .upload-icon {
+        font-size: 48px;
+        margin-bottom: 12px;
+      }
+      .upload-text {
+        font-size: 14px;
+        color: var(--text);
+        margin-bottom: 4px;
+      }
+      .upload-hint {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+      input[type="file"] {
+        display: none;
+      }
+      .preview-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-top: 24px;
+      }
+      @media (max-width: 900px) {
+        .preview-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .preview-box {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .preview-label {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text);
+      }
+      .preview-image {
+        width: 100%;
+        max-height: 300px;
+        object-fit: contain;
+        border-radius: 8px;
+        border: 1px solid var(--border-soft);
+        background: #020617;
+      }
+      .base64-output {
+        width: 100%;
+        min-height: 200px;
+        max-height: 400px;
+        padding: 12px;
+        border-radius: 6px;
+        border: 1px solid var(--border-soft);
+        background: #020617;
+        color: var(--text);
+        font-family: ui-monospace, monospace;
+        font-size: 12px;
+        line-height: 1.5;
+        resize: vertical;
+        outline: none;
+        overflow-y: auto;
+      }
+      .base64-output:focus {
+        border-color: var(--accent-strong);
+      }
+      .file-info {
+        font-size: 12px;
+        color: var(--text-muted);
+        font-family: ui-monospace, monospace;
+      }
+      .btn-row {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin-top: 20px;
+      }
+      .btn {
+        padding: 10px 20px;
+        border-radius: 6px;
+        border: 1px solid var(--border-soft);
+        background: var(--card);
+        color: var(--text);
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 150ms ease-out;
+      }
+      .btn:hover {
+        background: var(--accent-soft);
+        border-color: var(--accent-strong);
+        transform: translateY(-1px);
+      }
+      .btn-primary {
+        background: var(--accent-strong);
+        border-color: var(--accent-strong);
+        color: #ffffff;
+      }
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .code-samples-section {
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border-soft);
+      }
+      .code-samples-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0 0 16px;
+        color: var(--text);
+      }
+      .code-tabs {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+        border-bottom: 1px solid var(--border-soft);
+        position: relative;
+        z-index: 0;
+      }
+      .code-tab {
+        padding: 8px 16px;
+        border: none;
+        background: transparent;
+        color: var(--text-muted);
+        font-size: 13px;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+        transition: all 150ms ease-out;
+        position: relative;
+        z-index: 2;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+      .code-tab:hover {
+        color: var(--text);
+      }
+      .code-tab.active {
+        color: var(--accent-strong);
+        border-bottom-color: var(--accent-strong);
+      }
+      .code-blocks {
+        position: relative;
+      }
+      .code-block {
+        display: none;
+      }
+      .code-block.active {
+        display: block;
+      }
+      .code-block pre {
+        margin: 0;
+        padding: 16px;
+        border-radius: 6px;
+        border: 1px solid var(--border-soft);
+        background: #020617;
+        overflow-x: auto;
+      }
+      .code-block code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 12px;
+        line-height: 1.6;
+        color: var(--text);
+        white-space: pre;
+      }
+    </style>
+  
+      <link rel="stylesheet" href="/tools/theme-singae.css" />
+  <body data-tool-theme="singae">
+<div id="tool-meta-hidden" style="display:none" aria-hidden="true">
+      <span id="tagline"></span>
+      <span id="title"></span>
+      <span id="subtitle"></span>
+    </div>
+    <main class="tool-shell">
+      <div class="upload-area" id="uploadArea">
+        <div class="upload-icon">IMG</div>
+        <div class="upload-text" id="uploadText"></div>
+        <div class="upload-hint" id="uploadHint"></div>
+        <input type="file" id="fileInput" accept="image/*" />
+      </div>
+
+      <div class="preview-grid" id="previewGrid" style="display: none;">
+        <div class="preview-box">
+          <div class="preview-label" id="imageLabel"></div>
+          <img id="previewImage" class="preview-image" alt="Preview" />
+          <div class="file-info" id="fileInfo"></div>
+        </div>
+        <div class="preview-box">
+          <div class="preview-label" id="base64Label"></div>
+          <textarea id="base64Output" class="base64-output" readonly></textarea>
+          <div class="file-info" id="base64Info"></div>
+        </div>
+      </div>
+
+      <div class="btn-row" id="btnRow" style="display: none;">
+        <button class="btn btn-primary" id="btnCopy"></button>
+      </div>
+
+      <div class="code-samples-section" id="codeSamplesSection" style="display: none;">
+        <h3 class="code-samples-title" id="codeSamplesTitle"></h3>
+        <div class="code-tabs">
+          <button class="code-tab active" data-tab="javascript">JavaScript</button>
+          <button class="code-tab" data-tab="python">Python</button>
+          <button class="code-tab" data-tab="react">React</button>
+          <button class="code-tab" data-tab="vue">Vue</button>
+          <button class="code-tab" data-tab="swift">Swift</button>
+          <button class="code-tab" data-tab="android">Android</button>
+        </div>
+        <div class="code-blocks">
+          <div class="code-block active" id="javascriptCode">
+            <pre><code>// JavaScript code will appear here</code></pre>
+          </div>
+          <div class="code-block" id="pythonCode">
+            <pre><code>// Python code will appear here</code></pre>
+          </div>
+          <div class="code-block" id="reactCode">
+            <pre><code>// React code will appear here</code></pre>
+          </div>
+          <div class="code-block" id="vueCode">
+            <pre><code>// Vue code will appear here</code></pre>
+          </div>
+          <div class="code-block" id="swiftCode">
+            <pre><code>// Swift code will appear here</code></pre>
+          </div>
+          <div class="code-block" id="androidCode">
+            <pre><code>// Android code will appear here</code></pre>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="../../tooltip.js"></script>
+<script src="image-base64.js"></script>
+      <script src="/context-menu-fallback.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

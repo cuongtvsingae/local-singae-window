@@ -1,0 +1,49 @@
+{
+  "version": 2,
+  "updatedAt": "2026-05-19T16:25:12.361Z",
+  "pages": [
+    {
+      "pageId": "1087027377817845",
+      "pageName": "Chú chó biết tuốt",
+      "pageAccessToken": "EAAegqdwTxX8BRRNwrajRj0cDTpXGhzDppq3OBJya4Y7RUrxhjKppaetkkpImgZBuLupZCvbKvXEcPZBF7MYDSbdbihacawZCpYCzPC8QXDkUuH5Acnvv23eSwKtfVoV5xZCbS8j6EAmTN3v1lPNlfeUQzHxuFr5FZBZADZALn2EUDVU7Ey9MsbxNN5nfZCCiMOFNt0ljC",
+      "botReplyEnabled": true
+    },
+    {
+      "pageId": "303990430300646",
+      "pageName": "Nha Khoa Singae Dental",
+      "pageAccessToken": "EAAegqdwTxX8BReyeN1FDolnl5D3VaaGsEHikMgZATsT6XZCDsHjwozlxJyhDOTtpo68uGr3u7ziuuL3vZBNhUOUK2mI3m8LE5xvoAxQsrUftGcIq9l7ZCbQxSeigh6BdnLZBjQG9ITWTyXo0ZBdhQy6iQTP3xyeebJGSb7W3ZCG1IsZAGs35jH3Wl7daahZBq8AlC5Cmg",
+      "botReplyEnabled": true
+    },
+    {
+      "pageId": "259431634942712",
+      "pageName": "Viện Niềng Răng Số 1 - Tập Đoàn Singae",
+      "pageAccessToken": "EAAegqdwTxX8BRZA5so94PnEMS9kxKPyKYrqhTQerSUb2jS1AZBJi4jiJsJrtmElXrRqC5a16XDUVtSvNodPGg6UFZB68gQZBeKFy9oRcHXaE8TzPosgrAljpZAx9iJA0ZBZBjJeasJMWGTpj7um61d38DyX4NZCJmJYY096RmQY7EZAayNH1RPR5ZAC6Dtx0nSMXTaJPwZD",
+      "botReplyEnabled": true
+    },
+    {
+      "pageId": "102480472869914",
+      "pageName": "Singae Implant - Chuyên ca khó - Công nghệ SPI",
+      "pageAccessToken": "EAAegqdwTxX8BRY0mnmw1ZB9MD9eFxdDsuI4iQ0ps3jRFApYw3aXym6BzMtqHhpFsAeKZBtgB5yWZBQ4NhCWVc4Btki60Oa62n5BbrrHgUecnVq4giDCZAt2ODNkqYsyZCzSWwFSu69gXNgGMcNn0fizA8NVcRR8SjxPSpZBwdUsztPhGi8drGEyYTuue9r3YREpfAZD",
+      "botReplyEnabled": true
+    },
+    {
+      "pageId": "112024988462917",
+      "pageName": "Phòng Khám Nha khoa Singae",
+      "pageAccessToken": "EAAegqdwTxX8BRVhMbBXktwm39GfaQfdUduG2AB4mqtFkyM3eMY2ALU2GdOSUI06M2RBwtgohE2zAJsljJl9nlZAc9fjxT7G4vCgtP7N4MudPXTHUZBb0k3ZAk9bVU6s8IB0tEjkTy7udbq9VZBYrN1keZAdFgcerZAzXRLf2aMBwoKkXsByCAvv1p5Ggsm5Pa2AI8V0B4ZD",
+      "botReplyEnabled": true
+    },
+    {
+      "pageId": "101316519510632",
+      "pageName": "Nha Khoa Singae - Trồng răng Implant Công nghệ Singapore",
+      "pageAccessToken": "EAAegqdwTxX8BRYFYNScAXv5iBe83L2ZCcOpTEAQsxCTZCUbZCtglUTnsiyJvWZAF23aQs9bz8GebyZC3hhtmBoq0QLsaWZA6q8ayLpMvRix9787jYuVZCx7ccvb216v55OLhhT7e9D3PMwNJGM3ZAgZBEwkfDGzukk2l5gvVOiUWiKfYYRqsZADSwoyMZCzPUZC5tDvPXoAZD",
+      "botReplyEnabled": true
+    },
+    {
+      "pageId": "207225415796476",
+      "pageName": "Nha Khoa Singae - Răng Sứ Thẩm Mỹ",
+      "pageAccessToken": "EAAegqdwTxX8BRaybt7hBDUlVn9V5msJ0azmw81SSZC8vtVCuT4S1icZAGq7km14SmNZBoZC14pnhsFhrLgZBDdcMctW8SSH5mDZA6hnZBv6L9ulVs87FXzQXMGyHEP4c6JJTLHHBKUNKE3QA7iKIwQaOflPappPIXgVwfHic0O3YfbvFCsnVyZCONu22WHGSdHIF29UAAacZD",
+      "botReplyEnabled": true
+    }
+  ],
+  "activePageId": "207225415796476"
+}

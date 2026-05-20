@@ -1,0 +1,539 @@
+:root {
+  --ai-bg: #070b12;
+  --ai-panel: rgba(15, 23, 42, 0.7);
+  --ai-panel-border: rgba(148, 163, 184, 0.18);
+  --ai-text: #e2e8f0;
+  --ai-muted: rgba(226, 232, 240, 0.6);
+  --ai-primary: #38bdf8;
+  --ai-danger: #f87171;
+  --ai-success: #34d399;
+}
+
+body.ai-manager {
+  background: radial-gradient(circle at 15% 10%, rgba(56, 189, 248, 0.12), transparent 55%),
+    radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.16), transparent 52%),
+    var(--ai-bg);
+  color: var(--ai-text);
+  min-height: 100vh;
+}
+
+.ai-auth-mask {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(6, 8, 13, 0.8);
+  backdrop-filter: blur(6px);
+  z-index: 2000;
+}
+
+.ai-auth-mask.is-visible {
+  display: flex;
+}
+
+.ai-auth-card {
+  width: min(520px, 94vw);
+  background: rgba(18, 20, 30, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  text-align: center;
+}
+
+.ai-auth-title {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.ai-auth-subtitle {
+  margin: 0 0 16px;
+  opacity: 0.8;
+}
+
+.ai-auth-form {
+  display: grid;
+  gap: 12px;
+}
+
+.ai-auth-form .ai-input {
+  width: 100%;
+}
+
+.ai-auth-autologin {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  font-size: 13px;
+  color: rgba(226, 232, 240, 0.8);
+}
+
+.ai-auth-autologin input {
+  accent-color: var(--ai-primary);
+}
+
+.ai-tab {
+  position: relative;
+}
+
+.ai-tab-badge {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(239, 68, 68, 0.35);
+}
+
+.ai-auth-error {
+  min-height: 18px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #ff9a9a;
+}
+
+.ai-auth-lock .ai-layout {
+  pointer-events: none;
+  filter: blur(2px);
+}
+
+.ai-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26px 36px 18px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.ai-header-title {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.ai-header-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(56, 189, 248, 0.15);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.ai-header h1 {
+  margin: 0;
+  font-size: 26px;
+}
+
+.ai-header p {
+  margin: 4px 0 0;
+  color: var(--ai-muted);
+}
+
+.ai-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 18px 36px 40px;
+}
+
+.ai-tabs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ai-tab {
+  border: none;
+  background: transparent;
+  color: var(--ai-text);
+  padding: 12px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.2s ease, border 0.2s ease, background 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+}
+
+.ai-tab:hover {
+  transform: translateY(-1px);
+  color: #ffffff;
+}
+
+.ai-tab.is-active {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+}
+
+.ai-content {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.ai-panel {
+  background: var(--ai-panel);
+  border: none;
+  border-radius: 18px;
+  padding: 18px 20px 20px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  display: none;
+}
+
+.ai-panel.is-visible {
+  display: block;
+}
+
+body.is-ready .ai-panel.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ai-panel-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: none;
+}
+
+.ai-panel-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.ai-panel-header p {
+  margin: 4px 0 0;
+  color: var(--ai-muted);
+}
+
+.ai-panel-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ai-panel-body {
+  padding-top: 16px;
+}
+
+.ai-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.ai-input {
+  width: 260px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  color: var(--ai-text);
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+
+.ai-instruction-editor {
+  width: 100%;
+  min-height: 280px;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 13px;
+}
+
+.ai-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ai-panel-divider {
+  height: 1px;
+  background: rgba(148, 163, 184, 0.08);
+  margin: 16px 0;
+}
+
+.ai-cost-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.ai-cost-card {
+  background: rgba(15, 23, 42, 0.55);
+  border: none;
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: grid;
+  gap: 6px;
+}
+
+.ai-cost-card span {
+  color: var(--ai-muted);
+  font-size: 12px;
+}
+
+.ai-cost-card strong {
+  font-size: 18px;
+}
+
+.ai-card {
+  background: rgba(15, 23, 42, 0.45);
+  border: none;
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: grid;
+  gap: 10px;
+  animation: fadeUp 0.25s ease;
+}
+
+.ai-card-title {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.ai-card-meta {
+  color: var(--ai-muted);
+  font-size: 13px;
+}
+
+.ai-card-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: var(--ai-text);
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  color: #ffffff;
+}
+
+.btn-primary {
+  background: transparent;
+}
+
+.btn-danger {
+  background: transparent;
+}
+
+.btn-ghost {
+  background: transparent;
+}
+
+.btn-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.btn-text {
+  font-weight: 700;
+}
+
+.btn-icon svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+  stroke: currentColor;
+}
+
+.ai-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.ai-modal.is-open {
+  display: flex;
+}
+
+.ai-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.65);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.ai-modal.is-open .ai-modal-backdrop {
+  opacity: 1;
+}
+
+.ai-modal-card {
+  position: relative;
+  background: rgba(15, 23, 42, 0.95);
+  border: none;
+  border-radius: 16px;
+  width: min(860px, 94vw);
+  max-height: 84vh;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(18px);
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.ai-modal-card.is-wide {
+  width: min(1040px, 96vw);
+  max-height: 90vh;
+}
+
+.ai-modal.is-open .ai-modal-card {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.ai-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px 12px;
+  border-bottom: none;
+}
+
+.ai-modal-body {
+  padding: 16px 20px;
+  overflow-y: auto;
+  display: grid;
+  gap: 12px;
+}
+
+.ai-modal-footer {
+  padding: 14px 20px 18px;
+  border-top: none;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.ai-modal-close {
+  background: transparent;
+  border: none;
+  color: var(--ai-muted);
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.ai-field {
+  display: grid;
+  gap: 6px;
+}
+
+.ai-field label {
+  font-size: 13px;
+  color: var(--ai-muted);
+}
+
+.ai-field input,
+.ai-field textarea {
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(15, 23, 42, 0.6);
+  color: var(--ai-text);
+  padding: 8px 10px;
+}
+
+.ai-field textarea {
+  min-height: 160px;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 12px;
+}
+
+.ai-field textarea.is-tall {
+  min-height: 340px;
+}
+
+.ai-subsection h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+
+.ai-instruction-row {
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+.ai-terminal-list .ai-card {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 12px;
+  background: #0b1220;
+  color: #e5e7eb;
+}
+
+.ai-terminal-list .ai-card-title,
+.ai-terminal-list .ai-card-meta {
+  color: #e5e7eb;
+}
+
+.ai-toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  color: var(--ai-text);
+  padding: 12px 16px;
+  border-radius: 12px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+.ai-toast.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 960px) {
+  .ai-input {
+    width: 100%;
+  }
+  .ai-modal-card.is-wide {
+    width: min(92vw, 920px);
+  }
+}

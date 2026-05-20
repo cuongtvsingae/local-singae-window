@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CRM API Tester | singae.cloud</title>
+    <link rel="icon" type="image/png" href="../../../asset/logo.png" />
+    <link rel="stylesheet" href="../../../style.css" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="/tools/theme-singae.css" />
+  </head>
+  <body data-tool-theme="singae">
+    <div id="tool-meta-hidden" style="display:none" aria-hidden="true">
+      <span id="tagline">Test & debug API nhanh</span>
+      <span id="title">CRM API Tester</span>
+      <span id="subtitle">Simlydent + Getfly (Customer v6.0)</span>
+    </div>
+
+    <main class="tool-shell crm-tool" id="crmApiTesterApp">
+      <header class="crm-head">
+        <div class="crm-head-title">CRM API Tester</div>
+        <div class="crm-head-sub">Simlydent (1 tab) • Getfly (Customer v6.0) (1 tab)</div>
+      </header>
+
+      <section class="crm-tabs" role="tablist" aria-label="CRM API tabs">
+        <button class="crm-tab is-active" id="tab-simly" role="tab" aria-selected="true" aria-controls="panel-simly" type="button">
+          Simlydent
+        </button>
+        <button class="crm-tab" id="tab-getfly" role="tab" aria-selected="false" aria-controls="panel-getfly" type="button">
+          Getfly (Customer v6.0)
+        </button>
+        <div class="crm-tab-spacer"></div>
+        <button class="btn btn-ghost crm-btn" id="btnExportConfig" type="button">Export config</button>
+        <button class="btn btn-ghost crm-btn" id="btnImportConfig" type="button">Import config</button>
+        <input id="fileImportConfig" type="file" accept="application/json" hidden />
+      </section>
+
+      <section class="crm-panels">
+        <section class="crm-panel is-active" id="panel-simly" role="tabpanel" aria-labelledby="tab-simly">
+          <div class="crm-grid">
+            <section class="crm-card">
+              <div class="crm-card-title">Auth</div>
+              <div class="crm-form">
+                <label class="crm-label">
+                  <span>Base URL</span>
+                  <input class="crm-input" id="simBaseUrl" value="https://api.simlydent.vn" />
+                </label>
+                <label class="crm-label">
+                  <span>API key (grant_type=api_key)</span>
+                  <input class="crm-input" id="simApiKey" placeholder="sk_live_..." autocomplete="off" />
+                </label>
+                <label class="crm-label">
+                  <span>Access token (optional)</span>
+                  <input class="crm-input" id="simAccessToken" placeholder="Nếu có token thì nhập để khỏi gọi /oauth/token" autocomplete="off" />
+                </label>
+                <div class="crm-row">
+                  <button class="btn btn-primary crm-btn" id="btnSimGetToken" type="button">Get token</button>
+                  <button class="btn crm-btn" id="btnSimSave" type="button">Save</button>
+                </div>
+              </div>
+              <div class="crm-note">
+                Gợi ý: tool sẽ tự cache token trong LocalStorage cho lần sau (bạn vẫn có thể overwrite).
+              </div>
+            </section>
+
+            <section class="crm-card">
+              <div class="crm-card-title">Patient</div>
+              <div class="crm-form">
+                <label class="crm-label">
+                  <span>Search</span>
+                  <input class="crm-input" id="simPatientSearch" value="KH08112025" />
+                </label>
+                <div class="crm-row">
+                  <label class="crm-label crm-inline">
+                    <span>Page</span>
+                    <input class="crm-input" id="simPatientPage" value="1" />
+                  </label>
+                  <label class="crm-label crm-inline">
+                    <span>Page size</span>
+                    <input class="crm-input" id="simPatientPageSize" value="100" />
+                  </label>
+                </div>
+                <div class="crm-row">
+                  <button class="btn btn-primary crm-btn" id="btnSimTestPatient" type="button">Test GET /api/v1/patient</button>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <section class="crm-card crm-card-wide">
+            <div class="crm-card-title">Results</div>
+            <div class="crm-actions">
+              <button class="btn btn-ghost crm-btn" id="btnSimClear" type="button">Clear</button>
+              <button class="btn btn-ghost crm-btn" id="btnSimCopyLast" type="button">Copy last response</button>
+            </div>
+            <div class="crm-results" id="simResults"></div>
+          </section>
+        </section>
+
+        <section class="crm-panel" id="panel-getfly" role="tabpanel" aria-labelledby="tab-getfly">
+          <section class="crm-card crm-card-wide">
+            <div class="crm-card-title">Auth + Base URL</div>
+            <div class="crm-form crm-form-grid">
+              <label class="crm-label">
+                <span>Base URL</span>
+                <input class="crm-input" id="getflyBaseUrl" value="https://sas9.getflycrm.com" placeholder="https://tencongty.getflycrm.com" />
+              </label>
+              <label class="crm-label">
+                <span>Auth mode</span>
+                <select class="crm-input" id="getflyAuthMode">
+                  <option value="x-api-key">X-API-KEY</option>
+                  <option value="bearer">Bearer (x-authorization)</option>
+                  <option value="authorization">Authorization (raw)</option>
+                  <option value="none">None</option>
+                </select>
+              </label>
+              <label class="crm-label">
+                <span>X-API-KEY</span>
+                <input class="crm-input" id="getflyApiKey" placeholder="Nhập key..." autocomplete="off" />
+              </label>
+              <label class="crm-label">
+                <span>Bearer token</span>
+                <input class="crm-input" id="getflyBearer" placeholder="Nhập token (có/không có 'Bearer ')" autocomplete="off" />
+              </label>
+              <label class="crm-label">
+                <span>Authorization (raw)</span>
+                <input class="crm-input" id="getflyAuthorizationRaw" placeholder='vd: "API_TOKEN" hoặc "Bearer xxx"' autocomplete="off" />
+              </label>
+              <label class="crm-label">
+                <span>Query token (nếu API yêu cầu token=...)</span>
+                <input class="crm-input" id="getflyQueryToken" placeholder="vd: m2ils1jUo1s5Bxrt..." autocomplete="off" />
+              </label>
+              <div class="crm-row">
+                <button class="btn crm-btn" id="btnGetflySave" type="button">Save</button>
+                <button class="btn btn-ghost crm-btn" id="btnGetflyResetPreset" type="button">Reset presets</button>
+              </div>
+            </div>
+            <div class="crm-note">
+              Theo tài liệu Getfly v6: Base URL dạng <b>https://tencongty.getflycrm.com</b> và xác thực chuẩn là <b>X-API-KEY</b> gửi trong header mỗi request.
+              <br/>
+              Customer v6.0: vì docs có nhiều endpoint (List/Add/Detail/Update/Delete/Restore/Change owner/Groups/Industry/Relationship/Source/Sync...), tool này chạy theo <b>preset list</b> bên dưới. Bạn có thể sửa path/method/body để khớp đúng docs.
+              <br/>
+              Lưu ý: <b>Query parameters</b> (fields/filtering/sort/direction/limit/offset...) được gửi qua <b>URL query string</b> (không phải header). Tool sẽ tự serialize kiểu Getfly v6 như docs:
+              <b>filtering</b> object → <code>filtering[contact_name:contains]=Lê</code>, array → stringify (vd <code>[1,2,3]</code>).
+              Tham khảo mục Customer trên docs: <a href="https://developer.getfly.vn/docs/6.0/customer/intro/" target="_blank" rel="noreferrer">Getfly CRM Customer v6.0</a>.
+            </div>
+          </section>
+
+          <div class="crm-grid">
+            <section class="crm-card">
+              <div class="crm-card-title">Run</div>
+              <div class="crm-form">
+                <div class="crm-row">
+                  <button class="btn btn-primary crm-btn" id="btnGetflyRunAll" type="button">Test ALL (safe)</button>
+                  <button class="btn crm-btn" id="btnGetflyRunSelected" type="button">Test selected</button>
+                </div>
+                <label class="crm-label crm-check">
+                  <input type="checkbox" id="getflyAllowDanger" />
+                  <span>Cho phép request nguy hiểm (DELETE/Restore/Update)</span>
+                </label>
+              </div>
+              <div class="crm-note">
+                “Safe” chỉ chạy GET (không thay đổi dữ liệu). Nếu bật “nguy hiểm”, tool sẽ chạy cả POST/PUT/DELETE theo preset.
+              </div>
+            </section>
+
+            <section class="crm-card">
+              <div class="crm-card-title">Preset list</div>
+              <div class="crm-preset-toolbar">
+                <button class="btn btn-ghost crm-btn" id="btnGetflyAddPreset" type="button">+ Add</button>
+                <button class="btn btn-ghost crm-btn" id="btnGetflyImportPostman" type="button">Import Postman</button>
+                <input id="fileImportPostman" type="file" accept="application/json" hidden />
+              </div>
+              <div class="crm-preset-list" id="getflyPresetList"></div>
+            </section>
+          </div>
+
+          <section class="crm-card crm-card-wide">
+            <div class="crm-card-title">Results</div>
+            <div class="crm-actions">
+              <button class="btn btn-ghost crm-btn" id="btnGetflyClear" type="button">Clear</button>
+              <button class="btn btn-ghost crm-btn" id="btnGetflyCopyLast" type="button">Copy last response</button>
+            </div>
+            <div class="crm-results" id="getflyResults"></div>
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
+
+

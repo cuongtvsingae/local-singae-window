@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <title>Gradient | singae.cloud</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Online utility tool on singae.cloud." />
+    <link rel="canonical" href="https://singae.cloud/tools/code/gradient.html" />
+    <link rel="icon" type="image/png" href="../../asset/logo.png" />
+    <link rel="stylesheet" href="../../style.css" />
+  
+      <link rel="stylesheet" href="/tools/theme-singae.css" />
+  <body data-tool-theme="singae">
+<div id="tool-meta-hidden" style="display:none" aria-hidden="true">
+      <span id="tagline"></span>
+      <span id="title"></span>
+      <span id="subtitle"></span>
+    </div>
+    <main class="tool-shell">
+      <div class="gradient-layout">
+        <div class="panel">
+          <label class="panel-label" id="colorsLabel"></label>
+          <div class="color-inputs">
+            <div class="color-input-group">
+              <label id="color1Label"></label>
+              <div class="color-picker-wrapper">
+                <input type="color" id="color1" value="#3b82f6" />
+                <input type="text" id="color1Hex" class="hex-input" placeholder="#3b82f6" value="#3b82f6" />
+              </div>
+            </div>
+            <div class="color-input-group">
+              <label id="color2Label"></label>
+              <div class="color-picker-wrapper">
+                <input type="color" id="color2" value="#8b5cf6" />
+                <input type="text" id="color2Hex" class="hex-input" placeholder="#8b5cf6" value="#8b5cf6" />
+              </div>
+            </div>
+          </div>
+          <div class="select-group">
+            <label id="directionLabel"></label>
+            <select id="direction">
+              <option value="to right">To Right</option>
+              <option value="to left">To Left</option>
+              <option value="to bottom">To Bottom</option>
+              <option value="to top">To Top</option>
+              <option value="to bottom right">To Bottom Right</option>
+              <option value="to bottom left">To Bottom Left</option>
+              <option value="to top right">To Top Right</option>
+              <option value="to top left">To Top Left</option>
+            </select>
+          </div>
+          <label class="panel-label" id="cssLabel"></label>
+          <textarea id="cssOutput" class="css-output" readonly></textarea>
+        </div>
+        <div class="panel">
+          <label class="panel-label" id="previewLabel"></label>
+          <div id="gradientPreview" class="gradient-preview"></div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="btnCopy"></button>
+      </div>
+
+      <div class="code-samples-section">
+        <h3 class="code-samples-title" id="codeSamplesTitle"></h3>
+        <div class="code-tabs">
+          <button class="code-tab active" data-tab="javascript">JavaScript</button>
+          <button class="code-tab" data-tab="python">Python</button>
+          <button class="code-tab" data-tab="react">React</button>
+          <button class="code-tab" data-tab="vue">Vue</button>
+          <button class="code-tab" data-tab="swift">Swift</button>
+          <button class="code-tab" data-tab="android">Android</button>
+        </div>
+        <div class="code-blocks">
+          <div class="code-block active" id="javascriptCode">
+            <pre><code>// JavaScript (Canvas)
+const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+const gradient = ctx.createLinearGradient(0, 0, 300, 0);
+gradient.addColorStop(0, '#3b82f6');
+gradient.addColorStop(1, '#8b5cf6');
+ctx.fillStyle = gradient;
+ctx.fillRect(0, 0, 300, 300);</code></pre>
+          </div>
+          <div class="code-block" id="pythonCode">
+            <pre><code># Python (PIL/Pillow)
+from PIL import Image, ImageDraw
+
+width, height = 300, 300
+image = Image.new('RGB', (width, height))
+draw = ImageDraw.Draw(image)
+
+for x in range(width):
+    r = int(59 + (139 - 59) * x / width)
+    g = int(130 + (92 - 130) * x / width)
+    b = int(246 + (246 - 246) * x / width)
+    draw.line([(x, 0), (x, height)], fill=(r, g, b))
+
+image.save('gradient.png')</code></pre>
+          </div>
+          <div class="code-block" id="reactCode">
+            <pre><code>// React (JSX)
+import React from 'react';
+
+function GradientBox() {
+  const gradientStyle = {
+    width: '300px',
+    height: '300px',
+    background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
+    borderRadius: '8px'
+  };
+  
+  return &lt;div style={gradientStyle} /&gt;;
+}
+
+export default GradientBox;</code></pre>
+          </div>
+          <div class="code-block" id="vueCode">
+            <pre><code>// Vue.js
+&lt;template&gt;
+  &lt;div :style="gradientStyle"&gt;&lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  data() {
+    return {
+      gradientStyle: {
+        width: '300px',
+        height: '300px',
+        background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
+        borderRadius: '8px'
+      }
+    };
+  }
+};
+&lt;/script&gt;</code></pre>
+          </div>
+          <div class="code-block" id="swiftCode">
+            <pre><code>import SwiftUI
+
+struct GradientView: View {
+    var body: some View {
+        // Linear Gradient
+        LinearGradient(
+            gradient: Gradient(colors: [
+                Color(hex: "#3b82f6"),
+                Color(hex: "#8b5cf6")
+            ]),
+            startPoint: .leading,
+            endPoint: .trailing
+        )
+        .frame(width: 300, height: 300)
+        .cornerRadius(8)
+        
+        // Radial Gradient
+        RadialGradient(
+            gradient: Gradient(colors: [
+                Color(hex: "#3b82f6"),
+                Color(hex: "#8b5cf6")
+            ]),
+            center: .center,
+            startRadius: 0,
+            endRadius: 150
+        )
+        
+        // Angular Gradient
+        AngularGradient(
+            gradient: Gradient(colors: [
+                Color(hex: "#3b82f6"),
+                Color(hex: "#8b5cf6")
+            ]),
+            center: .center
+        )
+    }
+}
+
+extension Color {
+    init(hex: String) {
+        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        var int: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&int)
+        let a, r, g, b: UInt64
+        switch hex.count {
+        case 3: // RGB (12-bit)
+            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
+        case 6: // RGB (24-bit)
+            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
+        case 8: // ARGB (32-bit)
+            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
+        default:
+            (a, r, g, b) = (1, 1, 1, 0)
+        }
+        self.init(
+            .sRGB,
+            red: Double(r) / 255,
+            green: Double(g) / 255,
+            blue:  Double(b) / 255,
+            opacity: Double(a) / 255
+        )
+    }
+}</code></pre>
+          </div>
+          <div class="code-block" id="androidCode">
+            <pre><code>// XML Layout
+&lt;androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"&gt;
+    
+    &lt;View
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:background="@drawable/gradient_background"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" /&gt;
+        
+&lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;
+
+// drawable/gradient_background.xml
+&lt;shape xmlns:android="http://schemas.android.com/apk/res/android"&gt;
+    &lt;gradient
+        android:type="linear"
+        android:angle="0"
+        android:startColor="#3b82f6"
+        android:endColor="#8b5cf6" /&gt;
+&lt;/shape&gt;
+
+// Kotlin Code
+import android.graphics.drawable.GradientDrawable
+import android.view.View
+
+fun createGradientView(context: Context): View {
+    val view = View(context)
+    val gradient = GradientDrawable(
+        GradientDrawable.Orientation.LEFT_RIGHT,
+        intArrayOf(
+            0xFF3b82f6.toInt(),
+            0xFF8b5cf6.toInt()
+        )
+    )
+    view.background = gradient
+    view.layoutParams = ViewGroup.LayoutParams(300, 300)
+    return view
+}
+
+// Compose
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+
+@Composable
+fun GradientBox() {
+    Box(
+        modifier = Modifier
+            .size(300.dp)
+            .background(
+                brush = Brush.horizontalGradient(
+                    colors = listOf(
+                        Color(0xFF3b82f6),
+                        Color(0xFF8b5cf6)
+                    )
+                )
+            )
+    )
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="../../tooltip.js"></script>
+<script src="gradient.js"></script>
+      <script src="/context-menu-fallback.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

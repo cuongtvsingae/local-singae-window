@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Manager</title>
+    <meta name="description" content="Quản lý prompt và database cho tất cả chatbot." />
+    <link rel="icon" type="image/png" href="../../../asset/logo.png" />
+    <link rel="stylesheet" href="../../../style.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="ai-manager">
+    <header class="ai-header">
+      <div class="ai-header-title">
+        <span class="ai-header-icon" aria-hidden="true">AI</span>
+        <div>
+          <h1>AI Manager</h1>
+          <p>Quản lý prompt + database cho tất cả chatbot (CRUD tập trung).</p>
+        </div>
+      </div>
+      <div class="ai-header-actions">
+        <button id="btn-refresh-all" class="btn btn-primary" type="button">
+          <span class="btn-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M19 6.5v4.5h-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 11A7 7 0 1 1 7 5.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+          <span class="btn-text">Refresh all</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="ai-layout">
+      <div class="ai-tabs" role="tablist" aria-label="AI manager tabs">
+        <button class="ai-tab is-active" data-section="chatbot" type="button" role="tab">
+          <span class="btn-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 5.5h16v9.5a2 2 0 0 1-2 2H9.5L6 20v-3H6a2 2 0 0 1-2-2V5.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 9h8M8 12.5h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span>
+          <span class="btn-text">Chatbot</span>
+          <span class="ai-tab-badge" data-badge="chatbot" hidden></span>
+        </button>
+        <button class="ai-tab" data-section="singae" type="button" role="tab">
+          <span class="btn-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4.2 13.2 13.8 9c.6-.25 1.1.3.95.9l-2.6 7.4c-.15.6-.85.8-1.3.4l-2.5-2-1.6 1.3c-.45.35-1.05.05-1-.55l.2-2.4-1.8-.5c-.6-.15-.65-.95.1-1.25Z" fill="currentColor"/><path d="M7.6 13.8 13.2 10.9M8.9 15.1l.9.7" stroke="#06080d" stroke-width="1.1" stroke-linecap="round" opacity="0.85"/></svg>
+          </span>
+          <span class="btn-text">Trợ lý SINGAE</span>
+          <span class="ai-tab-badge" data-badge="singae" hidden></span>
+        </button>
+        <button class="ai-tab" data-section="ai-logs" type="button" role="tab">
+          <span class="btn-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="5" y="4.5" width="14" height="15" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 8.5h8M8 12h8M8 15.5h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span>
+          <span class="btn-text">Logs</span>
+          <span class="ai-tab-badge" data-badge="logs" hidden></span>
+        </button>
+        <button class="ai-tab" data-section="ai-lookup" type="button" role="tab">
+          <span class="btn-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16.2 16.2 3.3 3.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M8.7 11h4.6M8.7 13h3.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </span>
+          <span class="btn-text">Lookup</span>
+          <span class="ai-tab-badge" data-badge="lookup" hidden></span>
+        </button>
+        <button class="ai-tab" data-section="ai-messenger" type="button" role="tab">
+          <span class="btn-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 6.5h16v9a2 2 0 0 1-2 2H9l-3 2.5v-2.5H6a2 2 0 0 1-2-2v-9Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.2 11.2h3.6M12.6 11.2h3.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </span>
+          <span class="btn-text">Messenger</span>
+          <span class="ai-tab-badge" data-badge="messenger" hidden></span>
+        </button>
+        <button class="ai-tab" data-section="ai-cost" type="button" role="tab">
+          <span class="btn-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M6 6.5h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9 10.2h6M9 13.8h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="10.2" r="1" fill="currentColor"/><circle cx="12" cy="13.8" r="1" fill="currentColor"/></svg>
+          </span>
+          <span class="btn-text">Chi phí dự kiến</span>
+          <span class="ai-tab-badge" data-badge="cost" hidden></span>
+        </button>
+      </div>
+
+      <main class="ai-content" role="tabpanel">
+        <section id="chatbot" class="ai-panel is-visible">
+          <div class="ai-panel-header">
+            <div>
+              <h2>Chatbot</h2>
+              <p>Quản lý prompt + database cho Chatbot.</p>
+            </div>
+            <div class="ai-panel-actions">
+              <button id="btn-change-chat-model" class="btn btn-primary" type="button">
+                <span class="btn-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9 9h6v6H9z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                </span>
+                <span class="btn-text">Đổi model chat</span>
+              </button>
+              <button id="btn-change-llm-provider" class="btn btn-primary" type="button">
+                <span class="btn-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M7 7h10M7 12h10M7 17h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </span>
+                <span class="btn-text">Switch LLM server</span>
+              </button>
+              <button id="btn-add-chatbot-prompt" class="btn btn-primary" type="button">
+                <span class="btn-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </span>
+                <span class="btn-text">Add prompt</span>
+              </button>
+              <button id="btn-add-chatbot-kb" class="btn btn-primary" type="button">
+                <span class="btn-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </span>
+                <span class="btn-text">Add entry</span>
+              </button>
+            </div>
+          </div>
+          <div class="ai-panel-body">
+            <div class="ai-subsection">
+              <h3>Prompts</h3>
+              <div class="ai-list" id="chatbot-prompts-list"></div>
+            </div>
+            <div class="ai-panel-divider"></div>
+            <div class="ai-subsection">
+              <h3>Database</h3>
+              <div class="ai-toolbar">
+                <input id="chatbot-kb-search" class="ai-input" type="search" placeholder="Search..." />
+              </div>
+              <div class="ai-list" id="chatbot-kb-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="singae" class="ai-panel">
+          <div class="ai-panel-header">
+            <div>
+              <h2>Trợ lý SINGAE</h2>
+              <p>Quản lý prompt, database, output instruction và lịch sử chat user.</p>
+            </div>
+            <div class="ai-panel-actions">
+              <button id="btn-add-singae-kb" class="btn btn-primary" type="button">
+                <span class="btn-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </span>
+                <span class="btn-text">Add entry</span>
+              </button>
+              <button id="btn-add-singae-instruction" class="btn btn-primary" type="button">
+                <span class="btn-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </span>
+                <span class="btn-text">Add line</span>
+              </button>
+              <button id="btn-save-singae-instruction" class="btn btn-primary" type="button">
+                <span class="btn-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M6 5.5h9l3 3V18a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-10a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 5.5v5h8" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="8.2" y="14" width="7.6" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
+                </span>
+                <span class="btn-text">Save</span>
+              </button>
+              <button id="btn-reset-singae-instruction" class="btn btn-danger" type="button">
+                <span class="btn-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M6 8.5h7M6 8.5l2.5-2.5M6 8.5l2.5 2.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 6a7 7 0 1 1-2.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </span>
+                <span class="btn-text">Reset</span>
+              </button>
+            </div>
+          </div>
+          <div class="ai-panel-body">
+            <div class="ai-subsection">
+              <h3>Prompts</h3>
+              <div class="ai-list" id="singae-prompts-list"></div>
+            </div>
+            <div class="ai-panel-divider"></div>
+            <div class="ai-subsection">
+              <h3>getSingaeAssistantPlainTextInstruction</h3>
+              <textarea id="singae-instruction-editor" class="ai-input ai-instruction-editor" placeholder="One line per rule..."></textarea>
+            </div>
+            <div class="ai-panel-divider"></div>
+            <div class="ai-subsection">
+              <h3>Database</h3>
+              <div class="ai-toolbar">
+                <input id="singae-kb-search" class="ai-input" type="search" placeholder="Search..." />
+              </div>
+              <div class="ai-list ai-terminal-list" id="singae-kb-list"></div>
+            </div>
+            <div class="ai-panel-divider"></div>
+            <div class="ai-subsection">
+              <h3>Lịch sử chat theo user</h3>
+              <div class="ai-toolbar">
+                <button id="btn-refresh-singae-user-histories" class="btn btn-primary" type="button">
+                  <span class="btn-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M19 6.5v4.5h-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 11A7 7 0 1 1 7 5.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                  </span>
+                  <span class="btn-text">Refresh users</span>
+                </button>
+              </div>
+              <div class="ai-list" id="singae-user-history-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="ai-logs" class="ai-panel">
+          <div class="ai-panel-header">
+            <div>
+              <h2>GPT Logs</h2>
+              <p>Chi tiết request/response khi gọi GPT.</p>
+            </div>
+            <div class="ai-panel-actions">
+              <button id="btn-refresh-logs" class="btn btn-primary" type="button">
+                <span class="btn-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M19 6.5v4.5h-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 11A7 7 0 1 1 7 5.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </span>
+                <span class="btn-text">Refresh</span>
+              </button>
+              <button id="btn-clear-logs" class="btn btn-danger" type="button">
+                <span class="btn-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M6.5 7.5h11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M9 7.5v-.8a1.7 1.7 0 0 1 1.7-1.7h2.6A1.7 1.7 0 0 1 15 6.7v.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M9 10v6M12 10v6M15 10v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><rect x="7.5" y="7.5" width="9" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+                </span>
+                <span class="btn-text">Clear</span>
+              </button>
+            </div>
+          </div>
+          <div class="ai-panel-body">
+            <div class="ai-toolbar">
+              <input id="logs-search" class="ai-input" type="search" placeholder="Search logs..." />
+            </div>
+            <div class="ai-list" id="logs-list"></div>
+          </div>
+        </section>
+
+        <section id="ai-lookup" class="ai-panel">
+          <div class="ai-panel-header">
+            <div>
+              <h2>Lookup Logs</h2>
+              <p>Log call API Getfly và tra cứu khách hàng.</p>
+            </div>
+            <div class="ai-panel-actions">
+              <button id="btn-refresh-lookup" class="btn btn-primary" type="button">
+                <span class="btn-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M19 6.5v4.5h-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 11A7 7 0 1 1 7 5.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </span>
+                <span class="btn-text">Refresh</span>
+              </button>
+            </div>
+          </div>
+          <div class="ai-panel-body">
+            <div class="ai-toolbar">
+              <input id="lookup-search" class="ai-input" type="search" placeholder="Search lookup logs..." />
+            </div>
+            <div class="ai-list" id="lookup-list"></div>
+          </div>
+        </section>
+
+        <section id="ai-messenger" class="ai-panel">
+          <div class="ai-panel-header">
+            <div>
+              <h2>Facebook Messenger</h2>
+              <p>Raw event webhook từ Facebook Messenger.</p>
+            </div>
+            <div class="ai-panel-actions">
+              <button id="btn-refresh-messenger" class="btn btn-primary" type="button">
+                <span class="btn-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M19 6.5v4.5h-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 11A7 7 0 1 1 7 5.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </span>
+                <span class="btn-text">Refresh</span>
+              </button>
+            </div>
+          </div>
+          <div class="ai-panel-body">
+            <div class="ai-toolbar">
+              <input id="messenger-search" class="ai-input" type="search" placeholder="Search messenger events..." />
+            </div>
+            <div class="ai-list" id="messenger-list"></div>
+          </div>
+        </section>
+
+        <section id="ai-cost" class="ai-panel">
+          <div class="ai-panel-header">
+            <div>
+              <h2>Chi phí dự kiến (VND)</h2>
+              <p>Tính từ usage logs mới nhất.</p>
+            </div>
+            <div class="ai-panel-actions">
+              <button id="btn-refresh-cost" class="btn btn-primary" type="button">
+                <span class="btn-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M19 6.5v4.5h-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 11A7 7 0 1 1 7 5.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </span>
+                <span class="btn-text">Refresh</span>
+              </button>
+            </div>
+          </div>
+          <div class="ai-panel-body">
+            <div id="cost-summary" class="ai-cost-grid"></div>
+            <div class="ai-panel-divider"></div>
+            <div id="cost-breakdown" class="ai-list"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="ai-modal" class="ai-modal" aria-hidden="true">
+      <div class="ai-modal-backdrop" data-modal-close="true"></div>
+      <div class="ai-modal-card" role="dialog" aria-modal="true">
+        <header class="ai-modal-header">
+          <h3 id="ai-modal-title">Modal</h3>
+          <button class="ai-modal-close" type="button" data-modal-close="true">✕</button>
+        </header>
+        <div id="ai-modal-body" class="ai-modal-body"></div>
+        <footer class="ai-modal-footer">
+          <button id="ai-modal-cancel" class="btn btn-ghost" type="button" data-modal-close="true">Cancel</button>
+          <button id="ai-modal-confirm" class="btn btn-primary" type="button">Save</button>
+        </footer>
+      </div>
+    </div>
+
+    <div id="ai-toast" class="ai-toast" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
+
+

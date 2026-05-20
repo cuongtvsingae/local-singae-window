@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <title>Json Formatter | singae.cloud</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Online utility tool on singae.cloud." />
+    <link rel="canonical" href="https://singae.cloud/tools/code/json-formatter.html" />
+    <link rel="icon" type="image/png" href="../../asset/logo.png" />
+    <link rel="stylesheet" href="../../style.css" />
+    <style>
+      .tool-shell {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 32px 24px 40px;
+      }
+      .tool-header-row {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .tool-title-main {
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin: 0 0 6px;
+        text-align: center;
+      }
+      .tool-sub {
+        margin: 0;
+        font-size: 14px;
+        color: var(--text-muted);
+        text-align: center;
+      }
+      .panel {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .panel-label {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text);
+      }
+      .seo-intro {
+        max-width: 640px;
+        margin: 0 0 20px;
+        text-align: left;
+        font-size: 12px;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+      .seo-intro p {
+        margin: 6px 0;
+      }
+      .tool-article {
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border-soft);
+        max-width: 960px;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 13px;
+        line-height: 1.7;
+        color: var(--text-muted);
+        column-count: 2;
+        column-gap: 32px;
+      }
+      @media (max-width: 900px) {
+        .tool-article {
+          column-count: 1;
+        }
+      }
+      .tool-article h2 {
+        font-size: 16px;
+        margin: 0 0 10px;
+        color: var(--text);
+        break-after: avoid;
+      }
+      .tool-article h3 {
+        font-size: 14px;
+        margin: 18px 0 6px;
+        color: var(--text);
+        break-after: avoid;
+      }
+      .tool-article p {
+        margin: 6px 0;
+      }
+      .tool-article ul {
+        margin: 6px 0 6px 18px;
+        padding: 0;
+      }
+      .tool-article li {
+        margin: 3px 0;
+      }
+      .back-link {
+        font-size: 11px;
+        color: var(--text-muted);
+        text-decoration: none;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.6);
+        padding: 4px 9px;
+        background: rgba(15, 23, 42, 0.9);
+        transition: border-color 150ms ease-out, background 150ms ease-out, transform 150ms ease-out;
+      }
+      .back-link:hover {
+        border-color: var(--accent-strong);
+        background: var(--accent-soft);
+        transform: translateY(-0.5px);
+      }
+      .split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      @media (max-width: 900px) {
+        .split {
+          grid-template-columns: 1fr;
+        }
+      }
+      .editor-wrapper,
+      .output-wrapper {
+        display: flex;
+        align-items: stretch;
+        border-radius: 6px;
+        border: 1px solid rgba(15, 23, 42, 0.9);
+        background: #020617;
+        overflow: hidden;
+        box-sizing: border-box;
+        position: relative;
+        height: 500px;
+      }
+      .code-overlay {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 40px; /* bằng width line-gutter */
+        pointer-events: none;
+        overflow: hidden;
+      }
+      .code-overlay-pre {
+        margin: 0;
+        padding: 8px 10px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+          monospace;
+        font-size: 13px;
+        line-height: 1.4;
+        color: rgba(148, 163, 184, 0.35);
+        white-space: pre;
+      }
+      .ws-dot {
+        color: rgba(148, 163, 184, 0.45);
+      }
+      .line-gutter {
+        flex-shrink: 0;
+        width: 40px;
+        padding: 0;
+        background: #020617;
+        border-right: 1px solid rgba(30, 64, 175, 0.6);
+        color: var(--text-muted);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+          monospace;
+        font-size: 13px; /* ��ng b�" v�:i textarea �Ồ height m�i dòng kh�:p tuy�!t ��i */
+        line-height: 1.4;
+        text-align: right;
+        box-sizing: border-box;
+        overflow-y: auto;
+        overflow-x: hidden;
+        border-radius: 0;
+        height: 100%;
+        /* Ẩn scrollbar nhưng vẫn cho scroll */
+        scrollbar-width: none; /* Firefox */
+      }
+      .line-gutter::-webkit-scrollbar {
+        display: none; /* WebKit */
+      }
+      .line-gutter-inner {
+        padding: 8px 8px;
+        min-height: 100%;
+      }
+      .ln {
+        padding: 0 4px;
+        white-space: nowrap;
+        line-height: 1.4;
+        /* dùng cùng line-height v�:i textarea, �Ồ browser tự canh baseline */
+      }
+      .ln-error {
+        background: rgba(248, 113, 113, 0.25);
+        color: #fecaca;
+      }
+      textarea {
+        flex: 1;
+        min-width: 0;
+        height: 100%;
+        resize: none;
+        padding: 8px 10px;
+        border-radius: 0;
+        border: none;
+        background: transparent;
+        color: var(--text);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+          monospace;
+        font-size: 13px;
+        line-height: 1.4;
+        box-sizing: border-box;
+        overflow-x: auto;
+        overflow-y: auto;
+        word-wrap: break-word;
+        white-space: pre;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(148, 163, 184, 0.15) transparent;
+      }
+      textarea::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      textarea::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      textarea::-webkit-scrollbar-thumb {
+        background: rgba(148, 163, 184, 0.15);
+        border-radius: 4px;
+        border: 2px solid transparent;
+        background-clip: padding-box;
+      }
+      textarea::-webkit-scrollbar-thumb:hover {
+        background: rgba(148, 163, 184, 0.3);
+        background-clip: padding-box;
+      }
+      textarea:focus {
+        outline: none;
+      }
+      .btn-row {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin-top: 16px;
+      }
+      .btn {
+        padding: 10px 20px;
+        border-radius: 6px;
+        border: 1px solid var(--border-soft);
+        background: var(--card);
+        color: var(--text);
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 150ms ease-out;
+        transform-origin: center;
+      }
+      .btn:hover {
+        background: var(--accent-soft);
+        border-color: var(--accent-strong);
+        transform: translateY(-1px);
+      }
+      .btn-primary {
+        background: var(--accent-strong);
+        border-color: var(--accent-strong);
+        color: #ffffff;
+      }
+      .btn.animating {
+        pointer-events: none;
+        animation: buttonClick 300ms cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      #input {
+        border-right: none;
+      }
+      #output {
+        border-radius: 0;
+        overflow-x: auto;
+        overflow-y: auto;
+        word-wrap: break-word;
+        white-space: pre;
+      }
+      .input-error {
+        box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.5);
+      }
+      .icon-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid var(--border-soft);
+        background: var(--card);
+        color: var(--text);
+        padding: 4px 8px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 150ms ease-out;
+        transform-origin: center;
+      }
+      .icon-btn:hover {
+        background: var(--accent-soft);
+        border-color: var(--accent-strong);
+        transform: translateY(-1px);
+      }
+      .icon-btn svg {
+        width: 14px;
+        height: 14px;
+      }
+      .status {
+        font-size: 11px;
+        opacity: 0.9;
+        min-height: 18px;
+        display: flex;
+        align-items: center;
+      }
+      .status-error {
+        color: #fecaca;
+      }
+      .status-ok {
+        color: #bbf7d0;
+      }
+      .hint {
+        font-size: 11px;
+        color: var(--text-muted);
+        margin-top: 4px;
+      }
+      .ads-panel {
+        margin-top: 14px;
+      }
+      .ads-box {
+        border-radius: 14px;
+        padding: 10px 12px;
+        background: #000000;
+        border: 1px dashed rgba(75, 85, 99, 0.9);
+        color: #e5e7eb;
+        font-size: 11px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .ads-tag {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #9ca3af;
+      }
+
+      /* Modal load data */
+      .jf-modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(12px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 40;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 180ms ease-out;
+      }
+      .jf-modal-backdrop.is-open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .jf-modal {
+        width: min(440px, 92vw);
+        border-radius: 18px;
+        background: #020617;
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        box-shadow: 0 30px 80px rgba(15, 23, 42, 0.95);
+        padding: 16px 18px 14px;
+        transform: translateY(18px) scale(0.97);
+        opacity: 0;
+        transition:
+          opacity 180ms ease-out,
+          transform 180ms ease-out;
+      }
+      .jf-modal-backdrop.is-open .jf-modal {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      .jf-modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .jf-modal-title {
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .jf-modal-close {
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        background: transparent;
+        color: var(--text-muted);
+        font-size: 11px;
+        padding: 4px 8px;
+        cursor: pointer;
+      }
+      .jf-modal-body {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+      .jf-field {
+        margin-top: 12px;
+      }
+      .jf-label {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 12px;
+      }
+      .jf-input {
+        width: 100%;
+        padding: 7px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        background: #020617;
+        color: var(--text);
+        font-size: 12px;
+      }
+      .jf-input:focus {
+        outline: none;
+        border-color: var(--accent-strong);
+      }
+      .jf-modal-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 16px;
+        gap: 8px;
+      }
+      .jf-modal-col {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        align-items: stretch;
+      }
+      .jf-modal-col small {
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+    </style>
+  
+      <link rel="stylesheet" href="/tools/theme-singae.css" />
+  <body data-tool-theme="singae">
+<div id="tool-meta-hidden" style="display:none" aria-hidden="true">
+      <span id="tagline"></span>
+      <span id="title"></span>
+      <span id="subtitle"></span>
+    </div>
+    <main class="tool-shell">
+      <div class="split">
+        <div class="panel">
+          <div style="display:flex;align-items:center;gap:4px;">
+            <label class="panel-label" id="inputLabel"></label>
+            <button id="btnLoadData" class="icon-btn" style="padding:3px 7px;font-size:0;" title="Load JSON from URL or file">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  d="M12 3a1 1 0 0 1 1 1v8.086l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4A1 1 0 0 1 8.707 9.793L11 12.086V4a1 1 0 0 1 1-1Z"
+                />
+                <path
+                  fill="currentColor"
+                  d="M5 16a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Z"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="editor-wrapper">
+            <div class="line-gutter">
+              <div class="line-gutter-inner" id="lineGutter"></div>
+            </div>
+            <textarea id="input" spellcheck="false" placeholder=""></textarea>
+            <div class="code-overlay">
+              <pre id="wsOverlay" class="code-overlay-pre"></pre>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <label class="panel-label" id="outputLabel"></label>
+          <div class="output-wrapper">
+            <div class="line-gutter">
+              <div class="line-gutter-inner" id="lineGutterOut"></div>
+            </div>
+            <textarea id="output" spellcheck="false" readonly></textarea>
+            <div class="code-overlay">
+              <pre id="wsOverlayOut" class="code-overlay-pre"></pre>
+            </div>
+          </div>
+          <div class="hint" id="outputHint"></div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="btnFormat"></button>
+        <button class="btn" id="btnMinify"></button>
+        <button class="btn" id="btnCopy"></button>
+        <span id="status" class="status"></span>
+      </div>
+
+      </main>
+
+    <div id="loadModal" class="jf-modal-backdrop">
+      <div class="jf-modal">
+        <div class="jf-modal-header">
+          <div class="jf-modal-title" id="modalTitle">Load data</div>
+          <button type="button" class="jf-modal-close" id="modalClose">X</button>
+        </div>
+        <div class="jf-modal-body">
+          <div class="jf-field">
+            <label class="jf-label" for="urlInput" id="urlLabel">From URL</label>
+            <input id="urlInput" class="jf-input" type="text" placeholder="https://api.example.com/data.json" />
+          </div>
+          <div class="jf-modal-actions">
+            <div class="jf-modal-col">
+              <button id="btnLoadUrl" class="icon-btn">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    fill="currentColor"
+                    d="M5 12a1 1 0 0 1 1-1h8.586L12.293 8.707a1 1 0 0 1 1.414-1.414l4 4a1 1 0 0 1 .083.094l.008.01a1 1 0 0 1-.091 1.32l-4 4a1 1 0 0 1-1.414-1.414L14.586 13H6a1 1 0 0 1-1-1Z"
+                  />
+                </svg>
+                <span id="btnLoadUrlText">Load URL</span>
+              </button>
+              <small id="urlHint">Fetch JSON from a public endpoint.</small>
+            </div>
+            <div class="jf-modal-col">
+              <button id="btnUploadFile" class="icon-btn">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    fill="currentColor"
+                    d="M6 4a2 2 0 0 1 2-2h5.172a2 2 0 0 1 1.414.586l3.828 3.828A2 2 0 0 1 19 7.828V20a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4Z"
+                  />
+                  <path
+                    fill="#020617"
+                    d="M10 11a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2h-1v4a1 1 0 1 1-2 0v-4h-1a1 1 0 0 1-1-1Z"
+                  />
+                </svg>
+                <span id="btnUploadFileText">Upload file</span>
+              </button>
+              <input id="fileInput" type="file" accept=".json,application/json" style="display:none" />
+              <small id="fileHint">Choose a .json file from your device.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../../tooltip.js"></script>
+<script src="json-formatter.js"></script>
+      <script src="/context-menu-fallback.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Getfly Downloader</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <div class="tabs">
+        <button id="tabSync" class="tab is-active" type="button">Đồng bộ</button>
+        <button id="tabSaved" class="tab" type="button">Danh sách đã lưu</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <div id="panelSync">
+      <h1>Getfly Customer Downloader</h1>
+      <p class="sub">Đồng bộ khách hàng bằng API sync từ ngày chọn đến hiện tại.</p>
+      <div class="grid">
+        <label>API URL <input id="apiUrl" type="text" /></label>
+        <label>API Key <input id="apiKey" type="password" placeholder="X-API-KEY" /></label>
+        <label>Limit / page <input id="limit" type="number" min="1" max="200" value="100" /></label>
+        <label>Max pages <input id="maxPages" type="number" min="1" max="500" value="100" /></label>
+        <label>Ngày bắt đầu đồng bộ
+          <input id="lastSyncDate" type="date" />
+        </label>
+      </div>
+      <div class="actions">
+        <button id="btnSync">Sync Customers</button>
+      </div>
+      <pre id="log"></pre>
+      </div>
+
+      <div id="panelSaved" hidden>
+        <h2>Danh sách khách hàng đã lưu</h2>
+        <div class="actions">
+          <button id="btnReloadSaved" class="ghost" type="button">Tải lại danh sách</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr id="savedHeadRow"></tr>
+            </thead>
+            <tbody id="savedRows"></tbody>
+          </table>
+        </div>
+        <h3>Chi tiết khách hàng đã chọn</h3>
+        <pre id="savedDetailJson"></pre>
+      </div>
+    </section>
+  </main>
+  <script src="./app.js"></script>
+</body>
+</html>
+

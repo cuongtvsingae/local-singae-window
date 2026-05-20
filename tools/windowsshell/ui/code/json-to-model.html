@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <title>Json To Model | singae.cloud</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Online utility tool on singae.cloud." />
+    <link rel="canonical" href="https://singae.cloud/tools/code/json-to-model.html" />
+    <link rel="icon" type="image/png" href="../../asset/logo.png" />
+    <link rel="stylesheet" href="../../style.css" />
+    <style>
+      .tool-shell {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 32px 24px 40px;
+      }
+      .tool-header-row {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .tool-title-main {
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin: 0 0 6px;
+        text-align: center;
+      }
+      .tool-sub {
+        margin: 0;
+        font-size: 14px;
+        color: var(--text-muted);
+        text-align: center;
+      }
+      .split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      @media (max-width: 900px) {
+        .split {
+          grid-template-columns: 1fr;
+        }
+      }
+      .panel {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .panel-label {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text);
+      }
+      textarea {
+        width: 100%;
+        min-height: 300px;
+        padding: 12px;
+        border-radius: 6px;
+        border: 1px solid var(--border-soft);
+        background: #020617;
+        color: var(--text);
+        font-family: ui-monospace, monospace;
+        font-size: 13px;
+        line-height: 1.5;
+        resize: vertical;
+        outline: none;
+      }
+      textarea:focus {
+        border-color: var(--accent-strong);
+      }
+      .btn-row {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin-top: 16px;
+      }
+      .btn {
+        padding: 10px 20px;
+        border-radius: 6px;
+        border: 1px solid var(--border-soft);
+        background: var(--card);
+        color: var(--text);
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 150ms ease-out;
+      }
+      .btn:hover {
+        background: var(--accent-soft);
+        border-color: var(--accent-strong);
+        transform: translateY(-1px);
+      }
+      .btn-primary {
+        background: var(--accent-strong);
+        border-color: var(--accent-strong);
+        color: #ffffff;
+      }
+      .btn-primary:hover {
+        background: var(--accent-hover);
+      }
+      .code-samples-section {
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border-soft);
+      }
+      .code-samples-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0 0 16px;
+        color: var(--text);
+      }
+      .code-tabs {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+        border-bottom: 1px solid var(--border-soft);
+        position: relative;
+        z-index: 0;
+      }
+      .code-tab {
+        padding: 8px 16px;
+        border: none;
+        background: transparent;
+        color: var(--text-muted);
+        font-size: 13px;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+        transition: all 150ms ease-out;
+        position: relative;
+        z-index: 2;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+      .code-tab:hover {
+        color: var(--text);
+      }
+      .code-tab.active {
+        color: var(--accent-strong);
+        border-bottom-color: var(--accent-strong);
+      }
+      .code-blocks {
+        position: relative;
+      }
+      .code-block {
+        display: none;
+      }
+      .code-block.active {
+        display: block;
+      }
+      .code-block pre {
+        margin: 0;
+        padding: 16px;
+        border-radius: 6px;
+        border: 1px solid var(--border-soft);
+        background: #020617;
+        overflow-x: auto;
+      }
+      .code-block code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 12px;
+        line-height: 1.6;
+        color: var(--text);
+        white-space: pre;
+      }
+      .status {
+        text-align: center;
+        font-size: 12px;
+        margin-top: 8px;
+        color: var(--danger);
+      }
+    </style>
+  
+      <link rel="stylesheet" href="/tools/theme-singae.css" />
+  <body data-tool-theme="singae">
+<div id="tool-meta-hidden" style="display:none" aria-hidden="true">
+      <span id="tagline"></span>
+      <span id="title"></span>
+      <span id="subtitle"></span>
+    </div>
+    <main class="tool-shell">
+      <div class="split">
+        <div class="panel">
+          <label class="panel-label" id="inputLabel"></label>
+          <textarea id="jsonInput" placeholder='{"name": "John", "age": 30}'></textarea>
+          <div class="status" id="status" style="display: none;"></div>
+        </div>
+        <div class="panel">
+          <label class="panel-label" id="outputLabel"></label>
+          <textarea id="modelOutput" readonly></textarea>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="btnConvert"></button>
+        <button class="btn" id="btnCopy"></button>
+      </div>
+
+      <div class="code-samples-section">
+        <h3 class="code-samples-title" id="codeSamplesTitle"></h3>
+        <div class="code-tabs">
+          <button class="code-tab active" data-tab="javascript">JavaScript</button>
+          <button class="code-tab" data-tab="python">Python</button>
+          <button class="code-tab" data-tab="react">React</button>
+          <button class="code-tab" data-tab="vue">Vue</button>
+          <button class="code-tab" data-tab="swift">Swift</button>
+          <button class="code-tab" data-tab="android">Android</button>
+        </div>
+        <div class="code-blocks">
+          <div class="code-block active" id="javascriptCode">
+            <pre><code>// JavaScript code will appear here</code></pre>
+          </div>
+          <div class="code-block" id="pythonCode">
+            <pre><code>// Python code will appear here</code></pre>
+          </div>
+          <div class="code-block" id="reactCode">
+            <pre><code>// React code will appear here</code></pre>
+          </div>
+          <div class="code-block" id="vueCode">
+            <pre><code>// Vue code will appear here</code></pre>
+          </div>
+          <div class="code-block" id="swiftCode">
+            <pre><code>// Swift Model will appear here</code></pre>
+          </div>
+          <div class="code-block" id="androidCode">
+            <pre><code>// Kotlin Data Class will appear here</code></pre>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="../../tooltip.js"></script>
+<script src="json-to-model.js"></script>
+      <script src="/context-menu-fallback.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

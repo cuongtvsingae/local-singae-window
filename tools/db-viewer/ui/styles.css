@@ -1,0 +1,136 @@
+.dbv-shell {
+  max-width: 1280px !important;
+}
+
+.dbv-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.dbv-badge {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(191, 219, 254, 0.92);
+}
+
+.dbv-title {
+  margin: 4px 0;
+  font-size: 30px;
+}
+
+.dbv-sub {
+  margin: 0;
+  font-size: 13px;
+  color: rgba(226, 232, 240, 0.86);
+}
+
+.dbv-layout {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr);
+  gap: 14px;
+}
+
+.dbv-left,
+.dbv-right {
+  width: 100%;
+}
+
+.dbv-left-head {
+  margin-bottom: 10px;
+}
+
+.dbv-left-head input {
+  width: 100%;
+}
+
+.dbv-file-list {
+  max-height: 560px;
+  overflow: auto;
+  display: grid;
+  gap: 6px;
+}
+
+.dbv-file-item {
+  width: 100%;
+  text-align: left;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.5);
+  color: #e2e8f0;
+  padding: 8px 10px;
+}
+
+.dbv-file-item.is-active {
+  border-color: rgba(96, 165, 250, 0.8);
+  background: rgba(30, 58, 138, 0.35);
+}
+
+.dbv-meta {
+  font-size: 13px;
+  margin-bottom: 10px;
+  color: rgba(226, 232, 240, 0.9);
+}
+
+.dbv-sqlite-tools {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.dbv-sqlite-tools select {
+  min-width: 220px;
+}
+
+.dbv-preview {
+  margin: 0;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 10px;
+  background: rgba(2, 6, 23, 0.58);
+  min-height: 300px;
+  max-height: 420px;
+  overflow: auto;
+  padding: 10px;
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.dbv-table-wrap {
+  margin-top: 10px;
+  max-height: 320px;
+  overflow: auto;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 10px;
+}
+
+.dbv-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.dbv-table th,
+.dbv-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.dbv-table th {
+  position: sticky;
+  top: 0;
+  background: rgba(15, 23, 42, 0.92);
+}
+
+@media (max-width: 980px) {
+  .dbv-layout {
+    grid-template-columns: 1fr;
+  }
+}

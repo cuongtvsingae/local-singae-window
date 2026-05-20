@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SINGAE Lookup</title>
+    <meta name="description" content="Tra cứu khách hàng Getfly theo mã KH cho SINGAE AI." />
+    <link rel="icon" type="image/png" href="../../../asset/logo.png" />
+    <link rel="stylesheet" href="../../../style.css" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="/tools/theme-singae.css" />
+  </head>
+  <body data-tool-theme="singae">
+    <div class="lookup-bgview" aria-hidden="true"></div>
+
+    <main class="lookup-shell">
+      <div class="lookup-card">
+        <div class="lookup-title-row">
+          <h1>SINGAE Lookup</h1>
+          <div id="lookup-user" class="lookup-user" hidden></div>
+        </div>
+        <p class="lookup-sub">Mỗi user có tối đa 40 lần thành công / ngày. Kết quả được cache theo user + mã KH.</p>
+
+        <form id="lookup-form" class="lookup-form">
+          <input id="lookup-account-code" type="text" placeholder="Nhập mã KH (ví dụ: KH2001117)" required />
+          <button id="lookup-submit" type="submit">Tra cứu</button>
+        </form>
+
+        <div class="lookup-meta-row">
+          <div id="lookup-status" class="lookup-status" hidden></div>
+          <div id="lookup-quota" class="lookup-quota" hidden></div>
+        </div>
+
+        <section id="lookup-result-card" class="lookup-result-card" hidden>
+          <div class="lookup-result-row">
+            <div class="lookup-result-label">Mã KH</div>
+            <div id="lookup-result-code" class="lookup-result-value"></div>
+          </div>
+          <div class="lookup-result-row">
+            <div class="lookup-result-label">Tên KH</div>
+            <div id="lookup-result-name" class="lookup-result-value"></div>
+          </div>
+          <div class="lookup-result-row">
+            <div class="lookup-result-label">Liên hệ</div>
+            <div id="lookup-result-contact" class="lookup-result-value"></div>
+          </div>
+          <div class="lookup-result-row phones">
+            <div class="lookup-result-label">Số điện thoại</div>
+            <div id="lookup-result-phones" class="lookup-phone-list"></div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script src="app.js"></script>
+    <script src="/context-menu-fallback.js"></script>
+  </body>
+ </html>
+

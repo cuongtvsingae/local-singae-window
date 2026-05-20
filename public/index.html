@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <title>Dev &amp; Designer Tools – JSON, Color, Image &amp; More | singae.cloud</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Bộ công cụ web miễn phí cho developer &amp; designer: JSON formatter, color contrast checker, base64, QR code, image tools... Nhanh, nhẹ, không cần đăng nhập."
+    />
+
+    <link rel="canonical" href="https://singae.cloud/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://singae.cloud/" />
+    <meta property="og:title" content="Dev &amp; Designer Tools – JSON, Color, Image &amp; More" />
+    <meta
+      property="og:description"
+      content="Bộ công cụ web miễn phí cho developer &amp; designer: JSON formatter, color contrast checker, base64, QR code, image tools..."
+    />
+    <meta property="og:image" content="https://singae.cloud/asset/logo.png" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Dev &amp; Designer Tools – singae.cloud" />
+    <meta
+      name="twitter:description"
+      content="Lightweight web tools for developers &amp; designers. Fast, free, no login."
+    />
+    <meta name="twitter:image" content="https://singae.cloud/asset/logo.png" />
+
+    <script>
+      (function () {
+        var fallback = '#06080d url("asset/desktop-bg-black-ai.svg") center/cover no-repeat';
+        var wallpaper = fallback;
+        try {
+          var raw = localStorage.getItem('desktop_shell_wallpaper_cache_v1');
+          if (raw) {
+            var parsed = JSON.parse(raw);
+            if (parsed && typeof parsed.value === 'string' && parsed.value.trim()) {
+              if (parsed.type === 'image') wallpaper = '#06080d url("' + parsed.value + '") center/cover no-repeat';
+              if (parsed.type === 'gradient') wallpaper = parsed.value;
+            }
+          }
+        } catch (_) {}
+        document.documentElement.style.setProperty('--desktop-wallpaper-bg', wallpaper);
+      })();
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "singae.cloud - Dev & Designer Tools",
+        "url": "https://singae.cloud/",
+        "description": "Bộ công cụ web miễn phí cho developer & designer: JSON formatter, color contrast checker, base64, QR code, image tools...",
+        "inLanguage": "vi",
+        "publisher": {
+          "@type": "Person",
+          "name": "cuongtv"
+        }
+      }
+    </script>
+
+    <link rel="icon" type="image/png" href="asset/logo.png" />
+    <link rel="stylesheet" href="style.css?v=20260321b" />
+  </head>
+  <body class="desktop-shell">
+    <div id="app" class="app-root">
+      <section id="win11AuthShell" class="win11-auth-shell" aria-hidden="true">
+        <div class="win11-auth-backdrop"></div>
+        <div id="win11LockView" class="win11-lock-view">
+          <div class="win11-lock-time" id="win11LockTime">00:00</div>
+          <div class="win11-lock-date" id="win11LockDate">Wednesday, March 25</div>
+          <div class="win11-lock-hint">Click or press any key to sign in</div>
+        </div>
+        <div id="win11LoginView" class="win11-login-view" aria-live="polite">
+          <div class="win11-login-card">
+            <div class="win11-login-avatar" id="win11LoginAvatar"></div>
+            <div class="win11-login-title" id="win11LoginTitle">Sign in</div>
+            <form id="win11LoginForm" class="win11-login-form">
+              <input id="win11Username" type="text" autocomplete="username" placeholder="Username" />
+              <input id="win11Password" type="password" autocomplete="current-password" placeholder="Password" />
+              <button type="submit" id="win11LoginBtn">Sign in</button>
+            </form>
+            <div id="win11LoginError" class="win11-login-error"></div>
+          </div>
+        </div>
+        <div id="win11LoginLoadingView" class="win11-login-loading-view">
+          <div class="win11-loading-spinner" aria-hidden="true"></div>
+          <div class="win11-loading-text">Welcome</div>
+        </div>
+      </section>
+      <div class="desktop-wallpaper" id="desktopWallpaper" aria-hidden="true"></div>
+      <div id="global-mobile-gate" class="global-mobile-gate" aria-hidden="true" hidden>
+        <div class="global-mobile-gate-card">
+          <div class="global-mobile-gate-title">Mobile mode is under development</div>
+          <div class="global-mobile-gate-subtitle">Please open SINGAE AI in fullscreen desktop mode.</div>
+        </div>
+      </div>
+      <main class="desktop-view" id="desktopView">
+        <div class="desktop-icons" id="desktopIcons"></div>
+        <div class="desktop-window-layer" id="desktopWindowLayer"></div>
+        <section class="desktop-start-panel" id="desktopStartPanel" aria-hidden="true">
+          <div class="start-panel-head">
+            <span>Windows Menu</span>
+            <button id="startLogoutBtn" class="start-logout-btn" type="button">Sign out</button>
+          </div>
+          <div class="start-panel-body">
+            <div class="start-panel-subhead">All Apps</div>
+            <div id="startToolList" class="start-tool-list"></div>
+          </div>
+        </section>
+      </main>
+      <div class="desktop-taskbar-shell" id="desktopTaskbar">
+        <button class="taskbar-start" id="taskbarStart" aria-label="Tools Start">
+          <svg viewBox="0 0 32 32" class="start-logo-svg" aria-hidden="true">
+            <rect x="5.2" y="5.2" width="9.4" height="9.4" rx="1.1" fill="#ffffff" stroke="#050505" stroke-width="1.8"/>
+            <rect x="17.4" y="5.2" width="9.4" height="9.4" rx="1.1" fill="#ffffff" stroke="#050505" stroke-width="1.8"/>
+            <rect x="5.2" y="17.4" width="9.4" height="9.4" rx="1.1" fill="#ffffff" stroke="#050505" stroke-width="1.8"/>
+            <rect x="17.4" y="17.4" width="9.4" height="9.4" rx="1.1" fill="#ffffff" stroke="#050505" stroke-width="1.8"/>
+          </svg>
+        </button>
+        <div class="taskbar-divider" id="taskbarDivider" aria-hidden="true"></div>
+        <div class="desktop-taskbar-apps" id="desktopTaskbarApps"></div>
+        <div class="taskbar-clock" id="taskbarClock"></div>
+      </div>
+    </div>
+
+    <script src="main.js?v=20260410a"></script>
+    <script src="/context-menu-fallback.js"></script>
+  </body>
+</html>
+
+
+

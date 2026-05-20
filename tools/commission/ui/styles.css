@@ -1,0 +1,488 @@
+/* Tool-specific styling (Windows-like dark UI) */
+
+body {
+  background: transparent !important;
+}
+
+/* Hide ALL scrollbars (keep scroll working) to avoid UI jitter */
+html,
+body,
+#commissionApp,
+.tool-shell#commissionApp,
+.table-wrapper,
+.display-section {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge legacy */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+#commissionApp::-webkit-scrollbar,
+.tool-shell#commissionApp::-webkit-scrollbar,
+.table-wrapper::-webkit-scrollbar,
+.display-section::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+#commissionApp {
+  width: 100%;
+  max-width: none;
+  margin: 0 auto;
+}
+
+/* Separate overlay layer for tool notifications */
+.commission-toast-layer {
+  position: fixed;
+  left: 50%;
+  top: 14px;
+  transform: translateX(-50%);
+  z-index: 5000;
+  width: min(900px, calc(100vw - 24px));
+  pointer-events: none; /* allow interacting with underlying page */
+  overflow: visible;
+}
+
+.commission-toast-stack {
+  position: relative;
+  width: 100%;
+  height: 0;
+}
+
+.loading {
+  display: none;
+  text-align: center;
+  padding: 18px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(10px);
+}
+
+.loading.active,
+.loading[aria-busy="true"] {
+  display: block;
+}
+
+.loading-text {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 4px solid rgba(148, 163, 184, 0.18);
+  border-top-color: rgba(96, 165, 250, 0.95);
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.status {
+  border-radius: 10px;
+  border: 0 solid transparent;
+  background: rgba(15, 23, 42, 0.7);
+  padding: 0 14px;
+  font-size: 13px;
+  color: var(--text);
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-8px);
+  transform-origin: top;
+  transition:
+    max-height 180ms ease,
+    opacity 180ms ease,
+    padding 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.status.is-open {
+  max-height: 140px;
+  opacity: 1;
+  padding: 12px 14px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  transform: translateY(0);
+}
+
+.status-ok {
+  border-color: rgba(74, 222, 128, 0.25);
+  background: rgba(74, 222, 128, 0.14);
+  color: #4ade80;
+}
+
+.status-error {
+  border-color: rgba(248, 113, 113, 0.25);
+  background: rgba(248, 113, 113, 0.14);
+  color: #fca5a5;
+}
+
+.status-info {
+  border-color: rgba(96, 165, 250, 0.22);
+  background: rgba(96, 165, 250, 0.14);
+  color: #93c5fd;
+}
+
+/* Toast item system (2 items max, slide from above, fade after 2s) */
+.commission-toast-slot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  transform: translate3d(0, 0, 0);
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.commission-toast-item {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 780px;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  background: rgba(15, 23, 42, 0.78);
+  padding: 16px 18px;
+  font-size: 14px;
+  line-height: 1.35;
+  font-weight: 650;
+  color: var(--text);
+  opacity: 1;
+  /* Start well above its final position, then slide down when entering. */
+  transform: translateY(-220%) scale(0.98);
+  transform-origin: top;
+  box-shadow:
+    0 22px 60px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 180ms ease;
+}
+
+.commission-toast-item.is-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  box-shadow:
+    0 26px 72px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.commission-toast-item.is-out {
+  opacity: 0;
+  transform: translateY(-220%) scale(0.98);
+}
+
+.display-section {
+  margin-top: 14px;
+}
+
+.upload-section {
+  width: 100%;
+  margin-top: 14px;
+  padding: 18px 16px;
+  border-radius: 12px;
+  border: 1px dashed rgba(148, 163, 184, 0.45);
+  background: rgba(15, 23, 42, 0.55);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+.upload-section:hover {
+  border-color: rgba(96, 165, 250, 0.75);
+}
+
+.upload-section input[type='file'] {
+  display: block;
+  margin-top: 10px;
+  color: var(--text);
+}
+
+.file-label {
+  display: inline-block;
+  font-weight: 800;
+  font-size: 14px;
+  color: rgba(235, 241, 255, 0.9);
+  cursor: pointer;
+}
+
+.file-name {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.btn-upload {
+  margin-top: 10px;
+  min-width: 180px;
+}
+
+.table-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 14px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.facility-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 6px 0 12px 0;
+  justify-content: center;
+  width: 100%;
+}
+
+.facility-tab {
+  appearance: none;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: rgba(15, 23, 42, 0.55);
+  color: rgba(235, 241, 255, 0.9);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease, transform 120ms ease;
+}
+
+.facility-tab:hover {
+  border-color: rgba(96, 165, 250, 0.55);
+  transform: translateY(-1px);
+}
+
+.facility-tab.is-active {
+  border-color: rgba(96, 165, 250, 0.85);
+  background: rgba(96, 165, 250, 0.18);
+  color: #bfdbfe;
+}
+
+.date-range-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: rgba(15, 23, 42, 0.65);
+  justify-content: center;
+}
+
+.date-range-selector label {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.date-select {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  background: rgba(2, 6, 23, 0.6);
+  color: var(--text);
+  outline: none;
+}
+
+.clinic-commission-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: rgba(15, 23, 42, 0.65);
+}
+
+.clinic-commission-input label {
+  font-weight: 700;
+  font-size: 12px;
+  color: rgba(235, 241, 255, 0.78);
+  letter-spacing: 0.02em;
+}
+
+.clinic-commission-input-field {
+  width: 120px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  background: rgba(2, 6, 23, 0.6);
+  color: var(--text);
+  outline: none;
+  font-size: 13px;
+}
+
+.btn-ghost {
+  background: rgba(15, 23, 42, 0.7);
+  border-color: rgba(148, 163, 184, 0.28) !important;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  overflow-y: visible;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(15, 23, 42, 0.35);
+  width: 100%;
+  max-width: none;
+}
+
+/* Light buttons for Update / Export (white-gray) */
+#fetchCommissionFreshBtn.btn,
+#exportBtn.btn {
+  background: rgba(248, 250, 252, 0.88) !important;
+  color: rgba(15, 23, 42, 0.95) !important;
+  border-color: rgba(148, 163, 184, 0.55) !important;
+}
+
+#fetchCommissionFreshBtn.btn:hover,
+#exportBtn.btn:hover {
+  background: rgba(248, 250, 252, 0.98) !important;
+  border-color: rgba(96, 165, 250, 0.75) !important;
+}
+
+/* Center the entire tool content (iframe friendly) */
+.tool-shell#commissionApp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Pin to top; only center horizontally */
+  justify-content: flex-start;
+  min-height: calc(100vh - 24px);
+  padding-top: 14px;
+}
+
+.display-section {
+  /* Use full available viewport width (iframe-friendly) */
+  width: 100%;
+  max-width: none;
+  margin: 0 auto;
+}
+
+.display-table {
+  /* Keep content on one line; expand table width to fit content when needed */
+  width: max-content;
+  border-collapse: collapse;
+  min-width: 100%;
+  table-layout: auto;
+}
+
+.display-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  text-align: center;
+  padding: 12px 10px;
+  font-size: 13px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+  color: rgba(235, 241, 255, 0.92);
+  background: rgba(15, 23, 42, 0.85);
+  white-space: pre-line; /* allow \n in header labels to wrap */
+}
+
+.display-table td {
+  padding: 10px 10px;
+  border-bottom: none; /* no row lines */
+  font-size: 13px;
+  color: rgba(235, 241, 255, 0.9);
+  background: rgba(2, 6, 23, 0.28);
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+  word-break: break-word;
+}
+
+/* subtle vertical separators between columns (header + body) */
+.display-table th:not(:last-child),
+.display-table td:not(:last-child) {
+  border-right: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.display-table td.cell-center,
+.display-table th.cell-center {
+  text-align: center;
+}
+
+.assistant-cell {
+  color: #e0e7ff;
+  font-weight: 650;
+}
+
+.display-table th.name-col,
+.display-table td.name-col {
+  /* Keep "TÊN" just wide enough for the name (avoid stretching when table has extra space) */
+  width: 1%;
+  white-space: nowrap;
+}
+
+/* Give TLBS a bit more room for long names */
+.display-table[data-category='TLBS'] th.name-col,
+.display-table[data-category='TLBS'] td.name-col {
+  min-width: 260px;
+}
+
+/* Default min width for other tabs */
+.display-table:not([data-category='TLBS']) th.name-col,
+.display-table:not([data-category='TLBS']) td.name-col {
+  min-width: 180px;
+}
+
+.btn .btn-icon {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  vertical-align: -3px;
+  margin-right: 8px;
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.35));
+}
+
+.revenue-cell {
+  background: rgba(74, 222, 128, 0.08) !important;
+  color: #4ade80;
+  font-weight: 650;
+}
+
+.commission-cell {
+  background: rgba(56, 189, 248, 0.09) !important;
+  color: #7dd3fc;
+  font-weight: 650;
+}
+
+.target-achievement-cell {
+  background: rgba(245, 158, 11, 0.09) !important;
+  color: #fbbf24;
+  font-weight: 650;
+}
+
+.personal-commission-cell {
+  background: rgba(74, 222, 128, 0.08) !important;
+  color: #86efac;
+  font-weight: 650;
+}
+
+.clinic-commission-cell {
+  background: rgba(244, 63, 94, 0.09) !important;
+  color: #fda4af;
+  font-weight: 650;
+}
+
+.final-commission-cell {
+  background: rgba(59, 130, 246, 0.12) !important;
+  color: #93c5fd;
+  font-weight: 800;
+}
+
+/* No forced min-width: keep wrapping behavior on small screens */
+

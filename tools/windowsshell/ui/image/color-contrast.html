@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <title>Color Contrast | singae.cloud</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Online utility tool on singae.cloud." />
+    <link rel="canonical" href="https://singae.cloud/tools/image/color-contrast.html" />
+    <link rel="icon" type="image/png" href="../../asset/logo.png" />
+    <link rel="stylesheet" href="../../style.css" />
+    <style>
+      .tool-shell {
+        max-width: 1040px;
+        margin: 0 auto;
+        padding: 32px 24px 40px;
+      }
+      .tool-header-row {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .tool-title-main {
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin: 0 0 6px;
+        text-align: center;
+      }
+      .tool-sub {
+        margin: 0;
+        font-size: 14px;
+        color: var(--text-muted);
+        text-align: center;
+      }
+      .contrast-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.25fr);
+        gap: 16px;
+        align-items: stretch;
+      }
+      @media (max-width: 900px) {
+        .contrast-layout {
+          grid-template-columns: 1fr;
+        }
+      }
+      .contrast-left {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .contrast-right {
+        display: flex;
+        align-items: stretch;
+      }
+      .field-row {
+        display: flex;
+        gap: 18px;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
+      }
+      .field {
+        flex: 1 1 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .field label {
+        font-size: 12px;
+        opacity: 0.9;
+        margin-bottom: 0;
+      }
+      .color-input-group {
+        display: flex;
+        align-items: center;
+        border-radius: 6px;
+        border: 1px solid var(--border-soft);
+        background: #020617;
+        overflow: hidden;
+        max-width: 180px;
+      }
+      .color-input-group input[type='text'] {
+        flex: 1;
+        border: none;
+        background: transparent;
+        padding: 8px 10px;
+        color: var(--text);
+        font-size: 13px;
+        outline: none;
+        min-width: 0;
+        max-width: 100px;
+      }
+      .color-input-swatch {
+        width: 42px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        position: relative;
+      }
+      .color-input-swatch input[type='color'] {
+        display: none;
+      }
+      .color-swatch-display {
+        width: 30px;
+        height: 30px;
+        border-radius: 1px;
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        pointer-events: none;
+        position: relative;
+        z-index: 1;
+      }
+      .panel-card {
+        background: rgba(15, 23, 42, 0.96);
+        border-radius: 8px;
+        border: 1px solid var(--border-soft);
+        padding: 20px 18px 18px;
+      }
+      .preview {
+        position: relative;
+        width: 100%;
+        padding: 18px 20px;
+        border-radius: 8px;
+        border: 1px solid var(--border-soft);
+        background: rgba(15, 23, 42, 0.94);
+        overflow: hidden;
+        transition:
+          transform 200ms ease-out,
+          box-shadow 200ms ease-out;
+      }
+      .preview-box {
+        padding: 22px 26px;
+        border-radius: 6px;
+        min-height: 200px;
+      }
+      .preview-heading {
+        font-size: 22px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+      .preview-body {
+        font-size: 14px;
+        line-height: 1.5;
+        opacity: 0.95;
+      }
+      .ratio-row {
+        font-size: 12px;
+        margin-top: 6px;
+      }
+      .badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        margin-right: 6px;
+        border: 1px solid rgba(148, 163, 184, 0.6);
+      }
+      .badge-pass {
+        background: rgba(34, 197, 94, 0.08);
+        color: #4ade80;
+        border-color: rgba(74, 222, 128, 0.7);
+      }
+      .badge-fail {
+        background: rgba(248, 113, 113, 0.08);
+        color: #fca5a5;
+        border-color: rgba(248, 113, 113, 0.7);
+      }
+      .hint {
+        font-size: 11px;
+        color: var(--text-muted);
+        margin-top: 6px;
+      }
+      .preview-meta {
+        margin-top: 12px;
+        padding: 0;
+        border-radius: 8px;
+        border: none;
+        background: transparent;
+      }
+      .contrast-card {
+        border-radius: 8px;
+        background: rgba(22, 163, 74, 0.08);
+        border: 1px solid rgba(22, 163, 74, 0.35);
+        overflow: hidden;
+      }
+      .contrast-card-header {
+        display: flex;
+        padding: 18px 20px 14px;
+      }
+      .contrast-score {
+        flex: 1;
+        font-size: 42px;
+        font-weight: 700;
+      }
+      .contrast-rating {
+        flex: 1;
+        text-align: right;
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .contrast-stars {
+        margin-top: 4px;
+        font-size: 13px;
+      }
+      .contrast-row {
+        display: flex;
+        border-top: 1px solid rgba(148, 163, 184, 0.35);
+      }
+      .contrast-col {
+        flex: 1;
+        padding: 10px 18px 10px;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .contrast-col + .contrast-col {
+        border-left: 1px solid rgba(148, 163, 184, 0.35);
+      }
+      .contrast-explainer {
+        padding: 10px 20px 12px;
+        font-size: 11px;
+        line-height: 1.4;
+        color: var(--text-muted);
+      }
+      .contrast-card.contrast-poor {
+        background: rgba(248, 113, 113, 0.12);
+        border-color: rgba(248, 113, 113, 0.4);
+      }
+      .contrast-card.contrast-poor .contrast-score,
+      .contrast-card.contrast-poor .contrast-rating,
+      .contrast-card.contrast-poor .contrast-col {
+        color: #fca5a5;
+      }
+      .contrast-card.contrast-good-all {
+        background: rgba(34, 197, 94, 0.12);
+        border-color: rgba(34, 197, 94, 0.4);
+      }
+      .contrast-card.contrast-good-all .contrast-score,
+      .contrast-card.contrast-good-all .contrast-rating,
+      .contrast-card.contrast-good-all .contrast-col {
+        color: #4ade80;
+      }
+      .contrast-card.contrast-good-mixed {
+        background: rgba(250, 204, 21, 0.12);
+        border-color: rgba(250, 204, 21, 0.4);
+      }
+      .contrast-card.contrast-good-mixed .contrast-score,
+      .contrast-card.contrast-good-mixed .contrast-rating,
+      .contrast-card.contrast-good-mixed .contrast-col {
+        color: #facc15;
+      }
+      .preview-fullscreen-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        border: none;
+        background: rgba(15, 23, 42, 0.85);
+        color: var(--text-muted);
+        border-radius: 999px;
+        padding: 4px 6px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        transition:
+          background 140ms ease-out,
+          transform 140ms ease-out,
+          box-shadow 140ms ease-out,
+          color 140ms ease-out;
+      }
+      .preview-fullscreen-btn:hover {
+        background: rgba(59, 130, 246, 0.92);
+        color: #e5e7eb;
+        box-shadow: 0 0 18px rgba(59, 130, 246, 0.7);
+        transform: translateY(-0.5px);
+      }
+      .preview-fullscreen-btn svg {
+        width: 14px;
+        height: 14px;
+      }
+      .preview-fullscreen-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(10px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 200ms ease-out;
+        z-index: 45;
+      }
+      .preview.is-fullscreen {
+        position: fixed;
+        inset: 32px 24px;
+        margin: 0;
+        max-width: 1200px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 20px;
+        box-shadow: 0 30px 80px rgba(15, 23, 42, 0.95);
+        z-index: 50;
+        overflow: auto;
+      }
+      .preview.is-fullscreen .preview-box {
+        min-height: calc(100vh - 160px);
+        max-width: 960px;
+        margin: 0 auto;
+      }
+      body.preview-fullscreen-open {
+        overflow: hidden;
+      }
+      body.preview-fullscreen-open .preview-fullscreen-backdrop {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      /* Custom Color Picker */
+      .color-picker-backdrop {
+        position: fixed;
+        inset: 0;
+        background: transparent;
+        z-index: 100;
+        opacity: 0;
+        pointer-events: none;
+        transition: none;
+      }
+      .color-picker-backdrop.is-open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .color-picker-dialog {
+        position: fixed;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 20px 60px rgba(15, 23, 42, 0.4);
+        padding: 20px;
+        width: 320px;
+        opacity: 0;
+        transform: scale(0.95);
+        transition: none;
+        z-index: 101;
+      }
+      .color-picker-backdrop.is-open .color-picker-dialog {
+        opacity: 1;
+        transform: scale(1);
+      }
+      .color-picker-area {
+        width: 100%;
+        height: 200px;
+        border-radius: 12px;
+        position: relative;
+        cursor: crosshair;
+        margin-bottom: 12px;
+        overflow: hidden;
+        background: linear-gradient(to bottom, transparent, black),
+          linear-gradient(to right, white, var(--picker-hue));
+        border: 1px solid rgba(148, 163, 184, 0.3);
+      }
+      .color-picker-handle {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border: 2px solid #ffffff;
+        border-radius: 50%;
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        transition: transform 100ms ease-out;
+      }
+      .color-picker-hue {
+        width: 100%;
+        height: 20px;
+        border-radius: 10px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        background: linear-gradient(
+          to right,
+          #ff0000,
+          #ffff00,
+          #00ff00,
+          #00ffff,
+          #0000ff,
+          #ff00ff,
+          #ff0000
+        );
+        position: relative;
+        border: 1px solid rgba(148, 163, 184, 0.3);
+      }
+      .color-picker-hue-handle {
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        border: 2px solid #ffffff;
+        border-radius: 50%;
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+        pointer-events: none;
+      }
+      .color-picker-hex {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .color-picker-hex input {
+        flex: 1;
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        font-size: 13px;
+        font-family: ui-monospace, monospace;
+        outline: none;
+        transition: border-color 150ms ease-out;
+      }
+      .color-picker-hex input:focus {
+        border-color: #3b82f6;
+      }
+      .color-picker-hex-swatch {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        flex-shrink: 0;
+      }
+      .color-picker-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+      }
+      .color-picker-actions button {
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        background: #ffffff;
+        color: #1e293b;
+        font-size: 13px;
+        cursor: pointer;
+        transition:
+          background 150ms ease-out,
+          border-color 150ms ease-out;
+      }
+      .color-picker-actions button:hover {
+        background: #f1f5f9;
+        border-color: #3b82f6;
+      }
+      .color-picker-actions button.primary {
+        background: #3b82f6;
+        color: #ffffff;
+        border-color: #3b82f6;
+      }
+      .color-picker-actions button.primary:hover {
+        background: #2563eb;
+      }
+      .color-input-swatch {
+        cursor: pointer;
+        position: relative;
+      }
+      .tool-article {
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border-soft);
+        max-width: 960px;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 13px;
+        line-height: 1.7;
+        color: var(--text-muted);
+        column-count: 2;
+        column-gap: 32px;
+      }
+      @media (max-width: 900px) {
+        .tool-article {
+          column-count: 1;
+        }
+      }
+      .tool-article h2 {
+        font-size: 16px;
+        margin: 0 0 10px;
+        color: var(--text);
+        break-after: avoid;
+      }
+      .tool-article h3 {
+        font-size: 14px;
+        margin: 18px 0 6px;
+        color: var(--text);
+        break-after: avoid;
+      }
+      .tool-article p {
+        margin: 6px 0;
+      }
+      .tool-article ul {
+        margin: 6px 0 6px 18px;
+        padding: 0;
+      }
+      .tool-article li {
+        margin: 3px 0;
+      }
+    </style>
+  
+      <link rel="stylesheet" href="/tools/theme-singae.css" />
+  <body data-tool-theme="singae">
+<div id="tool-meta-hidden" style="display:none" aria-hidden="true">
+      <span id="tagline"></span>
+      <span id="title"></span>
+      <span id="subtitle"></span>
+    </div>
+    <main class="tool-shell">
+      <div class="contrast-layout">
+        <div class="contrast-left">
+          <div class="panel-card">
+            <div class="field-row">
+              <div class="field">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <label id="fgLabel"></label>
+                  <div class="color-input-group">
+                    <input type="text" id="fgHex" value="#ffffff" />
+                    <div class="color-input-swatch">
+                      <div class="color-swatch-display" id="fgSwatchDisplay"></div>
+                      <input type="color" id="fgColorPicker" value="#ffffff" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="field">
+                <div style="display:flex;align-items:center;gap:10px;justify-content:flex-end;">
+                  <label id="bgLabel"></label>
+                  <div class="color-input-group">
+                    <input type="text" id="bgHex" value="#111827" />
+                    <div class="color-input-swatch">
+                      <div class="color-swatch-display" id="bgSwatchDisplay"></div>
+                      <input type="color" id="bgColorPicker" value="#111827" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="preview-meta">
+              <span id="ratioLabel" style="display:none;"></span>
+              <div class="contrast-card" id="contrastCard">
+                <div class="contrast-card-header">
+                  $10.0</div>
+                  <div class="contrast-rating">
+                    <div id="ratingLabel">Rating</div>
+                    <div class="contrast-stars" id="ratingStars">*****</div>
+                  </div>
+                </div>
+                <div class="contrast-row">
+                  <div class="contrast-col">
+                    <span>Small text</span>
+                    <span id="smallTextStars">***</span>
+                  </div>
+                  <div class="contrast-col">
+                    <span>Large text</span>
+                    <span id="largeTextStars">***</span>
+                  </div>
+                </div>
+                <div class="contrast-explainer" id="hint"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="contrast-right">
+          <div class="preview" id="previewContainer">
+            <button
+              type="button"
+              class="preview-fullscreen-btn"
+              id="previewFullscreenBtn"
+              aria-label="Fullscreen preview"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  d="M7 10a1 1 0 0 1-1-1V6a2 2 0 0 1 2-2h3a1 1 0 1 1 0 2H8v3a1 1 0 0 1-1 1Zm0 7a1 1 0 0 0 1 1h3a1 1 0 1 1 0 2H8a2 2 0 0 1-2-2v-3a1 1 0 1 1 2 0v2Zm10-8a1 1 0 0 0 1-1V6a2 2 0 0 0-2-2h-3a1 1 0 1 0 0 2h2v3a1 1 0 0 0 1 1Zm0 3a1 1 0 0 1 1 1v3a2 2 0 0 1-2 2h-3a1 1 0 1 1 0-2h2v-3a1 1 0 0 1 1-1Z"
+                />
+              </svg>
+            </button>
+            <div id="previewBox" class="preview-box">
+              <div class="preview-heading" id="sampleTitle"></div>
+              <div class="preview-body" id="sampleText"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div id="previewFullscreenBackdrop" class="preview-fullscreen-backdrop"></div>
+
+    <div id="colorPickerBackdrop" class="color-picker-backdrop">
+      <div class="color-picker-dialog">
+        <div class="color-picker-area" id="colorPickerArea">
+          <div class="color-picker-handle" id="colorPickerHandle"></div>
+        </div>
+        <div class="color-picker-hue" id="colorPickerHue">
+          <div class="color-picker-hue-handle" id="colorPickerHueHandle"></div>
+        </div>
+        <div class="color-picker-hex">
+          <input type="text" id="colorPickerHex" placeholder="#000000" />
+          <div class="color-picker-hex-swatch" id="colorPickerSwatch"></div>
+        </div>
+        <div class="color-picker-actions">
+          <button type="button" id="colorPickerCancel">Cancel</button>
+          <button type="button" id="colorPickerConfirm" class="primary">OK</button>
+        </div>
+      </div>
+
+      </div>
+
+    <script src="../../tooltip.js"></script>
+<script src="color-contrast.js"></script>
+      <script src="/context-menu-fallback.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

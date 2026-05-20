@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Commission Settings | singae.cloud</title>
+    <link rel="icon" type="image/png" href="../../../asset/logo.png" />
+    <link rel="stylesheet" href="../../../style.css" />
+    <link rel="stylesheet" href="styles.css?v=20260401-4" />
+    <link rel="stylesheet" href="/tools/theme-singae.css" />
+  </head>
+  <body data-tool-theme="singae">
+    <main class="tool-shell tool-shell-wide" id="commissionSettingsApp">
+      <header class="cs-head">
+        <div>
+          <div class="cs-badge">Commission</div>
+          <h1 class="cs-title">COMMISSION SETTINGS</h1>
+          <p class="cs-subtitle">Tool quản lý danh sách nhân viên + khoán.</p>
+        </div>
+        <div class="cs-actions">
+          <button id="btnReloadCache" class="btn btn-icon-only" type="button" title="Reload cache">
+            <img class="btn-icon" alt="" src="../../../asset/icon-refresh.svg" />
+          </button>
+          <button id="btnSaveSettings" class="btn btn-primary btn-icon-only" type="button" title="Save">
+            <img class="btn-icon" alt="" src="../../../asset/icon-save.svg" />
+          </button>
+        </div>
+      </header>
+
+      <section class="cs-panel">
+        <div class="cs-top-grid">
+          <div class="cs-status" id="statusText">Loading...</div>
+        </div>
+
+        <div id="categoryTabs" class="cs-tabs" role="tablist" aria-label="Commission tabs"></div>
+        <div class="cs-toolbar">
+          <div class="cs-tip">
+            Tip: Tên mới chưa define sẽ nằm ở tab <strong>CHƯA GÁN NHÓM</strong>.
+          </div>
+          <div class="cs-toolbar-actions">
+            <button id="btnOpenUploadProductModal" class="btn btn-icon-only" type="button" title="Upload XLSX sản phẩm">
+              <img class="btn-icon" alt="" src="../../../asset/icon-upload.svg" />
+            </button>
+            <button id="btnOpenDefaultKhoanModal" class="btn btn-icon-only" type="button" title="Khoán mặc định">
+              <img class="btn-icon" alt="" src="../../../asset/icon-plus.svg" />
+            </button>
+            <button id="btnOpenClinicPctModal" class="btn btn-icon-only" type="button" title="%HH Phòng khám">
+              <img class="btn-icon" alt="" src="../../../asset/icon-tools.svg" />
+            </button>
+            <button id="btnOpenAddUserModal" class="btn btn-icon-only" type="button" title="Add user">
+              <img class="btn-icon" alt="" src="../../../asset/icon-user-plus.svg" />
+            </button>
+            <button id="btnOpenAddGroupModal" class="btn btn-icon-only" type="button" title="Add group">
+              <img class="btn-icon" alt="" src="../../../asset/icon-tools.svg" />
+            </button>
+            <button id="btnOpenSyncGsheetModal" class="btn btn-icon-only" type="button" title="Sync Google Sheet">
+              <img class="btn-icon" alt="" src="../../../asset/icon-refresh.svg" />
+            </button>
+          </div>
+        </div>
+
+        <div class="cs-add-row" id="addGroupView" style="display:none;">
+          <label class="cs-field">
+            <span>KHOÁN mặc định</span>
+            <div class="cs-inline">
+              <input id="defaultKhoanInput" type="text" inputmode="numeric" placeholder="250.000.000" />
+              <select id="defaultKhoanApplyMode" class="cs-inline-select">
+                <option value="save-only" selected>Lưu</option>
+                <option value="apply-missing-nvkd">Set cho tất cả NV KINH DOANH (chưa có khoán riêng)</option>
+              </select>
+              <button id="btnApplyDefaultKhoan" class="btn btn-primary btn-icon-only" type="button" title="Apply">
+                <img class="btn-icon" alt="" src="../../../asset/icon-plus.svg" />
+              </button>
+            </div>
+          </label>
+
+          <label class="cs-field">
+            <span>%HH PHÒNG KHÁM</span>
+            <input id="clinicPctInput" type="text" inputmode="numeric" placeholder="100" />
+          </label>
+
+          <div class="cs-add-user">
+            <div class="cs-add-user-title">Add user</div>
+            <div class="cs-inline">
+              <input id="newUserNameInput" type="text" placeholder="Nhập tên user..." />
+              <select id="newUserTypeSelect" class="cs-inline-select"></select>
+              <button id="btnAddUser" class="btn btn-primary btn-icon-only" type="button" title="Add user">
+                <img class="btn-icon" alt="" src="../../../asset/icon-user-plus.svg" />
+              </button>
+            </div>
+            <div id="newUserKhoanFields" class="cs-inline" style="margin-top:8px;"></div>
+          </div>
+        </div>
+
+        <div class="cs-table-wrap">
+          <table class="cs-table">
+            <thead>
+              <tr id="tableHeadRow">
+                <th style="width:72px;">STT</th>
+                <th>TÊN</th>
+                <th id="khoanCol1" style="width:220px;">KHOÁN</th>
+                <th id="khoanCol2" style="width:220px; display:none;">KHOÁN 2</th>
+                <th id="khoanCol3" style="width:220px; display:none;">KHOÁN 3</th>
+                <th style="width:120px;"></th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <div id="csModal" class="cs-modal" aria-hidden="true">
+      <div class="cs-modal-backdrop" data-close="true"></div>
+      <div class="cs-modal-card" role="dialog" aria-modal="true" aria-label="Commission Settings Modal">
+        <div class="cs-modal-head">
+          <div id="csModalTitle" class="cs-modal-title">Thao tác</div>
+          <button id="csModalClose" class="btn btn-icon-only" type="button" title="Close">
+            <img class="btn-icon" alt="" src="../../../asset/icon-close.svg" />
+          </button>
+        </div>
+        <div id="csModalBody" class="cs-modal-body"></div>
+      </div>
+    </div>
+
+    <script src="app.js?v=20260401-3"></script>
+  </body>
+</html>
+
