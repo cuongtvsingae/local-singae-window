@@ -1,0 +1,24 @@
+services:
+  singae-local:
+    build: .
+    image: singae-local:latest
+    container_name: singae-local
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3000}:3000"
+      - "${CHATBOT_LOCAL_SERVER_PORT:-13001}:13001"
+    volumes:
+      # Config + secrets (OPENAI_API_KEY, bridge secret, …)
+      - ./private:/app/private
+      # SQLite + logs (chatbot, tools)
+      - ./chatbot/database:/app/chatbot/database
+      - ./tools/user-admin/database:/app/tools/user-admin/database
+      - ./tools/windowsshell/database:/app/tools/windowsshell/database
+      - ./tools/singae-assistant/database:/app/tools/singae-assistant/database
+      - ./tools/it-support/data:/app/tools/it-support/data
+    environment:
+      NODE_ENV: production
+      LISTEN_HOST: 0.0.0.0
+      # In-container URLs (processor/worker/engine on same host)
+      CHATBOT_LOCAL_FORWARD_URL: http://127.0.0.1:13001/webhooks/chatbot/facebook
+      CHATBOT_LOCAL_PROCESS_URL: http://127.0.0.1:13000/process

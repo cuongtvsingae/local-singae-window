@@ -1,0 +1,22 @@
+node_modules
+**/node_modules
+npm-debug.log*
+.git
+.gitignore
+.cursor
+*.md
+!DOCKER.md
+
+# Secrets & local runtime data (mount at run time)
+private/.env
+**/*.sqlite
+**/*.sqlite-*
+
+# Dev / IDE
+.vscode
+.idea
+*.log
+
+# OS
+Thumbs.db
+.DS_Store
