@@ -1,6 +1,6 @@
 # Docker — singae-local
 
-Chạy **4 process** (hub `:3000`, chatbot engine `:13001`, processor `:13000`, worker SSE) trong một container qua `pm2-runtime start ecosystem.docker.cjs`.
+Chạy **4 process** (hub `:3000`, chatbot engine `:13001`, processor `:13000`, worker SSE) trong một container qua `pm2-runtime start ecosystem.docker.config.js` (PM2 không đọc file `*.cjs` làm ecosystem).
 
 ## Yêu cầu
 
@@ -133,7 +133,8 @@ docker compose restart
 | `bridgeConnected: false` | Container chạy nhưng worker chưa kết nối VPS — kiểm tra `CHATBOT_MANAGER_BASE_URL`, firewall |
 | Build fail ở `sqlite3` | Đảm bảo dùng image `node:20-bookworm-slim` (đã có `python3`, `make`, `g++` trong Dockerfile) |
 | `exec docker-entrypoint.sh: no such file or directory` | Script bị CRLF (Windows) — pull code mới và `docker compose build --no-cache` |
-| `SQLITE_BUSY` / worker `Forward to chatbot engine failed` | Hub + engine cùng ghi DB — dùng `ecosystem.docker.cjs` (mặc định trong container). Nếu vẫn lỗi: `docker compose down -v` rồi up lại (named volume, tránh bind mount Windows) |
+| `SQLITE_BUSY` / worker `Forward to chatbot engine failed` | Hub + engine cùng ghi DB — container dùng `ecosystem.docker.config.js` (hub proxy). Nếu vẫn lỗi: `docker compose down -v` rồi up lại |
+| Log chỉ có `ecosystem.docker:0` | PM2 chạy nhầm file `.cjs` như script — rebuild image có `ecosystem.docker.config.js` |
 | Port 3000 bận | Đổi mapping: `PORT=3001 docker compose up -d` và sửa `ports` trong compose nếu cần |
 
 Chi tiết test end-to-end: [TEST.md](./TEST.md).
