@@ -1,6 +1,6 @@
 # Docker — singae-local
 
-Chạy **4 process** (hub `:3000`, chatbot engine `:13001`, processor `:13000`, worker SSE) trong một container, tương đương `npm run pm2:start`.
+Chạy **4 process** (hub `:3000`, chatbot engine `:13001`, processor `:13000`, worker SSE) trong một container qua `pm2-runtime start ecosystem.docker.cjs`.
 
 ## Yêu cầu
 
