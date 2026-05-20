@@ -24,7 +24,9 @@ RUN node scripts/bootstrap.js
 COPY . .
 
 # PM2 runs all 4 apps in foreground (Docker-friendly)
+# Strip CRLF from shell scripts (Windows checkout) — avoids "no such file or directory"
 RUN npm install -g pm2@5 --no-audit --no-fund \
+  && sed -i 's/\r$//' scripts/docker-entrypoint.sh \
   && chmod +x scripts/docker-entrypoint.sh
 
 ENV NODE_ENV=production \
@@ -38,4 +40,4 @@ EXPOSE 3000 13001
 HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \
   CMD node -e "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
 
-ENTRYPOINT ["/app/scripts/docker-entrypoint.sh"]
+ENTRYPOINT ["/bin/sh", "/app/scripts/docker-entrypoint.sh"]

@@ -123,6 +123,7 @@ Volume mặc định trong `docker-compose.yml`:
 | Container thoát ngay | `docker compose logs` — thường thiếu `private/.env` hoặc lỗi npm native |
 | `bridgeConnected: false` | Container chạy nhưng worker chưa kết nối VPS — kiểm tra `CHATBOT_MANAGER_BASE_URL`, firewall |
 | Build fail ở `sqlite3` | Đảm bảo dùng image `node:20-bookworm-slim` (đã có `python3`, `make`, `g++` trong Dockerfile) |
+| `exec docker-entrypoint.sh: no such file or directory` | Script bị CRLF (Windows) — pull code mới và `docker compose build --no-cache` |
 | Port 3000 bận | Đổi mapping: `PORT=3001 docker compose up -d` và sửa `ports` trong compose nếu cần |
 
 Chi tiết test end-to-end: [TEST.md](./TEST.md).
