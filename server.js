@@ -312,63 +312,9 @@ try {
 
 let chatbotRouterLoaded = false;
 try {
-  const chatbotRouter = require('./chatbot/server/server');
-  app.use('/api/chatbot', chatbotRouter);
-  app.use('/api/openai-chatbot', (req, res, next) => {
-    req.url = `/openai${req.url}`;
-    chatbotRouter(req, res, next);
-  });
-  app.use('/api/localai-chatbot', (req, res, next) => {
-    req.url = `/localai${req.url}`;
-    chatbotRouter(req, res, next);
-  });
-
-  // Back-compat: AI Manager UI calls these endpoints at root (/api/*).
-  // Internally they live on the chatbot router (mounted at /api/chatbot).
-  app.use('/api/runtime-config', (req, res, next) => {
-    req.url = `/runtime-config${req.url}`;
-    chatbotRouter(req, res, next);
-  });
-  app.use('/api/openai-models', (req, res, next) => {
-    req.url = `/openai-models${req.url}`;
-    chatbotRouter(req, res, next);
-  });
-  app.use('/api/prompts', (req, res, next) => {
-    req.url = `/prompts${req.url}`;
-    chatbotRouter(req, res, next);
-  });
-  app.use('/api/prompt', (req, res, next) => {
-    req.url = `/prompt${req.url}`;
-    chatbotRouter(req, res, next);
-  });
-  app.use('/api/knowledge-base', (req, res, next) => {
-    req.url = `/knowledge-base${req.url}`;
-    chatbotRouter(req, res, next);
-  });
-  app.use('/api/usage-logs', (req, res, next) => {
-    req.url = `/usage-logs${req.url}`;
-    chatbotRouter(req, res, next);
-  });
-  app.use('/api/server-logs', (req, res, next) => {
-    req.url = `/server-logs${req.url}`;
-    chatbotRouter(req, res, next);
-  });
-  app.use('/api/database', (req, res, next) => {
-    req.url = `/database${req.url}`;
-    chatbotRouter(req, res, next);
-  });
-
-  app.use('/api/singae-lookup/verify-account', (req, res, next) => {
-    req.url = `/verify-account${req.url}`;
-    chatbotRouter(req, res, next);
-  });
-  app.use('/api/singae-lookup', (req, res, next) => {
-    req.url = `/singae-lookup${req.url}`;
-    chatbotRouter(req, res, next);
-  });
-  app.use('/chatbot', chatbotRouter);
+  const { mountChatbotOnHub } = require('./lib/chatbotHubMount');
+  mountChatbotOnHub(app);
   chatbotRouterLoaded = true;
-  console.log('✅ Chatbot API at /api/chatbot (Facebook webhook on VPS; use chatbot-local:worker)');
 } catch (error) {
   console.warn(error.message);
 }

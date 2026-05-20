@@ -112,9 +112,18 @@ docker compose exec singae-local pm2 logs
 
 Volume mặc định trong `docker-compose.yml`:
 
-- `private/` — `.env`, OAuth JSON, credential Zalo
-- `chatbot/database/` — SQLite chatbot + log
-- Các thư mục `database/` / `data/` của tool khác
+- `private/` — bind mount (`.env`, OAuth JSON, credential Zalo)
+- `singae-chatbot-db` và các named volume khác — SQLite trong container (tránh lỗi lock trên Windows)
+
+Giữ DB cũ từ folder local (một lần):
+
+```powershell
+docker compose up -d
+docker cp ./chatbot/database/. singae-local:/app/chatbot/database/
+docker compose restart
+```
+
+`docker compose down -v` xóa toàn bộ named volume (mất dữ liệu SQLite trong container).
 
 ## 7. Lỗi thường gặp
 
@@ -124,6 +133,7 @@ Volume mặc định trong `docker-compose.yml`:
 | `bridgeConnected: false` | Container chạy nhưng worker chưa kết nối VPS — kiểm tra `CHATBOT_MANAGER_BASE_URL`, firewall |
 | Build fail ở `sqlite3` | Đảm bảo dùng image `node:20-bookworm-slim` (đã có `python3`, `make`, `g++` trong Dockerfile) |
 | `exec docker-entrypoint.sh: no such file or directory` | Script bị CRLF (Windows) — pull code mới và `docker compose build --no-cache` |
+| `SQLITE_BUSY` / worker `Forward to chatbot engine failed` | Hub + engine cùng ghi DB — dùng `ecosystem.docker.cjs` (mặc định trong container). Nếu vẫn lỗi: `docker compose down -v` rồi up lại (named volume, tránh bind mount Windows) |
 | Port 3000 bận | Đổi mapping: `PORT=3001 docker compose up -d` và sửa `ports` trong compose nếu cần |
 
 Chi tiết test end-to-end: [TEST.md](./TEST.md).

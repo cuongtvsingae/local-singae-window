@@ -9,4 +9,4 @@ if [ ! -f private/.env ]; then
   echo "  Or:    cp private/.env.example private/.env"
 fi
 
-exec pm2-runtime ecosystem.config.cjs
+exec pm2-runtime ecosystem.docker.cjs

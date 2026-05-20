@@ -10,15 +10,24 @@ services:
     volumes:
       # Config + secrets (OPENAI_API_KEY, bridge secret, …)
       - ./private:/app/private
-      # SQLite + logs (chatbot, tools)
-      - ./chatbot/database:/app/chatbot/database
-      - ./tools/user-admin/database:/app/tools/user-admin/database
-      - ./tools/windowsshell/database:/app/tools/windowsshell/database
-      - ./tools/singae-assistant/database:/app/tools/singae-assistant/database
-      - ./tools/it-support/data:/app/tools/it-support/data
+      # Named volumes avoid SQLite locking issues on Windows bind mounts
+      - singae-chatbot-db:/app/chatbot/database
+      - singae-user-admin-db:/app/tools/user-admin/database
+      - singae-windowsshell-db:/app/tools/windowsshell/database
+      - singae-assistant-db:/app/tools/singae-assistant/database
+      - singae-it-support-data:/app/tools/it-support/data
     environment:
       NODE_ENV: production
       LISTEN_HOST: 0.0.0.0
+      HUB_CHATBOT_PROXY: "1"
+      CHATBOT_ENGINE_URL: http://127.0.0.1:13001
       # In-container URLs (processor/worker/engine on same host)
       CHATBOT_LOCAL_FORWARD_URL: http://127.0.0.1:13001/webhooks/chatbot/facebook
       CHATBOT_LOCAL_PROCESS_URL: http://127.0.0.1:13000/process
+
+volumes:
+  singae-chatbot-db:
+  singae-user-admin-db:
+  singae-windowsshell-db:
+  singae-assistant-db:
+  singae-it-support-data:

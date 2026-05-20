@@ -17,6 +17,29 @@ function isSqliteCorruptError(error) {
   return String(error?.code || "").toUpperCase() === "SQLITE_CORRUPT" || msg.includes("database disk image is malformed");
 }
 
+function isSqliteBusyError(error) {
+  const code = String(error?.code || "").toUpperCase();
+  return code === "SQLITE_BUSY" || error?.errno === 5;
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function withSqliteBusyRetry(fn, maxAttempts = 10) {
+  let lastError;
+  for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+    try {
+      return await fn();
+    } catch (error) {
+      if (!isSqliteBusyError(error)) throw error;
+      lastError = error;
+      await sleep(Math.min(50 * 2 ** attempt, 2000));
+    }
+  }
+  throw lastError;
+}
+
 let recoveringPromise = null;
 
 function closeDbSafe() {
@@ -203,27 +226,33 @@ async function recoverCorruptDatabase() {
 }
 
 function run(sql, params = []) {
-  return runCore(sql, params).catch(async (error) => {
-    if (!isSqliteCorruptError(error)) throw error;
-    await recoverCorruptDatabase();
-    return runCore(sql, params);
-  });
+  return withSqliteBusyRetry(() =>
+    runCore(sql, params).catch(async (error) => {
+      if (!isSqliteCorruptError(error)) throw error;
+      await recoverCorruptDatabase();
+      return runCore(sql, params);
+    })
+  );
 }
 
 function get(sql, params = []) {
-  return getCore(sql, params).catch(async (error) => {
-    if (!isSqliteCorruptError(error)) throw error;
-    await recoverCorruptDatabase();
-    return getCore(sql, params);
-  });
+  return withSqliteBusyRetry(() =>
+    getCore(sql, params).catch(async (error) => {
+      if (!isSqliteCorruptError(error)) throw error;
+      await recoverCorruptDatabase();
+      return getCore(sql, params);
+    })
+  );
 }
 
 function all(sql, params = []) {
-  return allCore(sql, params).catch(async (error) => {
-    if (!isSqliteCorruptError(error)) throw error;
-    await recoverCorruptDatabase();
-    return allCore(sql, params);
-  });
+  return withSqliteBusyRetry(() =>
+    allCore(sql, params).catch(async (error) => {
+      if (!isSqliteCorruptError(error)) throw error;
+      await recoverCorruptDatabase();
+      return allCore(sql, params);
+    })
+  );
 }
 
 async function initSchema() {
